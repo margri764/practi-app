@@ -1,0 +1,149 @@
+{
+  "configVersion": 1,
+  "timestamp": 1694101830228,
+  "index": "/practi-app/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/practi-app/favicon.ico",
+        "/practi-app/index.html",
+        "/practi-app/main.f6b256ad41247304.js",
+        "/practi-app/manifest.webmanifest",
+        "/practi-app/polyfills.18abb9878618be99.js",
+        "/practi-app/runtime.e981d4f4803d3d5a.js",
+        "/practi-app/styles.3dc04d7a021fdee4.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/practi-app/BebasNeue-Regular.f8cd6b7d650c1a01.ttf",
+        "/practi-app/LuckiestGuy-Regular.944b8438f24ffc2c.ttf",
+        "/practi-app/Poppins-Light.8b20023e8f811f53.ttf",
+        "/practi-app/assets/Logo PractiGestion.ai",
+        "/practi-app/assets/Logo PractiGestion.svg",
+        "/practi-app/assets/font/Bebas_Neue/BebasNeue-Regular.ttf",
+        "/practi-app/assets/font/Bebas_Neue/OFL.txt",
+        "/practi-app/assets/font/Luckiest_Guy/LuckiestGuy-Regular.ttf",
+        "/practi-app/assets/font/fontawesome-webfont.ttf",
+        "/practi-app/assets/font/poppins/OFL.txt",
+        "/practi-app/assets/font/poppins/Poppins-Black.ttf",
+        "/practi-app/assets/font/poppins/Poppins-BlackItalic.ttf",
+        "/practi-app/assets/font/poppins/Poppins-Bold.ttf",
+        "/practi-app/assets/font/poppins/Poppins-BoldItalic.ttf",
+        "/practi-app/assets/font/poppins/Poppins-ExtraBold.ttf",
+        "/practi-app/assets/font/poppins/Poppins-ExtraBoldItalic.ttf",
+        "/practi-app/assets/font/poppins/Poppins-ExtraLight.ttf",
+        "/practi-app/assets/font/poppins/Poppins-ExtraLightItalic.ttf",
+        "/practi-app/assets/font/poppins/Poppins-Italic.ttf",
+        "/practi-app/assets/font/poppins/Poppins-Light.ttf",
+        "/practi-app/assets/font/poppins/Poppins-LightItalic.ttf",
+        "/practi-app/assets/font/poppins/Poppins-Medium.ttf",
+        "/practi-app/assets/font/poppins/Poppins-MediumItalic.ttf",
+        "/practi-app/assets/font/poppins/Poppins-Regular.ttf",
+        "/practi-app/assets/font/poppins/Poppins-SemiBold.ttf",
+        "/practi-app/assets/font/poppins/Poppins-SemiBoldItalic.ttf",
+        "/practi-app/assets/font/poppins/Poppins-Thin.ttf",
+        "/practi-app/assets/font/poppins/Poppins-ThinItalic.ttf",
+        "/practi-app/assets/icons/logo-126x126.png",
+        "/practi-app/assets/icons/logo-144x144.png",
+        "/practi-app/assets/icons/logo-153x153.png",
+        "/practi-app/assets/icons/logo-192x192.png",
+        "/practi-app/assets/icons/logo-384x384.png",
+        "/practi-app/assets/icons/logo-512x512.png",
+        "/practi-app/assets/icons/logo-72x72.png",
+        "/practi-app/assets/icons/logo-90x90.png",
+        "/practi-app/assets/lock.jpg",
+        "/practi-app/assets/logo-favicon.png",
+        "/practi-app/assets/logo.jpg",
+        "/practi-app/assets/logo.png",
+        "/practi-app/assets/qr-practi-gestion.png",
+        "/practi-app/fontawesome-webfont.8a7cb27d142e3e19.ttf"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "/practi-app/BebasNeue-Regular.f8cd6b7d650c1a01.ttf": "8b3aaeb978f3cb5f575860774b50c332338563c1",
+    "/practi-app/LuckiestGuy-Regular.944b8438f24ffc2c.ttf": "7701304fb627ae9caa78cd982dce30d99a591296",
+    "/practi-app/Poppins-Light.8b20023e8f811f53.ttf": "e247a92158e112f8bf7b638c8d95381d66b00dbb",
+    "/practi-app/assets/Logo PractiGestion.ai": "f3fb945256eeafb20b7427e38d3e4440f8e4877f",
+    "/practi-app/assets/Logo PractiGestion.svg": "82131f342538dedd1d6098c8fa9a2206714ab51b",
+    "/practi-app/assets/font/Bebas_Neue/BebasNeue-Regular.ttf": "8b3aaeb978f3cb5f575860774b50c332338563c1",
+    "/practi-app/assets/font/Bebas_Neue/OFL.txt": "df7c2df2fae806ed90f9a33310a9252c7f05d632",
+    "/practi-app/assets/font/Luckiest_Guy/LuckiestGuy-Regular.ttf": "7701304fb627ae9caa78cd982dce30d99a591296",
+    "/practi-app/assets/font/fontawesome-webfont.ttf": "13b1eab65a983c7a73bc7997c479d66943f7c6cb",
+    "/practi-app/assets/font/poppins/OFL.txt": "525d837a484cdc20696e1afea410d34c971432bf",
+    "/practi-app/assets/font/poppins/Poppins-Black.ttf": "645e04c53c6b5b35bce654a811ebce16af8aa721",
+    "/practi-app/assets/font/poppins/Poppins-BlackItalic.ttf": "be4ef2aac7775a4b0179c0ecfce6cea8f7783f63",
+    "/practi-app/assets/font/poppins/Poppins-Bold.ttf": "875cf0cecd647bcf22e79d633d868c1b1ec98dfa",
+    "/practi-app/assets/font/poppins/Poppins-BoldItalic.ttf": "6de8952ca08d27ee77f57347d2cef4b4e26aa78f",
+    "/practi-app/assets/font/poppins/Poppins-ExtraBold.ttf": "4b5c0750f073abd576413a0898d3b95adaf199c8",
+    "/practi-app/assets/font/poppins/Poppins-ExtraBoldItalic.ttf": "94d3ee3acdbd00e37a715a25f2b5237666b5b8a3",
+    "/practi-app/assets/font/poppins/Poppins-ExtraLight.ttf": "85af6582a7e6155917c605f9d3fed68c02b23b06",
+    "/practi-app/assets/font/poppins/Poppins-ExtraLightItalic.ttf": "6fa0418f91032680d2d8fe4843009f2c80faa61d",
+    "/practi-app/assets/font/poppins/Poppins-Italic.ttf": "e2bfcd56016c3c915221ef1c5fc1a17b0776eb91",
+    "/practi-app/assets/font/poppins/Poppins-Light.ttf": "e247a92158e112f8bf7b638c8d95381d66b00dbb",
+    "/practi-app/assets/font/poppins/Poppins-LightItalic.ttf": "f76102b361e705751a83b7b22fe954daf1f27dd4",
+    "/practi-app/assets/font/poppins/Poppins-Medium.ttf": "283f21b44efbdbf276ba802be2d949a36bbc4233",
+    "/practi-app/assets/font/poppins/Poppins-MediumItalic.ttf": "b592c62fdf88c40cfd0f031bba6423b1d4430472",
+    "/practi-app/assets/font/poppins/Poppins-Regular.ttf": "fdd3002e7d814ee47c1c1b8487c72c6bbb3a2d00",
+    "/practi-app/assets/font/poppins/Poppins-SemiBold.ttf": "8a4ace9392d06bcb7f8ea2f5169b07e4c383a90d",
+    "/practi-app/assets/font/poppins/Poppins-SemiBoldItalic.ttf": "0c8bed0a5942b2388d36b11c115685d9f01700b0",
+    "/practi-app/assets/font/poppins/Poppins-Thin.ttf": "09ba4dcd5509c8085bf88c665dcc51cbdfced27b",
+    "/practi-app/assets/font/poppins/Poppins-ThinItalic.ttf": "fb8fccca21550e71135f92bbaf8a2e8a12c90465",
+    "/practi-app/assets/icons/logo-126x126.png": "76cee2bdd69fc94698bd2bf824786de5208f4de5",
+    "/practi-app/assets/icons/logo-144x144.png": "3c5b275589bc0872669967350f8a63a3dd51829a",
+    "/practi-app/assets/icons/logo-153x153.png": "dba9bbdf3fef780c07c4c6de4680e3aa95dadde0",
+    "/practi-app/assets/icons/logo-192x192.png": "238a00e9b830885893fe230c3f3b0ca3f394a23d",
+    "/practi-app/assets/icons/logo-384x384.png": "acb6255dbff4becd5fe57e65c5c0c4b0d824bf8f",
+    "/practi-app/assets/icons/logo-512x512.png": "a3636b4bcd7c178177f37c173d4b9b0edf77b2a5",
+    "/practi-app/assets/icons/logo-72x72.png": "2c23d249d07493e1c9e0d745de72419168f205e6",
+    "/practi-app/assets/icons/logo-90x90.png": "7aefa890dde9cfc7af03b6edd1e1484855c2bbc1",
+    "/practi-app/assets/lock.jpg": "1775a21604a77e6f20558dba969f4eefe377cbca",
+    "/practi-app/assets/logo-favicon.png": "c65be48137283a4986e628d34965db5833a8b4a4",
+    "/practi-app/assets/logo.jpg": "706b70f61ce9aa6465042cc6400878b246bd30e1",
+    "/practi-app/assets/logo.png": "421815e3035d73b16f0a3e1549ff4ff48bcb5d29",
+    "/practi-app/assets/qr-practi-gestion.png": "7609e9e765a791bc49fcfcfbe4d8fa049d116762",
+    "/practi-app/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
+    "/practi-app/fontawesome-webfont.8a7cb27d142e3e19.ttf": "13b1eab65a983c7a73bc7997c479d66943f7c6cb",
+    "/practi-app/index.html": "a63e375c7d0c1a05fbdfbcd9c7c47b0df9639ea8",
+    "/practi-app/main.f6b256ad41247304.js": "d8d418e7499c8f8ab8cc075bab55303768f2f9dd",
+    "/practi-app/manifest.webmanifest": "59013a1b9578fc15d516fb13f5422ba3cc5079eb",
+    "/practi-app/polyfills.18abb9878618be99.js": "451e8b17c129eea3e018aacbcb1e9d1cb91f5766",
+    "/practi-app/runtime.e981d4f4803d3d5a.js": "683072065832bad789f3904790d964413451b7ff",
+    "/practi-app/styles.3dc04d7a021fdee4.css": "a4de90a9bbfc4bb08264d8519cf0acf9f6de4a1b"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}
