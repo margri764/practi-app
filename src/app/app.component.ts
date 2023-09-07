@@ -72,7 +72,7 @@ export class AppComponent implements OnInit {
 
    this.localStorageService.loadInitialState();
    
-   this.isLoading = true;
+  //  this.isLoading = true;
    this.errorService.closeIsLoading$.subscribe((emmited)=>{if(emmited){this.isLoading = false}})
   
     this.store.select('auth')
