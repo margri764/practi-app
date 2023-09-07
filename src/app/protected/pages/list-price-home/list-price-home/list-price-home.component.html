@@ -1,0 +1,49 @@
+<div  fxLayout="row wrap"  fxLayoutAlign="center start" style="height: 100%; background-color: rgb(241, 241, 241);">
+
+    <span class="font fs-5 mt-20" routerLink="/listado-precios/listado"> Ver listas habilitadas</span>
+    
+    <!-- <app-general-list fxLayout="row wrap"  fxLayoutAlign="center center" fxFlex="100"></app-general-list> -->
+    <!-- <router-outlet></router-outlet> -->
+</div>
+<!-- 
+    <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="100" class="mt-40">
+        <button  mat-raised-button color="warn" type="button" class="add" (click)="addClient()" >
+            <mat-icon class="material-symbols-outlined notranslate">add</mat-icon>
+        </button>
+        <span class="font fs-5 mt-10" fxFlex="100" style="text-align: center;">Agregar Cliente</span>
+    </div> -->
+
+
+<!-- <div  fxLayout="row wrap"  fxLayoutAlign="center start" FxFlex="100" style="background-color: rgb(241, 241, 241); margin-top: 40px;" *ngIf="contactos.length !== 0">
+        
+    <div fxLayout="row wrap"  fxLayoutAlign="space-between center" style="margin-bottom: 30px;  padding: 10px; background-color: white;" fxFlex="97" class="whiteframe" *ngFor="let client of contactos">
+
+        <div  fxLayout="row wrap"  fxLayoutAlign="space-around center" fxFlex="100" style="background-color: rgb(37, 150, 190); color: white; height: 30px; padding: 5px;">
+            <span  class="font fs-5" fxFlex="50" > Código: {{client.idAgenda }} </span>
+            <span  class="font fs-5" fxLayout="row wrap"  fxLayoutAlign="end center" fxFlex="50" > Estado: {{client.esCliente}} </span>
+      
+          </div>
+   
+        <span  class="font fs-5 mt-20" fxFlex="100" > {{client.archivarComo| capitalizeFirstLetter }}</span>
+        <span  class="font fs-5 mt-20" fxFlex="50" > Cuit: {{client.cuit || 'sin definir' }}</span>
+        <span  class="font fs-5 mt-20" style="text-align: end;" fxFlex="50" > Tel: {{client.telefonoCodigoArea}} {{client.numeroLocal || 'sin definir' }}</span>
+
+        <span  class="font fs-5 mt-20 " fxFlex="100" > Localidad: {{client.localidad || 'sin definir' }}</span>
+        
+        <div fxLayout="row wrap" fxLayoutAlign="end center" fxFlex="100">
+            <div class="icon mr-10" (click)="deleteClient(client.id)" >
+                <span class="material-symbols-outlined notranslate" style="color: red;"> delete </span>
+            </div>
+            
+            <div class="icon"  (click)="editClient(client)">
+                <span class="material-symbols-outlined notranslate" style="color: rgb(255, 176, 57);"> edit </span>
+            </div>
+        </div>
+        
+    </div>
+</div> -->
+
+<!-- 
+<div  fxLayout="row wrap"  fxLayoutAlign="center center" FxFlex="90" style="margin-top: 50%; height: 60px;" class="whiteframe" *ngIf="contactos.length === 0">
+    <span class="font fs-5">Cargando....</span>
+</div> -->

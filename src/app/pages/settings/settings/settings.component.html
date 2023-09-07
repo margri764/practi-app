@@ -1,0 +1,59 @@
+
+<div fxLayout="row wrap" fxLayoutAlign="center center"  fxFlex="100" class="pd-5" *ngIf="!isLoading">
+
+    <div fxLayout="row wrap" fxLayoutAlign="start center" fxFlex.xs="100" fxFlex.sm="100" fxFlex="60" class="pd-5" *ngIf="!isLoading">
+
+
+      <div fxLayout="row wrap" fxLayoutAlign="space-between center" fxFlex="100" style="border-top: 1px solid rgb(187, 187, 187); border-bottom: 1px solid rgb(187, 187, 187); margin-top: 60px;  padding: 20px;" >
+
+            <div fxLayout="row wrap" fxLayoutAlign="start center" fxFlex="70" style="margin-bottom: 30px; margin-top: 30px;">
+
+                <div class="menuIcon"  >
+                    <span class="material-symbols-outlined notranslate" style=" transform: scale(3);color: rgb(135, 135, 135);"> account_circle </span>
+                </div>
+
+                <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="50" style=" margin-left: 30px;">
+                    <span class="font fs-4" style="text-align: start;" fxFlex="100"> <b>{{user.nombre || '' }}</b></span>
+                    <span class="font fs-4" style="text-align: start;" fxFlex="100"> <b>{{user.email || '' }}</b></span>
+                </div>    
+                
+            </div>
+
+             <span class="font fs-4 cursor" style="text-align: end; color: blue; " fxFlex="30"> <b>Ver perfil</b></span>
+
+        
+      </div>
+
+       <div fxLayout="row wrap" fxLayoutAlign="center start" style="border-bottom: 1px solid rgb(187, 187, 187); padding: 20px; margin-top: 0px;" >
+
+            <div fxLayout="row wrap" fxLayoutAlign="start center" fxFlex="100" style="margin-top: 30px;" >
+                
+                <span class="material-symbols-outlined notranslate" style=" transform: scale(2);color: rgb(135, 135, 135);">  qr_code_scanner </span>
+                <span class="font fs-5" style="margin-left: 30px;"> Link app-web </span>   
+
+            </div>
+
+            <img src="assets/qr-practi-gestion.png" alt="" fxFlex.xs="80" fxFlex.sm="50" fxFlex="20" style="margin-top: 20px;">
+            <span class="font fs-4" style="text-align: center; color: rgb(180, 180, 180); margin-top: 20px; margin-bottom: 30px;" fxFlex="100">Escaneá para descargar la app-web</span>
+
+       </div>
+
+       <div fxLayout="row wrap" fxLayoutAlign="start center" style="border-bottom: 1px solid rgb(187, 187, 187); padding: 20px; margin-top: 0px;" fxFlex="100">
+
+            <div class="menuIcon" style="margin-top: 30px; margin-bottom: 30px;" >
+                <span class="material-symbols-outlined notranslate" style=" transform: scale(2);color: rgb(135, 135, 135);"> terminal</span>
+            </div>
+            <span  class="font fs-5"  style="margin-left: 30px; margin-top: 30px; margin-bottom: 30px;"> Version: 1.2.6</span>
+
+       </div>
+    </div>
+
+</div>
+
+
+
+<div *ngIf="isLoading" style="margin-top: 30px;" class="loading-overlay">
+    <mat-spinner diameter="80"></mat-spinner>
+  </div>
+  
+

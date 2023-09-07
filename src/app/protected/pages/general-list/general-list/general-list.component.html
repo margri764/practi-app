@@ -1,0 +1,43 @@
+<div  fxLayout="row wrap"  fxLayoutAlign="center start" style="height: 100%; ">
+
+
+    <div fxLayout="row wrap"  fxLayoutAlign="start center" style="margin-top: 30px; background-color: white; height: 60px;" fxFlex.xs="97" fxFlex="40" class="whiteframe">
+        <span class="font fs-5" style="text-align: center; width: 100%;">Selecciona la lista de precios. </span>
+    </div>
+    
+    <!-- <img [src]=off.img alt="oferta" fxFlex="100" [routerLink]="['../view-more/',item.category.name, i]" >
+    let item, index as i -->
+
+
+    <div  fxLayout="row wrap"  fxLayoutAlign="center start" FxFlex="100" style=" margin-top: 60px;" *ngIf="arrList.length !== 0" >
+        
+        <div fxLayout="row wrap"  fxLayoutAlign="space-between center" style="margin-bottom: 30px;  padding: 10px; background-color: white;" fxFlex.xs="97" fxFlex="70" class="whiteframe" *ngFor="let list of arrList, let item" >
+    
+            <div  fxLayout="row wrap"  fxLayoutAlign="space-around center" fxFlex="100" style="background-color: rgb(37, 150, 190); color: white; height: 30px; padding: 5px;">
+                <span  class="font fs-5" fxFlex="50" > Código: {{list.id }} </span>
+                <span  class="font fs-5" fxLayout="row wrap"  fxLayoutAlign="end center" fxFlex="50" > Estado: {{list.activa}} </span>
+          
+              </div>
+       
+            <span  class="font fs-5 mt-20" fxFlex="80" > {{list.nombreLista| capitalizeFirstLetter }}</span>
+            <div class="icon mt-20" >
+                <span class="material-symbols-outlined notranslate fc-green cursor" *ngIf="list.activa ==1" [routerLink]="['/listado-precios/listado', list.id]" >done</span> 
+                <span class="material-symbols-outlined notranslate fc-red cursor" *ngIf="list.activa == 0">close</span> 
+
+            </div>
+
+            
+            
+            
+            
+        </div>
+    </div>
+
+    <div *ngIf="isLoading" class="loading-overlay">
+        <mat-spinner diameter="80"></mat-spinner>
+      </div>
+    
+ 
+    
+ </div>
+

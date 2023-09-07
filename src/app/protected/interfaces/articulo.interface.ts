@@ -1,0 +1,51 @@
+export interface Articulo {
+    precioBrutoFinal: any;
+    idCategoria: number;
+    idRubro: number;
+    idSector: number;
+    ordenListado: number;
+    descripcionLarga: string;
+    descripcionCorta: string;
+    modelo: string;
+    idFabricante: number;
+    codigoInterno: string; // devuelve un string pero la documentacion dice number
+    codigoArticulo: string;
+    idTipoAlicuota: number;
+    idTipoConcepto: number;
+    idUniMedida: number;
+    iva: number;
+    precioCosto: number;
+    precioCostoConIva: number;
+    precioCostoAuto: boolean;
+    precioCostoDos: number;
+    precioVerificado: number;
+    costoEnvioPorcentual: number;
+    costoEnvioMoneda: number;
+    otrosCostosPorcentual: number;
+    otrosCostosMoneda: number;
+    publicarInternet: boolean;
+    internetTitulo: string;
+    internetDescChica: string;
+    internetDescGra: string;
+    internetDestacado: boolean;
+    internetOferta: boolean;
+    internetVerPrecio: boolean;
+    fechaAlta: Date;
+    fechaModificacion: Date;
+    urlArticulo: string;
+    llevaStock: boolean;
+    llevaVenc: boolean;
+    pesable: boolean;
+    subArticulos: boolean;
+    totalSubArticulos: number;
+    idAtributosComb: number;
+    usaImpuestosInt: boolean;
+    fijoOvariable: string;
+    valorImpuesto: number;
+    idTipoAtributo: number;
+    nombreImpuesto: string;
+    idImpComanda: number;
+    activo: boolean;
+    idArticulo: number;
+  }
+  

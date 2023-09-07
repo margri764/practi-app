@@ -1,0 +1,24 @@
+
+<div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="100" *ngIf="article, else divLoading">
+    
+    <div fxLayout="row wrap" fxLayoutAlign="cstart center" fxFlex.xs="97" fxFlex="60" *ngIf="article" class="whiteframe mt-60">
+        <span class="font fs-4">id: {{article.idArticulo}}</span>
+        <span class="font fs-4">Descripcion larga: {{article.descripcionLarga}}</span>
+        <span class="font fs-4">Descripcion corta: {{article.descripcionCorta}}</span>
+        <span class="font fs-4">Precio c/IVA: {{article.precioCostoConIva}}</span> 
+    </div>
+
+    <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="100"> 
+        <span class="font fs-5 mt-40" routerLink="/home" style="color: blue; cursor: pointer;">Inicio</span>
+    </div>
+    
+</div>
+
+
+  
+<ng-template #divLoading>
+    <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="100" > 
+        <span class="font fs-7" style="margin-top: 50vh; text-align: center; width: 100%;">Loading...</span>
+    </div>  
+  </ng-template>
+  

@@ -1,0 +1,24 @@
+    <div  fxLayout="row wrap"  fxLayoutAlign="space-around center"  class="header">
+       
+        <div fxLayout="row wrap"  fxLayoutAlign="start center" fxFlex="40" style="margin-top: 5px;" (click)="navigate()" >
+                <span class="material-symbols-outlined notranslate cursor" >arrow_back_ios</span>
+                <span class="font cursor fs-5" fxFlex="80">{{labelHeader}}</span>
+        </div>
+
+        <div fxLayout="row wrap"  fxLayoutAlign="center center"  fxFlex="60" >
+
+                <div fxLayout="row wrap"  fxLayoutAlign="end center"  fxFlex="100" >
+
+                    <button  mat-mini-fab color="custom-color"  style="margin-right: 10px;" routerLink="/pedidos-temporales">
+                        <mat-icon class="material-symbols-outlined notranslate" [matBadge]="alert" matBadgeColor="warn" [matBadgeHidden]="hidden">notifications</mat-icon>
+                    </button>
+
+                    <span class="font" >{{user?.nombre}}</span>
+                
+                </div>
+       </div>
+
+
+
+   
+    </div>

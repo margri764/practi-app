@@ -1,0 +1,127 @@
+
+.mainIcon{
+  width: 85px;
+  height: 85px;
+  border-radius:50%;
+  cursor: pointer;
+  border: 6px double rgb(188, 210, 202);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  
+
+  
+  box-shadow: -1px 0px 14px -1px rgba(197, 196, 196, 0.45);
+  -webkit-box-shadow: -1px 0px 14px -1px rgba(197, 196, 196, 0.45);
+   -moz-box-shadow: -1px 0px 14px -1px rgba(197, 196, 196, 0.45);
+}
+
+.menuIcon{
+  width: 50px;
+  height: 50px;
+  border-radius:50%;
+  border: 2px solid rgb(217, 217, 217);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+
+.logoWidth{
+  width: 350px;
+}
+
+//Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 800px) {
+
+  .logoWidth{
+    width: 250px;
+  }
+  
+}
+
+//Extra small devices (phones, 600px and down) */
+@media only screen and (min-width: 800px) {
+
+
+  .logoWidth{
+    width: 350px;
+  }
+  
+
+  .mainIcon{
+    width: 100px;
+    height: 100px;
+    border-radius:50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: 0px solid rgb(188, 210, 202);
+    background-color: rgb(235, 235, 235);
+    transition: all 0.3s ease 0s;
+
+    box-shadow: 0px 0px 0px 0px rgba(82,82,82,0.75);
+    -webkit-box-shadow: 0px 0px 0px 0px rgba(82,82,82,0.75);
+    -moz-box-shadow: 0px 0px 0px 0px rgba(82,82,82,0.75);
+
+      .material-icons{
+        transform: scale(1.7);
+        color: rgb(37, 150, 190);
+        transition: all 0.3s ease 0s;
+
+      }
+      .material-symbols-outlined {
+        transform: scale(1.7);
+        color: rgb(37, 150, 190);
+        transition: all 0.3s ease 0s;
+
+      }
+  
+  }
+
+    
+  .mainIcon:hover{
+      transform: scale(1.01);
+      transition: all 0.2s ease 0s;
+      background-color: white;
+
+
+        .material-icons{
+          transform: scale(1.9);
+          color: rgb(37, 150, 190);
+        }
+        .material-symbols-outlined {
+          transform: scale(1.9);
+          color: rgb(37, 150, 190);
+       }
+
+  }
+
+  
+//Extra small devices (phones, 600px and down) */
+@media only screen and (min-width: 1200px) {
+
+  .logoWidth{
+    width: 300px;
+  }
+}
+
+//Extra small devices (phones, 600px and down) */
+@media only screen and (min-width: 1400px) {
+
+  .logoWidth{
+    width: 300px;
+  }
+}
+
+}

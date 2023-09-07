@@ -1,0 +1,20 @@
+<div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="100" class="pd-10 ">
+  
+    <button  mat-mini-fab  style="height: 120px; width: 120px; margin-top: 40px; background-color: red;">
+        <mat-icon class="material-symbols-outlined notranslate" style="transform: scale(3.3);"> warning </mat-icon>
+   </button>
+
+<div fxLayout="row wrap" fxLayoutAlign="center" fxFlex="100" class="pd-10 mb-30 mt-40" >
+    <span class="font fs-5" fxFlex="100" style="line-height: 1.2em; text-align: center;"> <b> {{msg}}</b> </span>        
+    <!-- <span class="font fs-3" fxFlex="100" style="margin-top: 10px; text-align: center;"> {{msg}}  </span>         -->
+</div>
+
+<div  fxLayout="row wrap"  fxLayoutAlign="center center" fxFlex="100" class="mb-20">
+
+   <button mat-raised-button  [ngClass]="confirm ? 'btnMenuClicked':'btnMenu'" fxFlex="90" (click)="continue()">
+      <i class="material-symbols-outlined notranslate">login</i> 
+      &nbsp; Continuar
+  </button>
+</div>
+
+</div>

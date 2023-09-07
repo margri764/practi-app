@@ -1,0 +1,132 @@
+<div  fxLayout="row wrap"  fxLayoutAlign="center start" fxFlex="100">
+
+    <div  fxLayout="row wrap"  fxLayoutAlign="space-around space-between" fxFlex="100" style="height: 40px; background-color: rgb(37, 150, 190); color: white; padding: 10px; box-shadow: 0px 6px 5px 0px rgba(140,139,139,0.75); -webkit-box-shadow: 0px 6px 5px 0px rgba(140,139,139,0.75);
+    -moz-box-shadow: 0px 6px 5px 0px rgba(140,139,139,0.75);" >
+       
+
+        <div fxLayout="row wrap"  fxLayoutAlign="space-around center" fxFlex="100">
+                <span class="font fs-6 t-center cursor" fxFlex="50" (click)="selectOption('client')" >Cliente</span>
+                <span class="font fs-6 t-center cursor" fxFlex="50" (click)="selectOption('product')">Productos</span>
+                <div fxLayout="row wrap"  fxLayoutAlign="center" fxFlex="40" [ngClass]="showClient ? 'selection':'none'" ></div>
+                <div fxLayout="row wrap"  fxLayoutAlign="center" fxFlex="40" [ngClass]="showProduct ? 'selection':'none'"></div>
+        </div>
+    </div>
+
+    
+    <ng-container *ngIf="showClient; else showProductTemplate">
+        
+      <form  [formGroup]="myForm"  fxLayout="row wrap" fxLayoutAlign="space-between center" fxFlex.xs="100" fxFlex.sm="80" fxFlex="60" class="mt-60 pd-10" >     
+            
+          <mat-form-field appearance="outline"  fxFlex="49" class="mt-10 font fs-5" >		
+              <mat-label>Fecha</mat-label>
+              <input matInput type="text" formControlName="date" readonly>
+          </mat-form-field> 
+
+           
+            <mat-form-field appearance="outline"  fxFlex="49" class="mt-10 font fs-5" >		
+                <mat-label>Cliente</mat-label>
+                <input matInput type="text" formControlName="client" (click)="getClient()" >
+            </mat-form-field> 
+
+
+        <div fxLayout="row wrap"  fxLayoutAlign="space-between center" fxFlex.xs="60" fxFlex.xs="100" *ngIf="client">
+
+                <mat-form-field appearance="outline"  fxFlex="48" class="mt-10 font fs-5" >		
+                    <mat-label>Razon Social</mat-label>
+                    <input matInput type="text" formControlName="comercialName" readonly>
+                </mat-form-field> 
+        
+
+                <mat-form-field appearance="outline"  fxFlex="48" class="mt-10 font fs-5" >		
+                    <mat-label>Telefono</mat-label>
+                    <input matInput type="text" formControlName="phone" readonly>
+                </mat-form-field> 
+
+                
+                <mat-form-field appearance="outline"  fxFlex="48" class="mt-10 font fs-5" >		
+                    <mat-label>Cuit</mat-label>
+                    <input matInput type="text" formControlName="cuit" readonly>
+                </mat-form-field> 
+
+                <mat-form-field appearance="outline"  fxFlex="48" class="mt-10 font fs-5" >		
+                    <mat-label>Descuento (%)</mat-label>
+                    <input matInput type="number" formControlName="discount">
+                </mat-form-field> 
+
+
+                <mat-form-field appearance="outline" floatLabel="always" fxFlex="48" class="mt-10 font fs-5">
+                    <mat-label>Selecciona Punto de venta</mat-label>
+                    <mat-select  formControlName="ptoVenta" class="font" >
+                                <mat-option></mat-option>
+                                <mat-option *ngFor="let point of salePoint" [value]="point.numero" class="font fs-4"> {{point.sucursal}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <div fxFlex="48"></div>
+            
+    
+
+            <div fxLayout="row wrap"  fxLayoutAlign="space-between center" fxFlex="100" style="margin-top: 30px;">
+                <button mat-raised-button class="font fs-5" [ngClass]="confirmE ? 'btnMenuClicked':'btnMenu'" (click)="createOrder('E')" fxFlex="48">Enviar Pedido</button>
+
+                <button mat-raised-button class="font fs-5" [ngClass]="confirmA ? 'btnMenuClicked':'btnMenu'" (click)="createOrder('A')" fxFlex="48">Guardar Pedido</button>
+            </div>
+
+        </div>
+
+            
+      </form>
+
+    </ng-container>
+    
+    <ng-template #showProductTemplate>
+
+        <!-- <div fxLayout="row wrap"  fxLayoutAlign="center center"  fxFlex="100" *ngIf="labelNoArticles">
+            <span  class="font fs-5" style="margin-left: 10px; margin-top: 30px;" fxFlex="100"> No se encontraron coincidencias... </span>
+        </div> -->
+
+        <div fxLayout="row wrap"  fxLayoutAlign="center center" fxFlex.xs="97" fxFlex="40"  style="margin-top: 35px; margin-bottom: 30px;">
+                      
+            <button mat-raised-button class="font fs-5" style="line-height: 60px; background-color:rgb(188, 210, 202); color: white; font-size: 1.6em;" fxFlex="97" routerLink="/buscar-articulos">Buscar Productos</button>
+        </div>
+
+       <!-- start card product -->
+        <div  fxLayout="row wrap"  fxLayoutAlign="center start" FxFlex="100" style="background-color: rgb(241, 241, 241);" *ngIf="arrArticles.length !== 0">
+        
+                <div fxLayout="row wrap"  fxLayoutAlign="space-between center" style="background-color: rgb(243, 243, 255); margin-bottom: 30px;  padding: 10px" fxFlex="97" class="whiteframe" *ngFor="let article of arrArticles">
+
+                    <div  fxLayout="row wrap"  fxLayoutAlign="space-around center" fxFlex="100" style="background-color: rgb(37, 150, 190); color: white; height: 30px;">
+                        <span  class="font fs-5" fxFlex="100" > Código: {{article.codigoInterno }} </span>
+                  
+                      </div>
+               
+                    <span  class="font fs-5 mt-20" fxFlex="100" > {{article.descripcionLarga | capitalizeFirstLetter }}</span>
+
+                    <div  fxLayout="row wrap"  fxLayoutAlign="space-between center" fxFlex="100" style="margin-top: 20px;">
+                        <span  class="font fs-5" fxFlex="50" >  {{article.cantidad }} x  {{article.precioBrutoFinal | currency:'$':'symbol':'1.2-2'}} </span>
+                        <span  class="font fs-5" style="text-align: end;"  fxFlex="50" >  Bonif. (%): {{article.bonificacionPorciento }}</span>
+                    </div>
+
+                    <div fxLayout="row wrap" fxLayoutAlign="space-between center" fxFlex="100" class="font fs-5 mt-40" >
+                        <span fxFlex="50" fxLayoutAlign="start center" > <b>Sub Total</b> </span>
+                        <span fxFlex="50" fxLayoutAlign="end"><b> {{article.ventaTotal | currency:'$':'symbol':'1.2-2' }}</b></span>
+                    </div>    
+        
+                    <div fxLayout="row wrap" fxLayoutAlign="end center" fxFlex="100" class="mt-20">
+                        <div class="icon " (click)="deleteItem(article.codigoInterno)" >
+                            <span class="material-symbols-outlined notranslate cursor" style="color: red;"> delete </span>
+                        </div>
+                    </div>
+
+                </div>
+                
+                <div fxLayout="row wrap" fxLayoutAlign="space-between center" fxFlex="97" class="font fs-6 mt-40 whiteframe" style="height: 90px; background-color: white; margin-bottom: 10px;" >
+                    <span fxFlex="50" fxLayoutAlign="start center" > <b>Total Pedido</b> </span>
+                    <span fxFlex="50" fxLayoutAlign="end"><b>{{getTotal() | currency:'$':'symbol':'1.2-2'}} </b></span>
+                </div>    
+        </div>
+        <!-- end card product -->
+         
+    </ng-template>
+
+</div>

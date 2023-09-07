@@ -1,0 +1,97 @@
+
+
+<div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="100"  style="padding: 30px;"> 
+
+    <div  fxLayout="row wrap"  fxLayoutAlign=" center" fxFlex="100" style="height: 50px; background-color: rgb(37, 150, 190); color: white; padding: 10px; box-shadow: 0px 6px 5px 0px rgba(140,139,139,0.75); -webkit-box-shadow: 0px 6px 5px 0px rgba(140,139,139,0.75);
+    -moz-box-shadow: 0px 6px 5px 0px rgba(140,139,139,0.75);" class="mt-20 pd-10">
+        <span fxLayout="row wrap" fxLayoutAlign="start center" class="font fs-6" fxFlex="70">Editar Pedido</span>
+        <span  class=" material-symbols-outlined notranslate cursor" style=" text-align: end;" fxFlex="30" (click)="close()">close</span>
+    </div>
+
+    <form [formGroup]="orderForm" fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="100" style="margin-top: 30px;" >
+
+        <div  fxLayout="row wrap" fxLayoutAlign="start center" fxFlex="100" >
+
+              <span class="font" style="margin-top: 20px; margin-bottom: 10px; text-align: start; font-size: 1.5em;" fxFlex="100"> <b>Datos Pedido</b></span>
+                <mat-form-field appearance="outline" fxFlex="25" fxFlex.xs="40" class="mt-10 font " >		
+                    <mat-label>Razon Social </mat-label>
+                    <input matInput type="text" formControlName="razonSocial" readonly>
+                </mat-form-field> 
+            
+                <mat-form-field appearance="outline" fxFlex="25" fxFlex.xs="40" class="mt-10 font ml-10" >		
+                    <mat-label>Descuento % </mat-label>
+                    <input matInput type="number" formControlName="descuentoPorcentaje" >
+                </mat-form-field> 
+
+        </div>
+
+        <div  fxLayout="row wrap" fxLayoutAlign="start center" fxFlex="100" >
+
+            <span class="font" style="margin-top: 20px; margin-bottom: 10px; text-align: start; font-size: 1.5em;"> <b>Items</b></span>
+            <div class="icon mr-10"  (click)="addItem()" style="margin-left: 25px;">
+                <span class="material-symbols-outlined notranslate cursor" style="color: red;  transform: scale(1.2);"> add </span>
+            </div>
+        </div>    
+
+        <app-add-item fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="100" style="margin-top: 20px;" *ngIf="addItemSelected" [item]="item"></app-add-item>
+
+
+        <div formArrayName="detalleItems" fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="100"  style="margin-top: 20px;">
+            <div *ngFor="let detalleItem of getDetalleItemsControls(); let i = index" fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="100">
+                <div [formGroupName]="i" fxLayout="row wrap"  fxLayoutAlign="space-between center" fxFlex="100" >
+
+                    <mat-form-field appearance="outline" fxFlex="60" class="mt-10 font " >		
+                        <mat-label>Nombre: </mat-label>
+                        <input matInput type="text"  formControlName="descripcion"  readonly>
+                    </mat-form-field> 
+
+                    <mat-form-field appearance="outline" fxFlex="30" class="mt-10 font " >		
+                        <mat-label>Cód. Interno: </mat-label>
+                        <input matInput type="text"  formControlName="codigoInterno"  readonly>
+                    </mat-form-field> 
+
+                    <mat-form-field appearance="outline" fxFlex="25" class="mt-10 font " >		
+                        <mat-label>Cantidad: </mat-label>
+                        <input matInput type="number" required formControlName="cantidad" >
+                    </mat-form-field> 
+
+                    <mat-form-field appearance="outline" fxFlex="25" class="mt-10 font " >		
+                        <mat-label>Bonif. (%): </mat-label>
+                        <input matInput type="number" required formControlName="bonificacionPorciento" >
+                    </mat-form-field> 
+                  
+                    <div class="icon mr-10"   (click)="deleteOrder(detalleItem,i)" >
+                        <span class="material-symbols-outlined notranslate cursor" style="color: red;"> delete </span>
+                    </div>
+                    
+                    
+                </div>
+            </div>
+            
+        </div>
+
+
+        <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="100" class="mt-20">
+                <button mat-raised-button  [ngClass]="confirm ? 'btnMenuClicked':'btnMenu'" fxFlex="90" (click)="onSaveForm()">
+                    <i class="material-symbols-outlined notranslate" style="transform: scale(1.3);">edit</i> 
+                    &nbsp; Editar Orden
+                </button>
+        </div>
+        <div #top style="margin-top: 100px;"></div>
+    </form>
+    
+    
+</div>
+
+<div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="100" style="position:fixed; left: 30%; top: 50%;">
+    
+    <span class="font fs-5" style="width: 100%; text-align: center; border: 1px solid red; padding: 20px; border-radius: 7px; color: white; background-color: red;" *ngIf="delItem">Item {{deletedItem | capitalizeFirstLetter}} eliminado.</span>
+</div>
+
+
+
+<div *ngIf="isLoading" style="margin-top: 30px;" class="loading-overlay">
+    <mat-spinner diameter="80"></mat-spinner>
+  </div>
+  
+    

@@ -1,0 +1,40 @@
+
+
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: rgb(37, 150, 190);
+}
+
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-label {
+  color: rgb(37, 150, 190);
+}
+
+::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+  color: rgb(37, 150, 190)!important;
+
+}
+
+::ng-deep .mat-slide-toggle.mat-disabled .mat-slide-toggle-bar {
+  color: rgb(37, 150, 190) !important;
+
+}
+
+::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+  color: rgb(37, 150, 190) !important;
+
+}
+
+.mat-icon-button {
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  transform: translateY(-65%);
+ }
+ 
+ .marginLogo{
+  margin-top: calc(100vh - 50vh);
+}
+
+  
+
+
+

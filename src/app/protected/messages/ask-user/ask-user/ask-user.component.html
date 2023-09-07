@@ -1,0 +1,24 @@
+<div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="100" class="pd-10 ">
+  
+    <button  mat-mini-fab  [ngStyle]="(this.actionName === 'eliminar')?{'background-color':'red'}:{'background-color':'#ffa500'} " style="height: 140px; width: 140px; margin-top: 40px;">
+        <mat-icon class="material-symbols-outlined notranslate" style="transform: scale(4);"> warning </mat-icon>
+   </button>
+
+<div fxLayout="row wrap" fxLayoutAlign="center" fxFlex="100" class="pd-10 mb-30 mt-40" >
+    <span class="font fs-6" fxFlex="100" style="line-height: 1.2em; text-align: center;"> <b> ¿Estás seguro de {{actionName}} el usuario {{name}}?</b> </span>        
+    <span class="font fs-3" fxFlex="100" style="margin-top: 10px; text-align: center;"> {{msg}}  </span>        
+</div>
+
+<div  fxLayout="row wrap"  fxLayoutAlign="space-between center" fxFlex="100" class="mb-20">
+    <button mat-raised-button  [ngClass]="!confirm ? 'btnMenuClicked':'btnMenu'" fxFlex="48" (click)="closeComponent()" >
+        <i class="material-symbols-outlined notranslate"  >redo</i> 
+        &nbsp;Cancelar
+    </button>
+   <button mat-raised-button  [ngClass]="confirm ? 'btnMenuClicked':'btnMenu'" fxFlex="48" (click)="continue()">
+      <i class="material-symbols-outlined notranslate">save</i> 
+      &nbsp; Continuar
+  </button>
+</div>
+
+</div>
+

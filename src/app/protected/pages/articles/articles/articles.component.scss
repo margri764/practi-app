@@ -1,0 +1,94 @@
+.add{
+    color: white;
+    width: 80px;
+    height: 80px;
+    border-radius: 100px;
+  }
+  .add mat-icon{
+    transform: scale(2);
+  }
+  
+  ::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+    color: rgb(37, 150, 190);
+  }
+  
+  ::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-label {
+    color: rgb(37, 150, 190);
+  }
+  
+  ::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+    color: rgb(37, 150, 190)!important;
+  
+  }
+  
+  ::ng-deep .mat-slide-toggle.mat-disabled .mat-slide-toggle-bar {
+    color: rgb(37, 150, 190) !important;
+  
+  }
+  
+  ::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+    color: rgb(37, 150, 190) !important;
+  
+  }
+
+
+  .example-container {
+    width: 100%;
+    height: calc(100vh - 300px);
+    overflow: auto;
+    font-size: 1.8em;
+    font-family: 'poppins-light'; 
+  }
+
+  
+  table {
+    font-size: 0.8em;
+    font-family: 'poppins-light'; 
+  }
+
+  
+.mat-column-img {
+    width: 5%;
+    cursor: pointer;
+    text-align: center;
+ 
+}
+
+//  este es la segunda columna es de donde se mueve es la "position"
+th.mat-column-name, td.mat-column-name {
+    padding-left: 8px;
+    width: 20%;
+    cursor: pointer;
+    text-align: start;
+  }
+
+.mat-column-price {
+    width: 10%;
+    cursor: pointer;
+    text-align: start;
+}
+
+.mat-column-comment {
+    width: 20%;
+    cursor: pointer;
+    text-align: start start;
+    padding: 3px;
+
+}
+  // este es el "end o "star" de ejemplo
+.mat-column-ingredients {
+    width: 20%;
+    cursor: pointer;
+    text-align: start start;
+}
+
+
+img{
+    width: 70px;
+    cursor: pointer;
+}
+
+.non-class{
+  opacity: 0;
+}
+  

@@ -1,0 +1,110 @@
+<div  fxLayout="row wrap"  fxLayoutAlign="center center" fxFlex="100">
+
+    <div  fxLayout="row wrap"  fxLayoutAlign="space-around center" fxFlex="100" style="background-color: rgb(37, 150, 190); color: white;
+  height: 100px; ">
+      <span class="font fs-6 t-center" fxFlex="100" >Agregar Producto</span>
+
+    </div>
+
+        
+      <!-- <form  [formGroup]="myForm"  fxLayout="row wrap" fxLayoutAlign="space-between center" fxFlex="100"  class="mt-60 pd-10" >     
+            
+          <mat-form-field appearance="outline"  fxFlex="49" class="mt-10 font fs-5" >		
+              <mat-label>Fecha</mat-label>
+              <input matInput type="text" required formControlName="date" readonly>
+          </mat-form-field> 
+
+           
+            <mat-form-field appearance="outline"  fxFlex="49" class="mt-10 font fs-5" >		
+                <mat-label>Cliente</mat-label>
+                <input matInput type="text" formControlName="client" (click)="getClient()">
+            </mat-form-field> 
+
+            <mat-form-field appearance="outline"  fxFlex="49" class="mt-10 font fs-5" >		
+                <mat-label>Razon Social</mat-label>
+                <input matInput type="text" formControlName="comercialName" readonly>
+            </mat-form-field> 
+      
+
+            <mat-form-field appearance="outline"  fxFlex="49" class="mt-10 font fs-5" >		
+                <mat-label>Telefono</mat-label>
+                <input matInput type="text" formControlName="phone" readonly>
+            </mat-form-field> 
+
+            
+            <mat-form-field appearance="outline"  fxFlex="49" class="mt-10 font fs-5" >		
+                <mat-label>Cuit</mat-label>
+                <input matInput type="text" formControlName="cuit" readonly>
+            </mat-form-field> 
+
+            <mat-form-field appearance="outline"  fxFlex="49" class="mt-10 font fs-5" >		
+                <mat-label>% Dto</mat-label>
+                <input matInput type="text" formControlName="discount">
+            </mat-form-field> 
+
+            <mat-form-field appearance="outline"  fxFlex="49" class="mt-10 font fs-5" >		
+                <mat-label>Pto Venta</mat-label>
+                <input matInput type="text" formControlName="ptoVenta" readonly>
+            </mat-form-field> 
+      
+
+        <div fxLayout="row wrap"  fxLayoutAlign="center center" fxFlex="100" style="margin-top: 30px;">
+            <button mat-raised-button class="font fs-5" (click)="createOrder()">Crear Pedido</button>
+        </div>
+
+            
+      </form> -->
+
+    <div fxLayout="row wrap"  fxLayoutAlign="space-between center" style="padding: 20px" fxFlex="100" class="whiteframe" >
+        
+            <span  class="font fs-5" fxFlex="100" > Código: {{article.codigoArticulo }} </span>
+
+            <span  class="font fs-5 mt-20" fxFlex="100" > {{article.descripcionLarga | capitalizeFirstLetter }}</span>
+
+            <div fxLayout="row wrap" fxLayoutAlign="space-between center" fxFlex="100" class=" mt-30" style="color: rgb(44, 44, 44);">
+                <span fxLayout="row wrap" fxLayoutAlign="start center" fxFlex="55" class="font fs-5"> Precio U. &nbsp;<b>{{article.precioBrutoFinal || 0 * productQuantity || 0 | currency:'$':'symbol':'1.2-2'}} </b> </span>
+                <!-- counter -->
+                <div fxLayout="row wrap" fxLayoutAlign="end center" fxFlex="45">
+                
+                    <div fxLayout="row wrap" fxLayoutAlign="space-between center"  class="incrementer">
+                
+                        <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="15" (click)="decrement()" >
+                                <i class="material-symbols-outlined notranslate cursor">remove</i>
+                        </div>
+                    
+                        <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="20">
+                            <span class="font fs-5">{{productQuantity}}</span>
+                        </div>
+                    
+                        <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="15" (click)="increment()">
+                                <i class="material-symbols-outlined notranslate cursor">add</i>
+                        </div>
+                </div>
+            
+                </div>
+                <!-- end counter -->
+
+               <div fxLayout="row wrap" fxLayoutAlign="space-between center" fxFlex="100" class="mt-20"> 
+               
+                     <span fxLayout="row wrap" fxLayoutAlign="start center" fxFlex="50" class="font fs-5"> Bonif. (%)</span>
+                     <input type="number" [(ngModel)]="inputValue" class="font fs-5 customInput" pattern="[0-9]*" (blur)="totalPurchase()"> 
+
+               </div>
+            </div>
+
+            <div fxLayout="row wrap" fxLayoutAlign="space-between center" fxFlex="100" class="font fs-7 mt-40" >
+                <span fxFlex="50" fxLayoutAlign="start center" > <b>Total</b> </span>
+                <span fxFlex="50" fxLayoutAlign="end"><b>{{total | currency:'$':'symbol':'1.2-2'}}</b></span>
+            </div>    
+
+            <div fxLayout="row wrap"  fxLayoutAlign="space-between center" fxFlex="97" style="margin-top: 20px;">
+                      
+                    <button mat-raised-button class="font fs-5" style="line-height: 40px; background-color:rgb(188, 210, 202); color: white;" (click)="selectItem()"> Seleccionar </button>
+              
+                  
+            </div>
+            
+    </div>
+        
+
+</div>

@@ -1,0 +1,25 @@
+<div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="100" class="pd-20">
+
+    <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="100" >
+
+     
+
+            <img src="assets/lock.jpg" alt="" fxFlex.xs="100" fxFlex="60">
+
+            <div fxLayout="row wrap" fxLayoutAlign="center" fxFlex="100" class="pd-10 ">
+                <span class="font fs-6" fxFlex="100" style="line-height: 1.2em; text-align: center;"> <b> No tienes los permisos para acceder a este modulo </b> </span>        
+                <span class="font fs-3" fxFlex="100" style="margin-top: 10px; text-align: center;"> Si crees que se trata de un error, habla con el administrador </span>        
+            </div>
+
+            <div  fxLayout="row wrap"  fxLayoutAlign="center center" fxFlex="100" >
+            
+                <button  [ngClass]="selection ? 'btnMenuClicked':'btnMenu'" fxFlex="83" (click)="continue()" >
+                    <i class="material-symbols-outlined notranslate" style="transform: scale(1.3);">login</i> 
+                    &nbsp; Continuar
+                </button>
+            </div>
+
+        </div>
+
+
+</div>

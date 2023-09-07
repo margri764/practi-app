@@ -1,0 +1,59 @@
+
+
+<div fxLayout="row wrap" fxLayoutAlign="center start">
+  
+  
+  <div  fxLayout="row wrap"  fxLayoutAlign="start center" fxFlex="100" style="height: 60px; background-color: rgb(37, 150, 190); color: white; padding: 10px; box-shadow: 0px 6px 5px 0px rgba(140,139,139,0.75); -webkit-box-shadow: 0px 6px 5px 0px rgba(140,139,139,0.75);
+    -moz-box-shadow: 0px 6px 5px 0px rgba(140,139,139,0.75);" >
+        
+        <div fxLayout="row wrap"  fxLayoutAlign="start center" fxFlex="100" style="margin-top: 5px;">
+          <!-- <span class="material-symbols-outlined notranslate cursor" >arrow_back_ios</span> -->
+          <span class="font fs-6 ml-10" fxFlex="90">Login</span>
+        </div>
+        
+  </div>
+
+            
+  <form  [formGroup]="myForm"  fxLayout="row wrap" fxLayoutAlign="center center" fxFlex.xs="90" fxFlex.sm="60" fxFlex="30" style="  margin-top: calc(100vh - 85vh); border: 1px solid rgb(197, 197, 197); border-radius: 10px; padding: 10px;">     
+      
+    <mat-form-field appearance="outline"  fxFlex="90" class="mt-10 font " >		
+        <mat-label>Usuario</mat-label>
+        <input matInput type="email" required formControlName="user">
+    </mat-form-field> 
+    <mat-error *ngIf ="validField ('user')" fxLayoutAlign="start" fxFlex="85" class="font fs-4 mb-10"> Campo requerido </mat-error> 
+
+
+    <mat-form-field appearance="outline" fxFlex="90" class="mt-20 font ">		
+      <mat-label>Contraseña</mat-label>
+      <input matInput [type]="passwordVisible ? 'text' : 'password'"  required formControlName="password" >
+      <button mat-icon-button  (click)="togglePasswordVisibility('password')" >
+        <mat-icon>{{ passwordVisible ? 'visibility' : 'visibility_off' }}</mat-icon>
+      </button>
+    </mat-form-field> 
+
+    <mat-error *ngIf="validField('password')" fxLayoutAlign="start" fxFlex="85" class="font fs-4 mb-10">
+      Campo requerido
+    </mat-error>
+      
+    
+      <div fxLayout="row wrap" fxLayoutAlign="center"  fxFlex="90">
+          <div fxLayout="row wrap" fxLayoutAlign="start" fxFlex="100" >
+              <mat-label  class="font " style="margin-right:0px;"> Recordarme</mat-label> &nbsp;
+              <mat-slide-toggle formControlName="toLStorage" [checked]="true" ></mat-slide-toggle>
+          </div>
+      </div>
+
+      <span class="font fs-5" style="color: red; border: 1px solid red; border-radius: 7px; padding: 10px; text-align: center; margin-top: 30px;" *ngIf="showLabelInvalidCredential"> Credenciales Incorrectas</span>
+      
+      <button type="button" fxLayout="row wrap" fxLayoutAlign="center center" [ngClass]="confirm ? 'btnMenuClicked':'btnMenu'" style="margin-top: 80px; margin-bottom: 40px;" fxFlex="90"  (click)="onSaveForm()">  Ingresar
+      </button>
+
+  </form>
+
+    
+  
+</div>
+  
+  <div *ngIf="isLoading" class="loading-overlay">
+    <mat-spinner diameter="80"></mat-spinner>
+  </div>

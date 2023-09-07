@@ -1,0 +1,66 @@
+
+<div  fxLayout="row wrap"  fxLayoutAlign="center center" fxFlex="92" >
+    
+    <div  fxLayout="row wrap"  fxLayoutAlign="center center" fxFlex="100">
+
+         <!-- start menu search -->
+         <div fxLayout="row wrap" fxLayoutAlign="center center" class="font whiteframe" fxFlex.xs="97" fxFlex.sm="60" fxFlex="30" style="padding: 10px;">
+
+            <form  [formGroup]="myForm" fxLayout="row wrap" fxLayoutAlign="start center" fxFlex="100"  > 
+    
+                        <mat-form-field appearance="outline" floatLabel="always">
+                            <mat-label class="font fs-4">seleccion</mat-label>
+                            <mat-select  formControlName="searchOption" class="font" [value]="defaultValue" >
+                                        <mat-option value=""></mat-option>
+                                        <mat-option *ngFor="let option of searchOptions" [value]="option" class="font fs-4"> {{option}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+    
+                   
+                            <mat-form-field  appearance="outline" fxFlex="96" class="font fs-5" >
+                                <input type="text" matInput  placeholder="Buscar artículo"  name="itemSearch"
+                                formControlName="itemSearch"
+                                >
+                                <mat-icon matSuffix style="transform:scale(1.7); color: rgb(37, 150, 190); margin-right: 20px;" (click)="searchByCode()">search</mat-icon>
+                            </mat-form-field>
+            </form>
+    
+            <span class="font fs-5" style="color: red; border-radius: 7px; padding: 20px; margin-top: 20px; border: 1px solid red;" *ngIf="noMatch">Sin coincidencias</span>
+    
+         </div>
+        <!-- end menu search -->
+
+     </div>   
+
+    <!-- start suggested    -->
+    <div fxLayout="row wrap"  fxLayoutAlign="center center"  fxFlex="100" *ngIf="mostrarSugerencias" style="padding: 20px; margin-top: 20px;" class="whiteframe" >
+            
+        <div fxLayout="row wrap"  fxLayoutAlign="center center"  fxFlex="100" *ngIf="spinner" style="margin-top: 30px;">
+            <mat-spinner diameter="48"></mat-spinner>
+        </div>
+                    
+        <div fxLayout="row wrap"  fxLayoutAlign.xs="start center" fxLayoutAlign="space-betweencenter" fxFlex="100" class="font mb-20 " *ngFor="let item of suggested , index as i" >
+            
+            <div fxLayout="row wrap" fxLayoutAlign="start center"  fxFlex="98"  class="fs-4 boxSelection" >
+                <mat-radio-button class="example-margin"  (click)="searchSuggested( item.codigoInterno )"></mat-radio-button>
+                <span  style="cursor: pointer; text-align: start; margin-left: 10px;" (click)="searchSuggested( item.codigoInterno )" fxFlex.xs="80" fxFlex="90" >
+                    {{ item.descripcionLarga | capitalizeFirstLetter}}
+                     &nbsp; <b>{{ item.precioBrutoFinal | currency:'$':'symbol':'1.2-2'}}</b>
+                </span>
+            </div>
+
+        </div>
+    </div>
+    <!-- end suggested    -->
+
+
+    <!-- end cards -->
+
+  
+</div> 
+
+<div *ngIf="isLoading" style="margin-top: 30px;" class="loading-overlay">
+    <mat-spinner diameter="80"></mat-spinner>
+  </div>
+  
+

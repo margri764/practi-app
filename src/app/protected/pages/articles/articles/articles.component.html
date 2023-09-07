@@ -1,0 +1,176 @@
+<div  fxLayout="row wrap"  fxLayoutAlign="center start"fxFlex="100">
+
+  
+<div  fxLayout="row wrap"  fxLayoutAlign="center center" fxFlex.xs="100" fxFlex="90"  >
+
+    <form  fxLayout="row wrap" fxLayoutAlign="center center" style="margin-top: 25px;"  autocomplete="off" fxFlex="27" fxFlex.xs="100" >
+        <mat-form-field  appearance="outline" fxFlex="96" class="font fs-5" >
+            <input type="text" matInput  placeholder="Insertar código"  name="itemSearch"
+            class="form-control  me-2"    
+            [(ngModel)]="itemSearch"
+            (input)="teclaPresionada( )" 
+            (onDebounce)="sugerencias( itemSearch )" 
+            (keyup.enter)="Search( itemSearch )" >
+            <mat-icon matSuffix style="transform:scale(1.7); color: rgb(37, 150, 190); margin-right: 20px;" (click)="Search( itemSearch)" >search</mat-icon>
+        </mat-form-field>
+    </form> 
+
+    <!-- start suggested    -->
+    <div fxLayout="row wrap"  fxLayoutAlign="start center"  fxFlex="100" *ngIf="mostrarSugerencias" style="padding: 20px;"  >
+
+        <div fxLayout="row wrap"  fxLayoutAlign="space-between center" fxFlex="100" class="font fs-5" style="margin-left: 0px;" >
+            <a > Buscar:   {{ itemSearch }}</a>
+            <mat-icon (click)="close()" style="cursor: pointer; margin-right: 10px; transform: scale(1.2);" > close</mat-icon>
+        </div>
+            
+        <div fxLayout="row wrap"  fxLayoutAlign="center center"  fxFlex="100" *ngIf="spinner" style="margin-top: 30px;">
+            <mat-spinner diameter="48"></mat-spinner>
+        </div>
+                    
+        <div fxLayout="row wrap"  fxLayoutAlign="start  center" fxFlex="100" class="font fs-5" *ngFor="let item of suggested , index as i">
+            <a  style="cursor: pointer; margin-top: 10px;" (click)="searchSuggested( item.idArticulo )" fxFlex="100">
+            {{ item.descripcionLarga | capitalizeFirstLetter}}
+            </a>
+        </div>
+    </div>
+    <!-- end suggested    -->
+
+
+    <!-- start select buttons -->
+    <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="100" class="mt-40">
+    
+        <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="48">
+            <button  mat-raised-button color="warn" type="button" class="add" (click)="getAllArticles()" >
+                <mat-icon class="material-symbols-outlined notranslate">refresh</mat-icon>
+            </button>
+            <span class="font fs-5 mt-10" fxFlex="100" style="text-align: center;">Obtener Artículos</span>
+        </div>
+
+        <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="48">
+            <button  mat-raised-button color="warn" type="button" class="add" (click)="addArticles()" >
+                <mat-icon class="material-symbols-outlined notranslate">add</mat-icon>
+            </button>
+            <span class="font fs-5 mt-10" fxFlex="100" style="text-align: center;">Agregar Artículo</span>
+        </div>
+    </div>
+    <!-- end slect buttons -->
+
+    <!-- start result search cards -->
+    <div  fxLayout="row wrap"  fxLayoutAlign="center start" FxFlex="100" style=" margin-top: 80px;" *ngIf="isArticleFounded">
+        
+        <div fxLayout="row wrap"  fxLayoutAlign="space-between center" style="margin-bottom: 30px;  padding: 10px; background-color: white;" fxFlex="97" class="whiteframe" *ngIf="isArticleFounded">
+    
+            <div  fxLayout="row wrap"  fxLayoutAlign="space-between center" fxFlex="100" style="background-color: rgb(37, 150, 190); height: 30px; padding: 5px; color: white;">
+                <span class="font fs-4">id: {{articleFounded.idArticulo}}</span>
+                <span class="font fs-4">Estado: <label [ngStyle]="styleObject(articleFounded.activo)"> &nbsp; {{articleFounded.activo | productStatus}}</label></span>
+          
+            </div>    
+              <span class="font fs-5 mt-20"fxFlex="100">Descripcion larga: {{articleFounded.descripcionLarga | capitalizeFirstLetter}}</span>
+              <span class="font fs-5 mt-5" fxFlex="100">Descripcion corta: {{articleFounded.descripcionCorta | capitalizeFirstLetter}}</span>
+              <span class="font fs-5 mt-5" fxFlex="100">Precio c/IVA: {{articleFounded.precioCostoConIva}}</span>
+       
+            
+            <div fxLayout="row wrap" fxLayoutAlign="end center" fxFlex="100" style="margin-top: 30px;">
+                <div class="icon mr-10" (click)="deleteArticle(articleFounded.idArticulo)" >
+                    <span class="material-symbols-outlined notranslate" style="color: red;"> delete </span>
+                </div>
+                
+                <div class="icon"  (click)="editArticle(articleFounded.idArticulo)">
+                    <span class="material-symbols-outlined notranslate" style="color: rgb(255, 176, 57);"> edit </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end result search cards -->
+
+  <ng-container *ngIf="phone">
+
+    <!-- start cards -->
+     <div  fxLayout="row wrap"  fxLayoutAlign="center start" FxFlex="100" style="margin-top: 60px;" *ngIf="arrArticles.length !== 0">
+            
+        <div fxLayout="row wrap"  fxLayoutAlign="space-between center" style="margin-bottom: 30px;  padding: 10px; background-color: white;" fxFlex="97" class="whiteframe" *ngFor="let art of arrArticles">
+
+            <div  fxLayout="row wrap"  fxLayoutAlign="space-between center" fxFlex="100" style="background-color: rgb(37, 150, 190); height: 30px; padding: 5px; color: white;">
+                <span class="font fs-4">id: {{art.idArticulo}}</span>
+        
+            </div>    
+            <span class="font fs-4 mt-20">Descripcion larga: {{art.descripcionLarga | capitalizeFirstLetter}}</span>
+            <span class="font fs-4 mt-5">Descripcion corta: {{art.descripcionCorta | capitalizeFirstLetter}}</span>
+            <span class="font fs-4 mt-5">Precio c/IVA: {{art.precioCostoConIva}}</span>
+    
+            
+            <div fxLayout="row wrap" fxLayoutAlign="end center" fxFlex="100">
+                <div class="icon mr-10" (click)="deleteArticle(art.idArticulo)" >
+                    <span class="material-symbols-outlined notranslate" style="color: red;"> delete </span>
+                </div>
+                
+                <div class="icon"  (click)="editArticle(art.idArticulo)">
+                    <span class="material-symbols-outlined notranslate" style="color: rgb(255, 176, 57);"> edit </span>
+                </div>
+            </div>
+        </div>
+     </div>
+    <!-- end cards -->
+
+   </ng-container>
+
+  <ng-container *ngIf="!phone">
+   
+    <div class="example-container mat-elevation-z8 font mt-30" fxFlex="100">
+    
+        <table mat-table [dataSource]="dataTableActive">
+    
+            <!-- img Column -->
+            <ng-container matColumnDef="img" sticky  >
+                <th mat-header-cell *matHeaderCellDef > <span style="margin-right: 20px;"> Imagen</span> </th>
+                <td mat-cell *matCellDef="let element" (click)="editArticle(element)" > <img [src]="element.img" [ngClass]="{ 'grayLayer': !element.stock || !element.category.state || element.paused }" style=" margin-right: 20px;"> </td>
+            </ng-container>
+                
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef > Nombre </th>
+                <td mat-cell *matCellDef="let element" (click)="editArticle(element)" > {{element.name}} </td>
+            </ng-container>
+        
+            <!-- Stock Column -->
+            <ng-container matColumnDef="stock" >
+                <th mat-header-cell *matHeaderCellDef> Stock </th>
+                <td mat-cell *matCellDef="let element" (click)="editArticle(element)" > {{element.stockQuantity}} </td>
+            </ng-container>
+        
+            <!-- Price Column -->
+            <ng-container matColumnDef="price" >
+                <th mat-header-cell *matHeaderCellDef> Precio </th>
+                <td mat-cell *matCellDef="let element" (click)="editArticle(element)" > {{element.price | decimalRound}} </td>
+            </ng-container>
+    
+            <!-- Comment Column -->
+            <ng-container matColumnDef="comment">
+                <th mat-header-cell *matHeaderCellDef> Comentarios </th>
+                <td mat-cell *matCellDef="let element" (click)="editArticle(element)" style="font-size: 0.6em;"> <span style="text-align: start;"> {{element.comment}} </span> </td>
+            </ng-container>
+    
+            <!-- Ingredients Column -->
+            <ng-container matColumnDef="ingredients" >
+                <th mat-header-cell *matHeaderCellDef > Ingredientes </th>
+                <td mat-cell *matCellDef="let element" (click)="editArticle(element)" style="font-size: 0.6em;" > <span style="text-align: start;">  {{element.ingredients}} </span> </td>
+            </ng-container>
+            
+        
+            <tr mat-header-row *matHeaderRowDef="displayedColumns sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    
+    </div>
+  </ng-container>
+  
+<div *ngIf="isLoading" style="margin-top: 30px;">
+    <mat-spinner diameter="80"></mat-spinner>
+</div>
+
+
+</div>
+
+
+
+</div>

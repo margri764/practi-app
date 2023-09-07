@@ -1,0 +1,183 @@
+
+
+.mainIcon{
+  width: 70px;
+  height: 70px;
+  border-radius:50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: red;
+
+  box-shadow: 0px 1px 8px 0px rgba(145,145,145,0.75);
+  -webkit-box-shadow: 0px 1px 8px 0px rgba(145,145,145,0.75);
+  -moz-box-shadow: 0px 1px 8px 0px rgba(145,145,145,0.75);
+
+  .material-symbols-outlined {
+    transform: scale(1.5);
+    color: white;
+    transition: all 0.3s ease 0s;
+  }
+
+
+}
+.textMainIcon{
+  font-size: 1.3em;
+  margin-top: 10px;
+  font-family: 'poppins-light'; 
+}
+
+
+
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: rgb(37, 150, 190);
+}
+
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-label {
+  color: rgb(37, 150, 190);
+}
+
+::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+  color: rgb(37, 150, 190)!important;
+
+}
+
+::ng-deep .mat-slide-toggle.mat-disabled .mat-slide-toggle-bar {
+  color: rgb(37, 150, 190) !important;
+
+}
+
+::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+  color: rgb(37, 150, 190) !important;
+
+}
+
+
+.example-container {
+  height: calc(100vh - 450px);
+  overflow: auto;
+  font-size: 1.8em;
+  font-family: 'poppins-light'; 
+}
+
+
+table {
+  font-size: 0.8em;
+  font-family: 'poppins-light'; 
+}
+
+
+.mat-column-action {
+  width: 14%;
+  text-align: center;
+}
+
+//  este es la segunda columna es de donde se mueve es la "position"
+th.mat-column-name, td.mat-column-name {
+  width: 14%;
+  padding-left: 8px;
+  cursor: pointer;
+  text-align: start;
+}
+
+.mat-column-socialName {
+  width: 15%;
+  cursor: pointer;
+  text-align: start;
+}
+
+
+.mat-column-location {
+  width: 14%;
+  cursor: pointer;
+  text-align: start ;
+}
+
+.mat-column-phone {
+  width: 15%;
+  cursor: pointer;
+  text-align: start ;
+}
+
+.mat-column-province {
+  width: 15%;
+  cursor: pointer;
+  text-align: start start;
+}
+
+.mat-column-email {
+  width: 14%;
+  cursor: pointer;
+  text-align: start ;
+}
+
+
+
+
+img{
+  width: 70px;
+  cursor: pointer;
+}
+
+.non-class{
+opacity: 0;
+}
+
+
+
+//Extra small devices (phones, 600px and down) */
+@media only screen and (min-width: 800px) {
+
+.mainIcon{
+    width: 55px;
+    height: 55px;
+    border-radius:50%;
+    border: 0px solid rgb(188, 210, 202);
+    background-color: red;
+    transition: all 0.3s ease 0s;
+
+      .material-symbols-outlined {
+        transform: scale(1.5);
+        color: white;
+        transition: all 0.3s ease 0s;
+      }
+}
+    
+.mainIcon:hover{
+      transform: scale(1.01);
+      transition: all 0.2s ease 0s;
+      // background-color: white;
+
+      .material-symbols-outlined {
+        transform: scale(1.5);
+        color: white;
+        transition: all 0.3s ease 0s;
+      }
+}
+
+.icon{
+      width: 35px;
+      height: 35px;
+
+      .material-symbols-outlined{
+        transform: scale(1);
+      }
+}
+      
+// .iconContainer{
+//   display: flex;
+//   width: 300px;
+//   justify-content: space-between;
+// }
+
+.textMainIcon{
+  font-size: 1em;
+  margin-top: 10px;
+  font-family: 'poppins-light'; 
+}
+
+
+
+}

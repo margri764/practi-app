@@ -1,0 +1,56 @@
+<div  fxLayout="row wrap"  fxLayoutAlign="center start" style="background-color: rgb(241, 241, 241);">
+
+
+       <!-- start paginator -->
+       <div  fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="100" *ngIf="arrArticles.length !== 0" style="margin-top: 30px;" >
+            
+        <mat-paginator #paginator
+        class="demo-paginator"
+        (page)="handlePageEvent($event)"
+        [length]="length"
+        [pageSize]="pageSize"
+        [disabled]="disabled" 
+        [showFirstLastButtons]="showFirstLastButtons"
+        [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
+        [hidePageSize]="hidePageSize"
+        [pageIndex]="pageIndex"
+        aria-label="Select page" 
+        >
+        <!-- style="margin-top: 30px; width: 90%; border: 1px solid red; align-items: center;" -->
+        </mat-paginator>
+    </div>
+<!-- end paginator -->
+
+<!-- start cards -->
+    <div  fxLayout="row wrap"  fxLayoutAlign="center start" fxFlex.xs="100" fxFlex.sm="97" fxFlex="60" style="background-color: rgb(241, 241, 241); margin-top: 60px;" *ngIf="arrArticles.length !== 0" >
+        
+        <div fxLayout="row wrap"  fxLayoutAlign="space-between center" style="margin-bottom: 20px;  padding: 10px; background-color: white;" fxFlex="97" class="whiteframe" *ngFor="let art of arrArticles">
+    
+            <div  fxLayout="row wrap"  fxLayoutAlign="end center" fxFlex="100" style="background-color: rgb(37, 150, 190); color: white; height: 30px; padding: 5px;">
+                <span  class="font fs-5" fxFlex="50" > Código: {{art.codigoInterno }} </span>
+                <span  class="font fs-5" fxFlex="50" style="text-align: end;"  > Stock: <b [ngStyle]="styleObject(art.cantidadStock )">{{art.cantidadStock }}</b>  </span>
+                
+          
+              </div>
+       
+            <span  class="font fs-5 mt-20" fxFlex="80" > {{art.descLarga| capitalizeFirstLetter }}</span>
+       
+            <!-- <span  class="font fs-5 mt-10" fxFlex="80" > Precio s/IVA: {{art.precioBrutoFinal | currency:'$':'symbol':'1.2-2'}}</span> -->
+            <span  class="font fs-5 mt-10" fxFlex="80" > Precio final: {{art.precioNetoFinal | currency:'$':'symbol':'1.2-2'}}</span>
+
+            
+            
+        </div>
+    </div>
+
+    <!-- end cards -->
+
+    <div *ngIf="isLoading" style="margin-top: 30px;" class="loading-overlay">
+        <mat-spinner diameter="80"></mat-spinner>
+      </div>
+      
+        
+    
+ </div>
+
+
