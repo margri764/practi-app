@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Subject, Subscription, debounceTime } from 'rxjs';
@@ -22,6 +22,7 @@ import { ErrorService } from 'src/app/protected/services/error/error.service';
   templateUrl: './search-products.component.html',
   styleUrls: ['./search-products.component.scss']
 })
+
 export class SearchProductsComponent implements OnInit, OnDestroy {
 
   @Output() onDebounce: EventEmitter<string> = new EventEmitter();
@@ -76,7 +77,7 @@ export class SearchProductsComponent implements OnInit, OnDestroy {
             private router : Router,
             private localStorageService: LocalStorageService,
             private fb : FormBuilder,
-            private errorService : ErrorService
+            private errorService : ErrorService,
 
 
   ) { 
@@ -128,13 +129,11 @@ export class SearchProductsComponent implements OnInit, OnDestroy {
 
   
 
-    this.articleSuscription = this.store.select('article')
-    .pipe(
-
-    ).subscribe(({arrSelectedArticles})=>{
-      if(arrSelectedArticles.length !== 0){
+    this.articleSuscription = this.store.select('article').subscribe(
+      ({arrSelectedArticles})=>{
         this.arrItemSelected = arrSelectedArticles;
-      }
+        // if(arrSelectedArticles.length !== 0){
+        // }
     })
   }
 
@@ -160,11 +159,11 @@ export class SearchProductsComponent implements OnInit, OnDestroy {
 
     articlesInLStorage.push(fastSelect);
 
-    //hago el update en redux y LS 
+    // hago el update en redux y LS 
     let updatedArr = [...this.arrItemSelected, fastSelect];
     this.store.dispatch(articleAction.setSelectedArticles({ arrSelectedArticles: updatedArr }));
     this.localStorageService.saveStateToSessionStorage(articlesInLStorage, "arrArticles");
-    //guardo en el ss los articulos temporalmente, el concat lo uso para q no se sobreescriban los datos
+    // guardo en el ss los articulos temporalmente, el concat lo uso para q no se sobreescriban los datos
     let tempData = getDataSS("arrArticles");
     updatedArr.concat(tempData);
     this.localStorageService.saveStateToSessionStorage(updatedArr, "arrArticles");
@@ -206,7 +205,7 @@ export class SearchProductsComponent implements OnInit, OnDestroy {
   teclaPresionada(){
     this.noMatches = false;
       this.debouncer.next( this.itemSearch );  
-    };
+   };
     
   sugerencias(value : string){
 
@@ -226,6 +225,10 @@ export class SearchProductsComponent implements OnInit, OnDestroy {
         console.log(precios);
         if(precios.length !== 0){
           this.suggested = precios;
+          //quitar esta logica de aca
+          const suggestedWithShowIncrementer = precios.map((item: any) => ({ ...item, showIncrementer: false, cantidad:0 }));
+          this.suggested = suggestedWithShowIncrementer;
+
             this.spinner = false;
             }else{
             this.spinner = false;
@@ -236,10 +239,9 @@ export class SearchProductsComponent implements OnInit, OnDestroy {
       )
     }
   
-    }
-
+  }
   
-    // este codigo no trabaja con el debounce (puse un condicional en el debouncer) es el enter de la lupa
+  // este codigo no trabaja con el debounce (puse un condicional en el debouncer) es el enter de la lupa
   searchByCode(){
     this.noMatch = false;
     const option = this.myForm.get('searchOption')?.value;
@@ -298,6 +300,139 @@ searchSuggested( item: any ) {
   this.Search( item );
 }
 
+// new search
+productQuantity : number = 0;
+showIncrementer : boolean = false;
+inputValue: number = 0;
+arrSelectedItem : any[]=[];
+
+
+counter( article : any, value :  string ){
+ 
+  let articlesInSStorage = getDataSS("arrArticles");
+  article.showIncrementer = true; // es para mostrar el incrementer
+
+
+  if(value === 'inc'){
+    article.cantidad = article.cantidad + 1;
+  }else{
+    // this.productQuantity = this.productQuantity - 1;
+    ( article.cantidad >= 1) ?  article.cantidad  =  article.cantidad  - 1 : "";
+  }
+
+
+  // si es 0 quita el counter y tiene que eliminar el item del SS y redux
+  if( article.cantidad == 0){
+    article.showIncrementer = false;
+    let noCeroQuantity = articlesInSStorage.filter((item: any) => item.codigoInterno !== article.codigoInterno);
+    this.localStorageService.saveStateToSessionStorage(noCeroQuantity, "arrArticles");
+    this.store.dispatch(articleAction.deleteArticle({ articleId: article.codigoInterno }));
+    return
+  }
+
+  const itemSelect = {
+                    descripcionLarga : article.descripcionLarga,
+                    precioBrutoFinal: article.precioBrutoFinal,
+                    cantidad: article.cantidad,
+                    codigoInterno : article.codigoInterno,
+                    id : article.idArticulo,
+                    bonificacionPorciento: 0,
+                    ventaTotal: (1 * article.precioBrutoFinal) 
+}
+
+  // obtengo del LS el array de articulos seleccionados
+  if(articlesInSStorage == undefined){
+    articlesInSStorage = [];
+  }
+
+  // si el item ya esta en LS y en redux quiere decir q es un update de la cantidad (lo elimina)
+  let noRepetidedArticles = articlesInSStorage.filter((item: any) => item.codigoInterno !== article.codigoInterno);
+  this.store.dispatch(articleAction.deleteArticle({ articleId: article.codigoInterno }));
+
+  // let updatedArrRedux = this.arrItemSelected.filter((item: any) => item.codigoInterno !== article.codigoInterno);
+  // this.store.dispatch(articleAction.setSelectedArticles({ arrSelectedArticles: updatedArrRedux }));
+  
+  console.log(this.arrItemSelected);
+
+  // agrego el item seleccionado al SS
+  noRepetidedArticles.push(itemSelect);
+
+  //hago el update en redux y LS 
+  let updatedArr = [...this.arrItemSelected, itemSelect];
+  this.store.dispatch(articleAction.setSelectedArticles({ arrSelectedArticles: updatedArr }));
+  this.localStorageService.saveStateToSessionStorage(noRepetidedArticles, "arrArticles");
+
+  console.log(updatedArr);
+  //guardo en el ss los articulos temporalmente, el concat lo uso para q no se sobreescriban los datos
+  // let tempData = getDataSS("arrArticles");
+  // updatedArr.concat(tempData);
+  // this.localStorageService.saveStateToSessionStorage(updatedArr, "arrArticles");
+  // this.openGenericSuccess('1 Producto añadido con éxito');
+  // this.close();
+
+
+
+
+}
+
+
+
+totalPurchase(){
+
+  // if(this.inputValue > 0){
+  //   const priceBonus = this.article.precioBrutoFinal * this.inputValue;
+  //   const result = this.article.precioBrutoFinal - priceBonus / 100;
+  //   this.total = (this.productQuantity * result) ;
+  //   return this.total;
+  // }
+
+  // this.total = (this.productQuantity * this.article.precioBrutoFinal) ;
+  // return this.total;
+
+}
+
+selectItem( item:any ){
+  // console.log(item);
+  // this.showIncrementer = true;
+  item.showIncrementer = true;
+
+  //   let articlesInLStorage = getDataLS("arrArticles");
+
+  //   // creo el objeto para guarda en ls y redux, tiene propiedades para mostrar en el front y otras para el BD
+  //   const fastSelect = {
+  //                       descripcionLarga : article.descripcionLarga,
+  //                       precioBrutoFinal: article.precioBrutoFinal,
+  //                       cantidad: 1,
+  //                       codigoInterno : article.codigoInterno,
+  //                       id : article.idArticulo,
+  //                       bonificacionPorciento: 0,
+  //                       ventaTotal: (1 * article.precioBrutoFinal) 
+  //   }
+
+  //   if(articlesInLStorage == undefined){
+  //     articlesInLStorage = [];
+  //   }
+
+  //   articlesInLStorage.push(fastSelect);
+
+  //   //hago el update en redux y LS 
+  //   let updatedArr = [...this.arrItemSelected, fastSelect];
+  //   this.store.dispatch(articleAction.setSelectedArticles({ arrSelectedArticles: updatedArr }));
+  //   this.localStorageService.saveStateToSessionStorage(articlesInLStorage, "arrArticles");
+  //   //guardo en el ss los articulos temporalmente, el concat lo uso para q no se sobreescriban los datos
+  //   let tempData = getDataSS("arrArticles");
+  //   updatedArr.concat(tempData);
+  //   this.localStorageService.saveStateToSessionStorage(updatedArr, "arrArticles");
+  //   this.openGenericSuccess('1 Producto añadido con éxito');
+  //   this.close();
+
+
+}
+
+// new search
+
+
+
   goBack(){
     this.router.navigateByUrl('/armar-pedido')
     setTimeout(()=>{
@@ -325,6 +460,7 @@ searchSuggested( item: any ) {
     });
   
   }
+
   openDialogArticle(article : any){
     let width : string = '';
     let height : string = '';
