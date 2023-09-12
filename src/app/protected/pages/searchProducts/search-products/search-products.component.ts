@@ -76,7 +76,7 @@ inputValue: number = 0;
 arrSelectedItem : any[]=[];
 quantity : any;
 
-  producto : string = "Producto añadido"
+producto : string = "Producto añadido"
 
   constructor(
             private articleService :ArticlesService,
@@ -106,7 +106,7 @@ quantity : any;
 
   ngOnInit(): void {
 
-    this.errorService.labelInvalidCode$.subscribe((emmited)=>{if(emmited){this.noMatch = true;}})
+    this.errorService.labelInvalidCode$.subscribe((emmited)=>{if(emmited){this.noMatch = true; this.spinner = false}})
 
     // despues de seleccionar el articulo con mas opciones como bonificacion, cierro el card de /buscar-pedidos
     this.orderService.selectProductOption$.subscribe((emmited)=>{ if(emmited){this.close()}
@@ -140,7 +140,7 @@ quantity : any;
       ({arrSelectedArticles})=>{
         this.arrItemSelected = arrSelectedArticles;
         this.quantity = this.arrItemSelected.length;
-        if(arrSelectedArticles.length > 0){
+        if(arrSelectedArticles.length > 1){
           this.producto = "Productos añadidos"
         }
     })
@@ -197,14 +197,15 @@ quantity : any;
   
   // este codigo no trabaja con el debounce (puse un condicional en el debouncer) es el enter de la lupa
   searchByCode(){
-    this.noMatch = false;
+
     const option = this.myForm.get('searchOption')?.value;
     const itemSearch = this.myForm.get('itemSearch')?.value;
     if( option === "Por descripción" || itemSearch === ''){
         return
     }else{    
       let tempClient : any;
-
+      this.noMatch = false;
+      this.spinner = true;
       if(getDataSS("tempClient" ) !== undefined){
       tempClient = getDataSS("tempClient")
       }
@@ -228,32 +229,7 @@ quantity : any;
   }
   }
      
-  Search( item : any ){
-    let tempClient : any;
 
-    if(getDataSS("tempClient" ) !== undefined){
-     tempClient = getDataSS("tempClient")
-    }
-    // this.articleService.searchProductById(item.idArticulo)
-    this.articleService.getArtListPriceByCode(tempClient.idListaPrecios, item.codigoInterno)
-        .subscribe ( ({precio} )=>{
-          if(precio){
-            this.articleFounded = precio;
-            this.spinner = false;
-            this.isArticleFounded = true;
-            this.mostrarSugerencias = false;
-            this.itemSearch = '';
-            this.suggested = [];
-          }else{
-            this.noMatch = true;
-          }
-        }
-        )
-}
-
-searchSuggested( item: any ) {
-  this.Search( item );
-}
 
 
 counter( article : any, value :  string ){
@@ -306,7 +282,7 @@ counter( article : any, value :  string ){
   this.localStorageService.saveStateToSessionStorage(noRepetidedArticles, "arrArticles");
 
   this.quantity = this.arrItemSelected.length;
-  if(this.arrItemSelected.length > 0){
+  if(this.arrItemSelected.length > 1){
     this.producto = "Productos añadidos"
   }
 
@@ -389,7 +365,6 @@ goBack(){
   },0)
 }
 
-
 openGenericSuccess(msg : string){
 
   let width : string = '';
@@ -428,4 +403,5 @@ openDialogArticle(article : any){
   });
 
 }
+
 }

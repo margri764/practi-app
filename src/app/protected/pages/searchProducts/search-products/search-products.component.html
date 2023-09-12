@@ -1,4 +1,4 @@
-<div  fxLayout="row wrap"  fxLayoutAlign="center start" fxFlex="100" >
+<div  fxLayout="row wrap"  fxLayoutAlign="center center" fxFlex="100" >
 
     <h1 class="font fs-5" style="text-align: center; margin-top: 40px;" fxFlex="100">Seleccionar tipo de búsqueda</h1>
     
@@ -23,41 +23,39 @@
                     </mat-form-field>
         </form>
 
-        <span class="font fs-5" style="color: red; border-radius: 7px; padding: 20px; margin-top: 20px; border: 1px solid red;" *ngIf="noMatch">Sin coincidencias</span>
-
      </div>
     <!-- end menu search -->
 
-    <!-- no items    -->
-    <div fxLayout="row wrap"  fxLayoutAlign="center center" fxFlex="100" *ngIf="noMatches" style="padding: 20px;" class="whiteframe" >
+    
+    <!-- start no items -->
+    <div fxLayout="row wrap"  fxLayoutAlign="center center" fxFlex="100"  *ngIf="noMatches" >
         
-            <div fxLayout="row wrap" fxLayoutAlign="space-between center"  fxFlex="98"  class="fs-4 boxSelection" >
-                <span class="font fs-4" style="color: red; text-align: center; width: 100%;">Sin coincidencias...</span>
+            <div fxLayout="row wrap" fxLayoutAlign="space-between center"  fxFlex.xs="90" fxFlex.sm="80" fxFlex="30"  class="fs-4 " style="border-radius: 10px; padding: 15px; color: white; background-color: black; margin-bottom: 20px; margin-top: 30px; height: 60px; border-left: 10px solid red;">
+                <span class="font fs-4" style="color: white; text-align: center; width: 100%;">Sin coincidencias...</span>
             </div>
     </div>
+    <!-- end no items -->
 
-    <div fxLayout="row wrap"  fxLayoutAlign="start center"  fxFlex.xs="99" fxFlex="80"  style="border-radius: 10px; padding: 15px; color: white; background-color: rgb(37, 150, 190); margin-bottom: 20px; margin-top: 30px; height: 80px;" *ngIf="quantity > 0">
-        <span class="font fs-5 cursor" fxFlex="60"   routerLink="/armar-pedido" >{{quantity}} {{producto}}</span><br>
+
+    <div fxLayout="row wrap"  fxLayoutAlign=" center"  fxFlex.xs="98" fxFlex="80"  style="border-radius: 10px; padding: 15px; color: white; background-color: rgb(37, 150, 190); margin-bottom: 20px; margin-top: 30px; height: 80px; border-left: 10px solid red;" *ngIf="quantity > 0" routerLink="/armar-pedido">
+        <span class="font fs-5 cursor" fxFlex="80"  >{{quantity}} {{producto}}</span><br>
     </div>
-
     
-    <!-- start suggested    -->
-    <div fxLayout="row wrap"  fxLayoutAlign.xs="space-between center" fxLayoutAlign="center center"  fxFlex.xs="99" fxFlex="80" *ngIf="mostrarSugerencias" style="padding: 20px; margin-top: 30px;" class="whiteframe" >
+    <div fxLayout="row wrap"  fxLayoutAlign="center center"  fxFlex="100" *ngIf="spinner" style="margin-top: 25px;">
+        <mat-spinner diameter="48"></mat-spinner>
+    </div>
+    
+<!-- start suggested -->
+    <div fxLayout="row wrap"  fxLayoutAlign.xs="space-between center" fxLayoutAlign="center center"  fxFlex.xs="99" fxFlex="80" *ngIf="mostrarSugerencias" style="padding: 20px; margin-top: 30px;"  >
      
             
-        <div fxLayout="row wrap"  fxLayoutAlign="center center"  fxFlex="100" *ngIf="spinner" style="margin-top: 25px;">
-            <mat-spinner diameter="48"></mat-spinner>
-        </div>
                     
         <div fxLayout="row wrap"  fxLayoutAlign.xs="start center" fxLayoutAlign="space-between center" fxFlex="100" class="font mb-20 mt-10 " *ngFor="let item of suggested , index as i" >
             
             <div fxLayout="row wrap" fxLayoutAlign="space-between center"  fxFlex="98"  class="fs-4 boxSelection" >
 
                 <div fxLayout="row wrap" fxLayoutAlign="space-between center"  fxFlex="70" >
-                    <!-- <mat-checkbox class="example-margin" (click)="selectItem( item )"></mat-checkbox> -->
-
-                    <!-- <mat-radio-button class="example-margin"  (click)="searchSuggested( item )"></mat-radio-button> -->
-                    <span  style="cursor: pointer; text-align: start; " (click)="searchSuggested( item)" fxFlex="90" >
+                    <span  style="cursor: pointer; text-align: start; "  fxFlex="90" >
                         {{ item.descripcionLarga | capitalizeFirstLetter}}
                     &nbsp; <b> {{ item.precioBrutoFinal | currency:'$':'symbol':'1.2-2'}}</b>
                     </span>
@@ -89,83 +87,70 @@
                 
                 </div>
               <!-- end counter -->
-
-         
-              
             </div>
 
-
-            
-
         </div>
-
-    
-
-
   
     </div> 
-   <!-- rnd suggested    -->
+<!-- end suggested -->
 
 
-   <div fxLayout="row wrap"  fxLayoutAlign.xs="space-between center" fxLayoutAlign="center center"  fxFlex.xs="99" fxFlex="80" *ngIf="articleFounded.length !== 0" style="padding: 20px; margin-top: 30px;" class="whiteframe" >
-     
-
-                
-    <div fxLayout="row wrap"  fxLayoutAlign.xs="start center" fxLayoutAlign="space-between center" fxFlex="100" class="font mb-20 mt-10 " *ngFor="let item of articleFounded , index as i" >
+    <div fxLayout="row wrap"  fxLayoutAlign.xs="space-between center" fxLayoutAlign="center center"  fxFlex.xs="99" fxFlex="80" *ngIf="articleFounded.length !== 0" style="padding: 20px; margin-top: 30px;" class="whiteframe" >
         
-        <div fxLayout="row wrap" fxLayoutAlign="space-between center"  fxFlex="98"  class="fs-4 boxSelection" >
 
-            <div fxLayout="row wrap" fxLayoutAlign="space-between center"  fxFlex="70" >
-                <!-- <mat-checkbox class="example-margin" (click)="selectItem( item )"></mat-checkbox> -->
-
-                <!-- <mat-radio-button class="example-margin"  (click)="searchSuggested( item )"></mat-radio-button> -->
-                <span  style="cursor: pointer; text-align: start; " (click)="searchSuggested( item)" fxFlex="90" >
-                    {{ item.descripcionLarga | capitalizeFirstLetter}}
-                &nbsp; <b> {{ item.precioBrutoFinal | currency:'$':'symbol':'1.2-2'}}</b>
-                </span>
-            </div>    
-
-          <!-- counter -->
-            <div fxLayout="row wrap" fxLayoutAlign="end center" fxFlex="30" >
+                    
+        <div fxLayout="row wrap"  fxLayoutAlign.xs="start center" fxLayoutAlign="space-between center" fxFlex="100" class="font mb-20 mt-10 " *ngFor="let item of articleFounded , index as i" >
             
-                <div fxLayout="row wrap" fxLayoutAlign="space-between center"  class="incrementer" *ngIf="item.showIncrementer " >
-                
-                        <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="15" (click)="counterItemCode(item, 'dec')" >
-                                <i class="material-symbols-outlined notranslate cursor">remove</i>
-                        </div>
-                    
-                        <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="20">
-                            <span class="font fs-4">{{item.cantidad || 1}}</span>
-                        </div>
-                    
-                        <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="15" (click)="counterItemCode(item, 'inc')">
-                                <i class="material-symbols-outlined notranslate cursor">add</i>
-                        </div>
-                </div>
+            <div fxLayout="row wrap" fxLayoutAlign="space-between center"  fxFlex="98"  class="fs-4 boxSelection" >
 
-                <div fxLayout="row wrap" fxLayoutAlign="center center" style="border: 1px solid rgb(187, 187, 187); opacity: 0.8; border-radius: 7px; padding: 10px; width: 80px; height: 40px;" *ngIf="!item.showIncrementer">
-                    <span class="font fs-3" style="text-align: center; margin: auto;" (click)="counterItemCode(item, 'inc')">Agregar</span>
-                </div>
-                
+                <div fxLayout="row wrap" fxLayoutAlign="space-between center"  fxFlex="70" >
+                    <span  style="cursor: pointer; text-align: start; " fxFlex="90" >
+                        {{ item.descripcionLarga | capitalizeFirstLetter}}
+                    &nbsp; <b> {{ item.precioBrutoFinal | currency:'$':'symbol':'1.2-2'}}</b>
+                    </span>
+                </div>    
 
+            <!-- counter -->
+                <div fxLayout="row wrap" fxLayoutAlign="end center" fxFlex="30" >
+                
+                    <div fxLayout="row wrap" fxLayoutAlign="space-between center"  class="incrementer" *ngIf="item.showIncrementer " >
+                    
+                            <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="15" (click)="counterItemCode(item, 'dec')" >
+                                    <i class="material-symbols-outlined notranslate cursor">remove</i>
+                            </div>
+                        
+                            <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="20">
+                                <span class="font fs-4">{{item.cantidad || 1}}</span>
+                            </div>
+                        
+                            <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="15" (click)="counterItemCode(item, 'inc')">
+                                    <i class="material-symbols-outlined notranslate cursor">add</i>
+                            </div>
+                    </div>
+
+                    <div fxLayout="row wrap" fxLayoutAlign="center center" style="border: 1px solid rgb(187, 187, 187); opacity: 0.8; border-radius: 7px; padding: 10px; width: 80px; height: 40px;" *ngIf="!item.showIncrementer">
+                        <span class="font fs-3" style="text-align: center; margin: auto; color: rgb(187, 187, 187); opacity: 0.8;" (click)="counterItemCode(item, 'inc')">Agregar</span>
+                    </div>
+                    
+
+                
+                </div>
+            <!-- end counter -->
+
+        
             
             </div>
-          <!-- end counter -->
 
-     
-          
+
+            
+
         </div>
 
 
-        
-
-    </div>
 
 
 
-
-
-</div> 
+    </div> 
 
 
 </div>
