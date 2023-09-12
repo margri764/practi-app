@@ -38,7 +38,7 @@ export class SearchProductsComponent implements OnInit, OnDestroy {
   labelNoArticles : boolean = false;
   isLoading : boolean = false;
   isArticleFounded : boolean = false;
-  articleFounded : any = {};
+  articleFounded : any []= [];
   noMatches : boolean = false;
   myForm! : FormGroup;
   noMatch : boolean = false;
@@ -69,6 +69,15 @@ export class SearchProductsComponent implements OnInit, OnDestroy {
   productCode  : any[] = [];
   // search by code
 
+  // new search
+productQuantity : number = 0;
+showIncrementer : boolean = false;
+inputValue: number = 0;
+arrSelectedItem : any[]=[];
+quantity : any;
+
+  producto : string = "Producto añadido"
+
   constructor(
             private articleService :ArticlesService,
             private dialog : MatDialog,
@@ -78,8 +87,6 @@ export class SearchProductsComponent implements OnInit, OnDestroy {
             private localStorageService: LocalStorageService,
             private fb : FormBuilder,
             private errorService : ErrorService,
-
-
   ) { 
 
     this.myForm = this.fb.group({
@@ -132,66 +139,13 @@ export class SearchProductsComponent implements OnInit, OnDestroy {
     this.articleSuscription = this.store.select('article').subscribe(
       ({arrSelectedArticles})=>{
         this.arrItemSelected = arrSelectedArticles;
-        // if(arrSelectedArticles.length !== 0){
-        // }
+        this.quantity = this.arrItemSelected.length;
+        if(arrSelectedArticles.length > 0){
+          this.producto = "Productos añadidos"
+        }
     })
   }
 
-
-  fastSelect( article :  any){
-
-    let articlesInLStorage = getDataLS("arrArticles");
-
-    // creo el objeto para guarda en ls y redux, tiene propiedades para mostrar en el front y otras para el BD
-    const fastSelect = {
-                        descripcionLarga : article.descripcionLarga,
-                        precioBrutoFinal: article.precioBrutoFinal,
-                        cantidad: 1,
-                        codigoInterno : article.codigoInterno,
-                        id : article.idArticulo,
-                        bonificacionPorciento: 0,
-                        ventaTotal: (1 * article.precioBrutoFinal) 
-    }
-
-    if(articlesInLStorage == undefined){
-      articlesInLStorage = [];
-    }
-
-    articlesInLStorage.push(fastSelect);
-
-    // hago el update en redux y LS 
-    let updatedArr = [...this.arrItemSelected, fastSelect];
-    this.store.dispatch(articleAction.setSelectedArticles({ arrSelectedArticles: updatedArr }));
-    this.localStorageService.saveStateToSessionStorage(articlesInLStorage, "arrArticles");
-    // guardo en el ss los articulos temporalmente, el concat lo uso para q no se sobreescriban los datos
-    let tempData = getDataSS("arrArticles");
-    updatedArr.concat(tempData);
-    this.localStorageService.saveStateToSessionStorage(updatedArr, "arrArticles");
-    this.openGenericSuccess('1 Producto añadido con éxito');
-    this.close();
-
-
-
-  }
-
-
-  // getProducts(){
-  //   this.labelNoArticles= false;
-  //   this.isLoading = true;
-  //   this.articleService.getAllArticles().subscribe(
-  //     ({articulos})=>{
-  //       console.log(articulos);
-  //       this.isLoading = false;
-  //       if(articulos.length !== 0){
-  //           this.arrArticles = articulos;
-  //       }else{
-  //         this.labelNoArticles = true;
-  
-  //       }
-  
-  //     }
-  //   )
-  // }
 
   close(){
     this.mostrarSugerencias = false;
@@ -255,11 +209,12 @@ export class SearchProductsComponent implements OnInit, OnDestroy {
       tempClient = getDataSS("tempClient")
       }
 
-      console.log(tempClient.idListaPrecios, itemSearch);
       this.articleService.getArtListPriceByCode(tempClient.idListaPrecios, itemSearch)
       .subscribe ( ({precio} )=>{
         if(precio){
-          this.articleFounded = precio;
+          this.articleFounded.push(precio);
+          const suggestedWithShowIncrementer = this.articleFounded.map((item: any) => ({ ...item, showIncrementer: false, cantidad:0 }));
+          this.articleFounded = suggestedWithShowIncrementer;
           this.spinner = false;
           this.isArticleFounded = true;
           this.mostrarSugerencias = false;
@@ -300,12 +255,6 @@ searchSuggested( item: any ) {
   this.Search( item );
 }
 
-// new search
-productQuantity : number = 0;
-showIncrementer : boolean = false;
-inputValue: number = 0;
-arrSelectedItem : any[]=[];
-
 
 counter( article : any, value :  string ){
  
@@ -319,7 +268,6 @@ counter( article : any, value :  string ){
     // this.productQuantity = this.productQuantity - 1;
     ( article.cantidad >= 1) ?  article.cantidad  =  article.cantidad  - 1 : "";
   }
-
 
   // si es 0 quita el counter y tiene que eliminar el item del SS y redux
   if( article.cantidad == 0){
@@ -349,10 +297,68 @@ counter( article : any, value :  string ){
   let noRepetidedArticles = articlesInSStorage.filter((item: any) => item.codigoInterno !== article.codigoInterno);
   this.store.dispatch(articleAction.deleteArticle({ articleId: article.codigoInterno }));
 
-  // let updatedArrRedux = this.arrItemSelected.filter((item: any) => item.codigoInterno !== article.codigoInterno);
-  // this.store.dispatch(articleAction.setSelectedArticles({ arrSelectedArticles: updatedArrRedux }));
-  
-  console.log(this.arrItemSelected);
+  // agrego el item seleccionado al SS
+  noRepetidedArticles.push(itemSelect);
+
+  //hago el update en redux y LS 
+  let updatedArr = [...this.arrItemSelected, itemSelect];
+  this.store.dispatch(articleAction.setSelectedArticles({ arrSelectedArticles: updatedArr }));
+  this.localStorageService.saveStateToSessionStorage(noRepetidedArticles, "arrArticles");
+
+  this.quantity = this.arrItemSelected.length;
+  if(this.arrItemSelected.length > 0){
+    this.producto = "Productos añadidos"
+  }
+
+  //guardo en el ss los articulos temporalmente, el concat lo uso para q no se sobreescriban los datos
+  // let tempData = getDataSS("arrArticles");
+  // updatedArr.concat(tempData);
+  // this.localStorageService.saveStateToSessionStorage(updatedArr, "arrArticles");
+  // this.openGenericSuccess('1 Producto añadido con éxito');
+  // this.close();
+
+}
+
+counterItemCode( article : any, value :  string ){
+ 
+  let articlesInSStorage = getDataSS("arrArticles");
+  article.showIncrementer = true; // es para mostrar el incrementer
+
+
+  if(value === 'inc'){
+    article.cantidad = article.cantidad + 1;
+  }else{
+    // this.productQuantity = this.productQuantity - 1;
+    ( article.cantidad >= 1) ?  article.cantidad  =  article.cantidad  - 1 : "";
+  }
+
+  // si es 0 quita el counter y tiene que eliminar el item del SS y redux
+  if( article.cantidad == 0){
+    article.showIncrementer = false;
+    let noCeroQuantity = articlesInSStorage.filter((item: any) => item.codigoInterno !== article.codigoInterno);
+    this.localStorageService.saveStateToSessionStorage(noCeroQuantity, "arrArticles");
+    this.store.dispatch(articleAction.deleteArticle({ articleId: article.codigoInterno }));
+    return
+  }
+
+  const itemSelect = {
+                    descripcionLarga : article.descripcionLarga,
+                    precioBrutoFinal: article.precioBrutoFinal,
+                    cantidad: article.cantidad,
+                    codigoInterno : article.codigoInterno,
+                    id : article.idArticulo,
+                    bonificacionPorciento: 0,
+                    ventaTotal: (1 * article.precioBrutoFinal) 
+}
+
+  // obtengo del LS el array de articulos seleccionados
+  if(articlesInSStorage == undefined){
+    articlesInSStorage = [];
+  }
+
+  // si el item ya esta en LS y en redux quiere decir q es un update de la cantidad (lo elimina)
+  let noRepetidedArticles = articlesInSStorage.filter((item: any) => item.codigoInterno !== article.codigoInterno);
+  this.store.dispatch(articleAction.deleteArticle({ articleId: article.codigoInterno }));
 
   // agrego el item seleccionado al SS
   noRepetidedArticles.push(itemSelect);
@@ -362,7 +368,11 @@ counter( article : any, value :  string ){
   this.store.dispatch(articleAction.setSelectedArticles({ arrSelectedArticles: updatedArr }));
   this.localStorageService.saveStateToSessionStorage(noRepetidedArticles, "arrArticles");
 
-  console.log(updatedArr);
+  this.quantity = this.arrItemSelected.length;
+  if(this.arrItemSelected.length > 0){
+    this.producto = "Productos añadidos"
+  }
+
   //guardo en el ss los articulos temporalmente, el concat lo uso para q no se sobreescriban los datos
   // let tempData = getDataSS("arrArticles");
   // updatedArr.concat(tempData);
@@ -370,113 +380,52 @@ counter( article : any, value :  string ){
   // this.openGenericSuccess('1 Producto añadido con éxito');
   // this.close();
 
+}
 
-
-
+goBack(){
+  this.router.navigateByUrl('/armar-pedido')
+  setTimeout(()=>{
+    this.orderService.changeClientValue.emit(true);
+  },0)
 }
 
 
+openGenericSuccess(msg : string){
 
-totalPurchase(){
+  let width : string = '';
+  let height : string = '';
 
-  // if(this.inputValue > 0){
-  //   const priceBonus = this.article.precioBrutoFinal * this.inputValue;
-  //   const result = this.article.precioBrutoFinal - priceBonus / 100;
-  //   this.total = (this.productQuantity * result) ;
-  //   return this.total;
-  // }
+  if(screen.width >= 800) {
+    width = "400px"
+    height ="450px";
+  }
 
-  // this.total = (this.productQuantity * this.article.precioBrutoFinal) ;
-  // return this.total;
+  this.dialog.open(GenericSuccessComponent, {
+    data: msg,
+    width: `${width}`|| "",
+    height:`${height}`|| "",
+    disableClose: true,
+    panelClass:"custom-modalbox-NoMoreComponent", 
+  });
 
 }
 
-selectItem( item:any ){
-  // console.log(item);
-  // this.showIncrementer = true;
-  item.showIncrementer = true;
+openDialogArticle(article : any){
+  let width : string = '';
+  let height : string = '';
 
-  //   let articlesInLStorage = getDataLS("arrArticles");
+  if(screen.width >= 800) {
+    width = "430px";
+    height ="470px";
+  }
 
-  //   // creo el objeto para guarda en ls y redux, tiene propiedades para mostrar en el front y otras para el BD
-  //   const fastSelect = {
-  //                       descripcionLarga : article.descripcionLarga,
-  //                       precioBrutoFinal: article.precioBrutoFinal,
-  //                       cantidad: 1,
-  //                       codigoInterno : article.codigoInterno,
-  //                       id : article.idArticulo,
-  //                       bonificacionPorciento: 0,
-  //                       ventaTotal: (1 * article.precioBrutoFinal) 
-  //   }
-
-  //   if(articlesInLStorage == undefined){
-  //     articlesInLStorage = [];
-  //   }
-
-  //   articlesInLStorage.push(fastSelect);
-
-  //   //hago el update en redux y LS 
-  //   let updatedArr = [...this.arrItemSelected, fastSelect];
-  //   this.store.dispatch(articleAction.setSelectedArticles({ arrSelectedArticles: updatedArr }));
-  //   this.localStorageService.saveStateToSessionStorage(articlesInLStorage, "arrArticles");
-  //   //guardo en el ss los articulos temporalmente, el concat lo uso para q no se sobreescriban los datos
-  //   let tempData = getDataSS("arrArticles");
-  //   updatedArr.concat(tempData);
-  //   this.localStorageService.saveStateToSessionStorage(updatedArr, "arrArticles");
-  //   this.openGenericSuccess('1 Producto añadido con éxito');
-  //   this.close();
-
+  this.dialog.open(SelectArticleMessageComponent, {
+    data: article,
+    width: `${width}`|| "",
+    height:`${height}`|| "",
+    // disableClose: true,
+    panelClass:"custom-modalbox-NoMoreComponent", 
+  });
 
 }
-
-// new search
-
-
-
-  goBack(){
-    this.router.navigateByUrl('/armar-pedido')
-    setTimeout(()=>{
-      this.orderService.changeClientValue.emit(true);
-    },0)
-  }
-
-
-  openGenericSuccess(msg : string){
-
-    let width : string = '';
-    let height : string = '';
-
-    if(screen.width >= 800) {
-      width = "400px"
-      height ="450px";
-    }
-
-    this.dialog.open(GenericSuccessComponent, {
-      data: msg,
-      width: `${width}`|| "",
-      height:`${height}`|| "",
-      disableClose: true,
-      panelClass:"custom-modalbox-NoMoreComponent", 
-    });
-  
-  }
-
-  openDialogArticle(article : any){
-    let width : string = '';
-    let height : string = '';
-
-    if(screen.width >= 800) {
-      width = "430px";
-      height ="470px";
-    }
-
-    this.dialog.open(SelectArticleMessageComponent, {
-      data: article,
-      width: `${width}`|| "",
-      height:`${height}`|| "",
-      // disableClose: true,
-      panelClass:"custom-modalbox-NoMoreComponent", 
-    });
-  
-  }
 }
