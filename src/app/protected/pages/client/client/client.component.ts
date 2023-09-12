@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from 'src/app/protected/services/auth/auth.service';
 import { EditClientComponent } from '../../edit-client/edit-client/edit-client.component';
 import { NewClientComponent } from '../../new-client/new-client/new-client.component';
-import { Subject, Subscription, take } from 'rxjs';
+import { Subject, Subscription, debounceTime, take } from 'rxjs';
 import { ErrorService } from 'src/app/protected/services/error/error.service';
 import { AskDelClientComponent } from 'src/app/protected/messages/ask-del-client/ask-del-client/ask-del-client.component';
 import { MatTableDataSource } from '@angular/material/table';
@@ -13,7 +13,7 @@ import { Store } from '@ngrx/store';
 import { MatAccordion } from '@angular/material/expansion';
 import { getDataLS, getDataSS } from 'src/app/protected/Storage';
 import { CookieService } from 'ngx-cookie-service';
-import { FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-client',
@@ -27,8 +27,9 @@ export class ClientComponent implements OnInit, OnDestroy {
   @Output() onEnter   : EventEmitter<string> = new EventEmitter();
   debouncer: Subject<string> = new Subject();
 
-  displayedColumns: string[] = ['action','name','location','province','phone', 'email'];
+  displayedColumns: string[] = ['action','name','address','phone', 'email'];
   dataTableActive : any = new MatTableDataSource<any>();
+  myForm! : FormGroup;
   
 
   itemSearch : string = '';
@@ -80,7 +81,9 @@ export class ClientComponent implements OnInit, OnDestroy {
               private dialog : MatDialog,
               private errorService : ErrorService,
               private store : Store <AppState>,
-              private cookieService : CookieService
+              private cookieService : CookieService,
+              private fb : FormBuilder,
+
 
   ) { 
         
@@ -89,34 +92,63 @@ export class ClientComponent implements OnInit, OnDestroy {
   //   this.login = true;
   // }
     (screen.width <= 800) ? this.phone = true : this.phone = false;
+
+    this.myForm = this.fb.group({
+      itemSearch:  [ '',  ],
+    });   
   }
 
 
   ngOnInit(): void {
     this.getInitialClients();
+
+
+        //para las busquedas
+        this.myForm.get('itemSearch')?.valueChanges.subscribe(newValue => {
+          this.itemSearch = newValue;
+    
+           console.log(this.myForm.get('itemSearch')?.value);
+          if(this.itemSearch !== ''){
+             this.teclaPresionada();
+          }
+        });
+    
+        this.debouncer
+        .pipe(debounceTime(400))
+        .subscribe( valor => {
+    
+          this.sugerencias(valor);
+        });
   }
 
  getInitialClients(){
   this.isLoading = true;
+
+
   this.authService.getClientsPaginator(this.pageIndex, this.pageSize).subscribe(
-    ({contactos})=>{
+    ({contactos, pagination})=>{
       this.contactos = contactos;
       this.dataTableActive = contactos;
-      this.isLoading = false
+      this.isLoading = false;
+      this.length = pagination.total_reg;
     })
 }
 
 handlePageEvent(e: PageEvent) {
+
+
   this.pageEvent = e;
   this.length = e.length;
   this.pageSize = e.pageSize;
   this.pageIndex = e.pageIndex;
-
-  console.log(this.pageEvent,
-    this.length,
-    this.pageSize, 
-    this.pageIndex);
     this.isLoading= true;
+
+    console.log(this.pageIndex);
+    if(this.pageIndex === 0){
+      this.isLoading = false;
+      return
+    }
+
     this.authService.getClientsPaginator(this.pageIndex, this.pageSize,).subscribe(
       ({contactos})=>{
         this.contactos = contactos;
@@ -125,138 +157,111 @@ handlePageEvent(e: PageEvent) {
       })
 }
 
+deleteClient(client : any){
 
-
-  deleteClient(client : any){
-
-    if(screen.width >= 800) {
-      this.width = "600px";
-      this.height = "510px";
-    }
-
-      this.dialog.open(AskDelClientComponent, {
-        data:  client.archivarComo,
-        width: `${this.width}`|| "",
-        height:`${this.height}`|| "",
-        panelClass:"custom-modalbox-edit",
-      });
-  
-      this.errorService.authDelClient$.pipe(
-        take(1)
-      ).subscribe( (auth)=> { // el ask-edit dispara ui boolean si se elige CONTINUAR con la acción
-        
-        if(auth){
-          this.authService.deleteClientById(client.id).subscribe( 
-            ()=>{})
-        }
-      })
-   
+  if(screen.width >= 800) {
+    this.width = "600px";
+    this.height = "510px";
   }
 
-  editClient(client: any){
-
-    if(screen.width >= 800) {
-      this.width = "600px";
-      this.height ="720px";
-    }
-
-    this.dialog.open(EditClientComponent, {
-      data: client,
+    this.dialog.open(AskDelClientComponent, {
+      data:  client.archivarComo,
       width: `${this.width}`|| "",
       height:`${this.height}`|| "",
-      panelClass:"custom-modalbox-NoMoreComponent", 
+      panelClass:"custom-modalbox-edit",
     });
 
-  }
-
-  addClient(){
-
-    if(screen.width >= 800) {
-      this.width = "600px";
-      this.height ="770px";
-    }
-
-    this.dialog.open(NewClientComponent, {
-      width: `${this.width}`|| "",
-      height:`${this.height}`|| "",
-      panelClass:"custom-modalbox-NoMoreComponent", 
-    });
-  }
-
-   // search
-   close(){
-    this.mostrarSugerencias = false;
-    this.itemSearch = '';
-    this.suggested = [];
-    this.spinner= false;
-    this.isClientFounded = false;
-    // this.clientFounded = {};
-  }
-
-  teclaPresionada(){
-
-    console.log(this.mostrarSugerencias);
-     
-     this.debouncer.next( this.itemSearch );  
-     this.sugerencias(this.itemSearch)
-     if(this.itemSearch == ''){
-       this.suggested=[];
-       this.mostrarSugerencias = false  
-     }
-     if(this.suggested.length === 0) {
-       this.spinner= true;
-     }
- 
-   };
-
-   sugerencias(value : string){
-      this.spinner = true;
-      this.itemSearch = value;
-      this.mostrarSugerencias = true;  
-      const valueSearch = value.toUpperCase();
-      this.authService.searchClientByName(valueSearch)
-      .subscribe ( ({contactos} )=>{
-        if(contactos.length !== 0){
-          // this.arrArticlesSugested = articulos;
-          this.suggested = contactos.splice(0,10);
-          console.log(this.suggested);
-            this.spinner = false;
-          }else{
-            // this.labelNoArticles = true;
-          }
-        }
-      )
-    }
- 
-  buscar(){
-   this.onEnter.emit( this.itemSearch );
- 
-  }
-
-  
-Search( id : any ){
-    this.mostrarSugerencias = true;
-    this.spinner = true;
-    this.fade = false;
-    this.authService.getClientById(id)
-    .subscribe ( ({contacto} )=>{
-      console.log(contacto);
-      if(contacto){
-        this.clientFounded = contacto;
-        this.spinner = false;
-        this.close();
-        this.isClientFounded = true;
-      }else{
-        // this.labelNoArticles = true;
+    this.errorService.authDelClient$.pipe(
+      take(1)
+    ).subscribe( (auth)=> { // el ask-edit dispara ui boolean si se elige CONTINUAR con la acción
+      
+      if(auth){
+        this.authService.deleteClientById(client.id).subscribe( 
+          ()=>{})
       }
-    }
-    )
+    })
+  
+}
+
+editClient(client: any){
+
+  if(screen.width >= 800) {
+    this.width = "600px";
+    this.height ="720px";
+  }
+
+  this.dialog.open(EditClientComponent, {
+    data: client,
+    width: `${this.width}`|| "",
+    height:`${this.height}`|| "",
+    panelClass:"custom-modalbox-NoMoreComponent", 
+  });
 
 }
 
-  searchSuggested( id: any ) {
-    this.Search( id );
+addClient(){
+
+  if(screen.width >= 800) {
+    this.width = "600px";
+    this.height ="770px";
   }
+
+  this.dialog.open(NewClientComponent, {
+    width: `${this.width}`|| "",
+    height:`${this.height}`|| "",
+    panelClass:"custom-modalbox-NoMoreComponent", 
+  });
+}
+
+   // search
+close(){
+  this.mostrarSugerencias = false;
+  this.itemSearch = '';
+  this.suggested = [];
+  this.spinner= false;
+  this.isClientFounded = false;
+  this.myForm.get('itemSearch')?.setValue('');
+  this.noMatches = false;
+}
+
+noMatches : boolean = false;
+
+teclaPresionada(){
+  this.noMatches = false;
+  this.debouncer.next( this.itemSearch );  
+};
+
+
+sugerencias(value : string){
+    this.spinner = true;
+    this.itemSearch = value;
+    this.mostrarSugerencias = true;  
+    const valueSearch = value.toUpperCase();
+    this.authService.searchClientByName(valueSearch)
+    .subscribe ( ({contactos} )=>{
+      if(contactos.length !== 0){
+        // this.arrArticlesSugested = articulos;
+        this.suggested = contactos.splice(0,10);
+        console.log(this.suggested);
+          this.spinner = false;
+        }else{
+          this.spinner = false;
+          this.noMatches = true;
+          this.myForm.get('itemSearch')?.setValue('');
+        }
+      }
+    )
+}
+  
+Search( item: any ){
+    this.mostrarSugerencias = true;
+    this.spinner = false;
+    this.fade = false;
+    console.log(item);
+    this.clientFounded = item;
+    this.close();
+    this.isClientFounded = true;
+}
   // search
 
 

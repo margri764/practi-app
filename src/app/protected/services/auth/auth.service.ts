@@ -114,6 +114,7 @@ getAllClients( ){
 
 getClientsPaginator(from : any, to : any){
 
+
   console.log(from,to);
 
     return this.http.get<any>(`${this.baseUrl}api/agenda?p=${from}&r=${to}`)

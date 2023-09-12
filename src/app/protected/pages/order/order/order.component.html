@@ -57,8 +57,8 @@
                 <mat-form-field appearance="outline" floatLabel="always" fxFlex="48" class="mt-10 font fs-5">
                     <mat-label>Selecciona Punto de venta</mat-label>
                     <mat-select  formControlName="ptoVenta" class="font" >
-                                <mat-option></mat-option>
-                                <mat-option *ngFor="let point of salePoint" [value]="point.numero" class="font fs-4"> {{point.sucursal}}</mat-option>
+                         <mat-option></mat-option>
+                         <mat-option *ngFor="let point of salePoint" [value]="point.numero" class="font fs-4"> {{point.sucursal}}</mat-option>
                     </mat-select>
                 </mat-form-field>
 

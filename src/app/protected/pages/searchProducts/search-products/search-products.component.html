@@ -30,14 +30,19 @@
     <!-- start no items -->
     <div fxLayout="row wrap"  fxLayoutAlign="center center" fxFlex="100"  *ngIf="noMatches" >
         
-            <div fxLayout="row wrap" fxLayoutAlign="space-between center"  fxFlex.xs="90" fxFlex.sm="80" fxFlex="30"  class="fs-4 " style="border-radius: 10px; padding: 15px; color: white; background-color: black; margin-bottom: 20px; margin-top: 30px; height: 60px; border-left: 10px solid red;">
-                <span class="font fs-4" style="color: white; text-align: center; width: 100%;">Sin coincidencias...</span>
+            <div fxLayout="row wrap" fxLayoutAlign="start center"  fxFlex.xs="90" fxFlex.sm="80" fxFlex="30"  class="fs-4 whiteframe " style="border-radius: 10px; padding: 15px; color: white; background-color: black; margin-bottom: 20px; margin-top: 30px; height: 60px; border-left: 10px solid red; box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+            -webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+            -moz-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);">
+                <span class="material-icons" style="color: white;"> error </span>
+                <span class="font fs-4" style="color: white; text-align: center; margin-left: 20px;">Sin coincidencias...</span>
             </div>
     </div>
     <!-- end no items -->
 
 
-    <div fxLayout="row wrap"  fxLayoutAlign=" center"  fxFlex.xs="98" fxFlex="80"  style="border-radius: 10px; padding: 15px; color: white; background-color: rgb(37, 150, 190); margin-bottom: 20px; margin-top: 30px; height: 80px; border-left: 10px solid red;" *ngIf="quantity > 0" routerLink="/armar-pedido">
+    <div fxLayout="row wrap"  fxLayoutAlign=" center"  fxFlex.xs="98" fxFlex="80"  style="border-radius: 10px; padding: 15px; color: white; background-color: rgb(37, 150, 190); margin-bottom: 20px; margin-top: 30px; height: 80px; border-left: 10px solid red; box-shadow: 2px 2px 5px 0px rgba(133,133,133,0.75);
+    -webkit-box-shadow: 2px 2px 5px 0px rgba(133,133,133,0.75);
+    -moz-box-shadow: 2px 2px 5px 0px rgba(133,133,133,0.75);" *ngIf="quantity > 0" routerLink="/armar-pedido">
         <span class="font fs-5 cursor" fxFlex="80"  >{{quantity}} {{producto}}</span><br>
     </div>
     
@@ -47,8 +52,6 @@
     
 <!-- start suggested -->
     <div fxLayout="row wrap"  fxLayoutAlign.xs="space-between center" fxLayoutAlign="center center"  fxFlex.xs="99" fxFlex="80" *ngIf="mostrarSugerencias" style="padding: 20px; margin-top: 30px;"  >
-     
-            
                     
         <div fxLayout="row wrap"  fxLayoutAlign.xs="start center" fxLayoutAlign="space-between center" fxFlex="100" class="font mb-20 mt-10 " *ngFor="let item of suggested , index as i" >
             

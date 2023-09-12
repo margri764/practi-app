@@ -1,84 +1,64 @@
 
-<div  fxLayout="row wrap"  fxLayoutAlign="center start" style="height: 100%; position: relative;">
+<div  fxLayout="row wrap"  fxLayoutAlign="center start" fxFlex="100">
+    
+    <div  fxLayout="row wrap"  fxLayoutAlign.xs="space-between center" fxLayoutAlign="start center" fxFlex="97" style="margin-top: 30px;">
 
-     <!-- start form -->
-    <form  fxLayout="row wrap" fxLayoutAlign="center center" style="margin-top: 25px;" fxFlex.xs="100" fxFlex="40"  autocomplete="off" >
-        <mat-form-field  appearance="outline" fxFlex="90" class="textMainIcon">
-            <input type="text" matInput  placeholder="Buscar Cliente"  name="itemSearch"
-            class="form-control  me-2"    
-            [(ngModel)]="itemSearch"
-            (input)="teclaPresionada( )" 
-            (onDebounce)="sugerencias( itemSearch )" 
-            (keyup.enter)="Search( itemSearch )" >
-            <mat-icon matSuffix style="transform:scale(1.7); color: rgb(37, 150, 190); margin-right: 20px;" (click)="Search( itemSearch)" >search</mat-icon>
-        </mat-form-field>
-    </form> 
-    <!-- end form -->
+        <!-- start form -->
+         <form  [formGroup]="myForm" autocomplete="off" style="margin-top: 24px;" > 
+            <mat-form-field  appearance="outline" class="font fs-4" >
+                <input type="text" matInput  placeholder="Buscar cliente"  name="itemSearch" formControlName="itemSearch">
+                <mat-icon matSuffix style="transform:scale(1.5); color: rgb(37, 150, 190); margin-right: 10px;" >search</mat-icon>
+            </mat-form-field>
+        </form>
+
+        <!-- end form -->
+
+        <!-- start select buttons -->
+        <div fxLayout="row wrap"  fxLayoutAlign="center center"  fxFlex.xs="20" fxFlex="10"  >
+            <div class="mainIcon" (click)="addClient()" >
+                <span class="material-symbols-outlined notranslate"> add </span>
+            </div>
+        </div>  
+        <!-- end select buttons -->
+    </div>  
+
+    <!-- start no items -->
+      <div fxLayout="row wrap"  fxLayoutAlign="center center" fxFlex="100"  *ngIf="noMatches" >
+        
+        <div fxLayout="row wrap" fxLayoutAlign="start center"  fxFlex.xs="90" fxFlex.sm="80" fxFlex="30"  class="fs-4 whiteframe " style="border-radius: 10px; padding: 15px; color: white; background-color: black; margin-bottom: 20px; margin-top: 30px; height: 60px; border-left: 10px solid red; box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+        -webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);">
+            <span class="material-icons" style="color: white;"> error </span>
+            <span class="font fs-4" style="color: white; text-align: center; margin-left: 20px;">Sin coincidencias...</span>
+        </div>
+      </div>
+    <!-- end no items -->
+
 
     <!-- start suggested    -->
     <div fxLayout="row wrap"  fxLayoutAlign.xs="start center" fxLayoutAlign="center center"  fxFlex="100" *ngIf="mostrarSugerencias" style="padding: 20px;" >
-
-        <div fxLayout="row wrap"  fxLayoutAlign="space-between center" fxFlex.xs="100" fxFlex="37" class="font whiteframe" style="margin-left: 0px;" >
-            <a > Buscar:   {{ itemSearch }}</a>
-            <mat-icon (click)="close()" style="cursor: pointer; margin-right: 10px; transform: scale(1.2);" > close</mat-icon>
-        </div>
             
         <div fxLayout="row wrap"  fxLayoutAlign="center center"  fxFlex="100" *ngIf="spinner" style="margin-top: 30px;">
             <mat-spinner diameter="48"></mat-spinner>
         </div>
                     
-        <div fxLayout="row wrap"  fxLayoutAlign.xs="start center"  fxLayoutAlign="center center" fxFlex="100" class="font " *ngFor="let item of suggested , index as i" >
-            
-            <div fxFlex="30"></div>
-            <div fxLayout="row wrap" fxFlex="37">
-                <a  style="cursor: pointer; margin-top: 10px; text-align: start; color: blue; text-decoration: underline;" (click)="searchSuggested( item.id )" fxFlex="100">
-                {{ item.archivarComo | capitalizeFirstLetter}}
-                </a>
-            </div>
-            <div fxFlex="30"></div>
-
+        <div fxLayout="row wrap"  fxLayoutAlign.xs="start center"  fxLayoutAlign="center center" fxFlex="100" class="font mt-10" *ngFor="let item of suggested" >
+            <div fxLayout="row wrap" fxLayoutAlign="start center"  fxFlex="98"  class="fs-4 boxSelection" >
+                <mat-radio-button class="example-margin" (click)="Search(item)"></mat-radio-button>
+                <span  style="cursor: pointer; text-align: start; margin-left: 15px;">{{ item.archivarComo | capitalizeFirstLetter}}</span>
+            </div>    
         </div>
     </div>
     <!-- end suggested    -->
 
-    <!-- start select buttons -->
-    <div fxLayout="row wrap" fxLayoutAlign="end" fxFlex="100">
 
-        <div fxLayout="row wrap"  fxLayoutAlign="center"  fxFlex.xs="20" fxFlex="10"  style="margin-right: 5px;" >
-            <div class="mainIcon" (click)="addClient()" >
-                <span class="material-symbols-outlined notranslate"> add </span>
-            </div>
-            <span class="textMainIcon" fxFlex="100" style="text-align: center;">Agregar </span>
-        </div>  
-
-        <!-- <div class="iconContainer" > -->
-
-            <!-- <div fxLayout="row wrap"  fxLayoutAlign="center center"  fxFlex.xs="48" fxFlex="30" >
-                <div class="mainIcon" style="display: flex;"  >
-                    <span class="material-symbols-outlined notranslate"> refresh </span>
-                </div>
-                <span class="textMainIcon"  style="text-align: center;">Pto de Venta </span>
-            </div>  
-
-            <div fxLayout="row wrap"  fxLayoutAlign="center center"  fxFlex.xs="48" fxFlex="30"  >
-                <div class="mainIcon"  >
-                    <span class="material-symbols-outlined notranslate"> edit </span>
-                </div>
-                <span class="textMainIcon" fxFlex="100" style="text-align: center;">busqueda</span>
-            </div>   -->
-
-       
-        <!-- </div> -->
-    </div>
-    <!-- end select buttons -->
 
     <!-- start result search cards -->
     <div  fxLayout="row wrap"  fxLayoutAlign="center start"  fxFlex="100" style="margin-top: 40px;" *ngIf="isClientFounded">
         <div fxLayout="row wrap"  fxLayoutAlign="space-between center" style="margin-bottom: 30px;  padding: 10px; background-color: white;" fxFlex="97" class="whiteframe" >
-
             <div  fxLayout="row wrap"  fxLayoutAlign="space-around center" fxFlex="100" style="background-color: rgb(37, 150, 190); color: white; height: 30px; padding: 5px;">
-                <span  class="font" fxFlex="50" > Código: {{clientFounded.idAgenda }} </span>
-                <span  class="font" fxLayout="row wrap"  fxLayoutAlign="end center" fxFlex="50" > Estado: {{clientFounded.esCliente}} </span>
+                <span  class="font" fxFlex="50" > {{clientFounded.archivarComo| capitalizeFirstLetter }} </span>
+                <span  class="font" fxLayout="row wrap"  fxLayoutAlign="end center" fxFlex="50" > idAgenda: {{clientFounded.id}} </span>
         
             </div>
     
@@ -114,16 +94,16 @@
                 <div fxLayout="row wrap"  fxLayoutAlign="space-between center" style="margin-bottom: 30px;  padding: 10px; background-color: white;" fxFlex="97" class="whiteframe" *ngFor="let client of contactos">
 
                     <div  fxLayout="row wrap"  fxLayoutAlign="space-around center" fxFlex="100" style="background-color: rgb(37, 150, 190); color: white; height: 30px; padding: 5px;">
-                        <span  class="font" fxFlex="50" > Código: {{client.idAgenda }} </span>
-                        <span  class="font" fxLayout="row wrap"  fxLayoutAlign="end center" fxFlex="50" > Estado: {{client.esCliente}} </span>
+                        <span  class="font" fxFlex="50" > {{client.archivarComo| capitalizeFirstLetter }} </span>
+                        <span  class="font" fxLayout="row wrap"  fxLayoutAlign="end center" fxFlex="50" > idAgenda: {{client.id}} </span>
                 
                     </div>
             
-                    <span  class="font mt-20" fxFlex="100" > {{client.archivarComo| capitalizeFirstLetter }}</span>
+                    <!-- <span  class="font mt-20" fxFlex="100" > {{client.archivarComo| capitalizeFirstLetter }}</span> -->
                     <span  class="font mt-20" fxFlex="50" > Cuit: {{client.cuit || 'sin definir' }}</span>
                     <span  class="font mt-20" style="text-align: end;" fxFlex="50" > Tel: {{client.telefonoCodigoArea}} {{client.numeroLocal || 'sin definir' }}</span>
 
-                    <span  class="font mt-20 " fxFlex="100" > Localidad: {{client.localidad || 'sin definir' }}</span>
+                    <span  class="font mt-20 " fxFlex="100" > Dirección: {{client.domicilio || "sin definir"}}, {{client.localidad || "sin definir"}}, {{client.provincia || "sin definir"}}</span>
                     
                     <div fxLayout="row wrap" fxLayoutAlign="end center" fxFlex="100">
                         <div class="icon mr-10" (click)="deleteClient(client)" >
@@ -170,18 +150,11 @@
                 </ng-container>
         
                 <!-- Comment Column -->
-                <ng-container matColumnDef="location">
-                    <th mat-header-cell *matHeaderCellDef> Localidad </th>
-                    <td mat-cell *matCellDef="let element" (click)="editClient(element)" style="font-size: 0.6em;"> <span style="text-align: start;"> {{element.localidad}} </span> </td>
+                <ng-container matColumnDef="address">
+                    <th mat-header-cell *matHeaderCellDef> Dirección </th>
+                    <td mat-cell *matCellDef="let element" (click)="editClient(element)" style="font-size: 0.6em;"> <span style="text-align: start;"> {{element.domicilio || "sin definir"}}, {{element.localidad || "sin definir"}}, {{element.provincia || "sin definir"}} </span> </td>
                 </ng-container>
                 
-                
-                <!-- Comment Column -->
-                <ng-container matColumnDef="province">
-                    <th mat-header-cell *matHeaderCellDef> Provincia </th>
-                    <td mat-cell *matCellDef="let element" (click)="editClient(element)" style="font-size: 0.6em;"> <span style="text-align: start;"> {{element.provincia}} </span> </td>
-                </ng-container>
-
                 <ng-container matColumnDef="phone" >
                     <th mat-header-cell *matHeaderCellDef > Teléfono </th>
                     <td mat-cell *matCellDef="let element" (click)="editClient(element)" style="font-size: 0.6em;" > <span style="text-align: start;">  {{element.extensionTelefono}}{{element.numeroLocal}} </span> </td>
