@@ -126,9 +126,9 @@ getClientsPaginator(from : any, to : any){
 
 }
 
-updateClientById( body : User, id:any){
+updateClientById( body : any, id:any){
                                         
-  return this.http.put<any>(`${this.baseUrl}api/agenda/edit/${id}`, body)
+  return this.http.put<any>(`${this.baseUrl}api/agenda/${id}`, body)
 .pipe(
   map( res =>{ 
         console.log('desde service updateClientById', res)

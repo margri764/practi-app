@@ -1,6 +1,7 @@
 
 export class User {
 
+
     constructor(
             public archivarComo: string ,
             public nombre: string ,
@@ -33,6 +34,8 @@ export class User {
             public observaciones: string ,
             public id: number,
             public permisos : number [],
+            public idListaPrecios: any,
+            public idTipoDocumento: any,
         )
         {}
   

@@ -14,18 +14,28 @@
 
     
     <ng-container *ngIf="showClient; else showProductTemplate">
+
+        <div fxLayout="row wrap"  fxLayoutAlign="end center" fxFlex.xs="100" fxFlex.sm="80" fxFlex="60" style="margin-top: 30px;" *ngIf="client">
+
+            <div class="icon mr-10"  (click)="showEditOption()">
+                <span class="material-symbols-outlined notranslate cursor" style="color: rgb(255, 176, 57);"> edit </span>
+            </div>
+            <div class="icon"  (click)="close()" *ngIf="enableEdition">
+                <span class="material-symbols-outlined notranslate cursor"> close </span>
+            </div>
+        </div>
         
       <form  [formGroup]="myForm"  fxLayout="row wrap" fxLayoutAlign="space-between center" fxFlex.xs="100" fxFlex.sm="80" fxFlex="60" class="mt-60 pd-10" >     
             
-          <mat-form-field appearance="outline"  fxFlex="49" class="mt-10 font fs-5" >		
+          <mat-form-field appearance="outline"  fxFlex="48" class="mt-10 font fs-5" >		
               <mat-label>Fecha</mat-label>
               <input matInput type="text" formControlName="date" readonly>
           </mat-form-field> 
 
            
-            <mat-form-field appearance="outline"  fxFlex="49" class="mt-10 font fs-5" >		
+            <mat-form-field appearance="outline"  fxFlex="48" class="mt-10 font fs-5" >		
                 <mat-label>Cliente</mat-label>
-                <input matInput type="text" formControlName="client" (click)="getClient()" >
+                <input matInput type="text" formControlName="client" (click)="getClient()" readonly >
             </mat-form-field> 
 
 
@@ -33,19 +43,31 @@
 
                 <mat-form-field appearance="outline"  fxFlex="48" class="mt-10 font fs-5" >		
                     <mat-label>Razon Social</mat-label>
-                    <input matInput type="text" formControlName="comercialName" readonly>
+                    <input matInput type="text" formControlName="comercialName" [readonly]="!enableEdition">
                 </mat-form-field> 
         
 
-                <mat-form-field appearance="outline"  fxFlex="48" class="mt-10 font fs-5" >		
+                <mat-form-field appearance="outline"  fxFlex="48" class="mt-10 font fs-5" *ngIf="!enableEdition">		
                     <mat-label>Telefono</mat-label>
-                    <input matInput type="text" formControlName="phone" readonly>
+                    <input matInput type="text" formControlName="phone" [readonly]="!enableEdition" >
+                </mat-form-field> 
+
+                
+                <mat-form-field appearance="outline"  fxFlex="24" class="mt-10 font fs-5" *ngIf="enableEdition">		
+                    <mat-label>Cod. Area</mat-label>
+                    <input matInput type="text" formControlName="telefonoCodigoArea" [readonly]="!enableEdition" >
+                </mat-form-field> 
+
+                  
+                <mat-form-field appearance="outline"  fxFlex="24" class="mt-10 font fs-5" *ngIf="enableEdition">		
+                    <mat-label>N° Tel.</mat-label>
+                    <input matInput type="text" formControlName="numeroLocal" [readonly]="!enableEdition" >
                 </mat-form-field> 
 
                 
                 <mat-form-field appearance="outline"  fxFlex="48" class="mt-10 font fs-5" >		
                     <mat-label>Cuit</mat-label>
-                    <input matInput type="text" formControlName="cuit" readonly>
+                    <input matInput type="text" formControlName="cuit" [readonly]="!enableEdition">
                 </mat-form-field> 
 
                 <mat-form-field appearance="outline"  fxFlex="48" class="mt-10 font fs-5" >		
@@ -62,14 +84,22 @@
                     </mat-select>
                 </mat-form-field>
 
-                <div fxFlex="48"></div>
+                <mat-form-field appearance="outline"  fxFlex="48" class="mt-10 font fs-5" >		
+                    <mat-label>Email</mat-label>
+                    <input matInput type="text" formControlName="email1" [readonly]="!enableEdition">
+                </mat-form-field> 
+
             
     
 
-            <div fxLayout="row wrap"  fxLayoutAlign="space-between center" fxFlex="100" style="margin-top: 30px;">
+            <div fxLayout="row wrap"  fxLayoutAlign="space-between center" fxFlex="100" style="margin-top: 30px;" *ngIf="!enableEdition">
                 <button mat-raised-button class="font fs-5" [ngClass]="confirmE ? 'btnMenuClicked':'btnMenu'" (click)="createOrder('E')" fxFlex="48">Enviar Pedido</button>
 
                 <button mat-raised-button class="font fs-5" [ngClass]="confirmA ? 'btnMenuClicked':'btnMenu'" (click)="createOrder('A')" fxFlex="48">Guardar Pedido</button>
+            </div>
+
+            <div fxLayout="row wrap"  fxLayoutAlign="space-between center" fxFlex="100" style="margin-top: 30px;" *ngIf="enableEdition">
+                <button mat-raised-button class="font fs-5" [ngClass]="confirm? 'btnMenuClicked':'btnMenu'" (click)="editClient()" fxFlex="96">Editar Cliente</button>
             </div>
 
         </div>
@@ -130,3 +160,9 @@
     </ng-template>
 
 </div>
+
+<div *ngIf="isLoading" style="margin-top: 30px;" class="loading-overlay">
+    <mat-spinner diameter="80"></mat-spinner>
+  </div>
+  
+    

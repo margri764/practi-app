@@ -13,7 +13,9 @@ import * as authAction from 'src/app/auth.actions'
 import { GenericSuccessComponent } from 'src/app/protected/messages/generic-success/generic-success/generic-success.component';
 import { LocalStorageService } from 'src/app/protected/services/localStorage/local-storage.service';
 import { Subscription, filter } from 'rxjs';
-import {getDataSS } from 'src/app/protected/Storage';
+import {getDataSS, saveDataSS } from 'src/app/protected/Storage';
+import { ErrorService } from 'src/app/protected/services/error/error.service';
+import { AuthService } from 'src/app/protected/services/auth/auth.service';
 
 
 @Component({
@@ -33,15 +35,18 @@ export class OrderComponent implements OnInit, OnDestroy {
   onlyDate: string = this.date.toLocaleDateString(); // Muestra solo la fecha
   authSuscription! : Subscription;
   articleSuscription! : Subscription;
-  client : any;
+  client! : User;
   showClient : boolean = true;
   showProduct : boolean = false;
   confirmE: boolean= false;
   confirmA: boolean= false;
+  enableEdition : boolean = false;
+
 
   confirm : boolean = false;
   saleOption : string[] =['Contado, Cuenta Corriente']
-  salePoint : any [] =[]
+  salePoint : any [] =[];
+  isLoading : boolean = false;
 
 
   constructor(
@@ -51,6 +56,8 @@ export class OrderComponent implements OnInit, OnDestroy {
               private orderService : OrderService,
               private cdRef: ChangeDetectorRef,
               private localStorageService: LocalStorageService,
+              private errorService : ErrorService,
+              private authService : AuthService
   ) {
 
   }
@@ -65,6 +72,9 @@ export class OrderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
+   this.errorService.closeIsLoading$.subscribe((emmited)=>{if(emmited){this.isLoading = false}})
+
+
    this.getSalePoint();
    this.getTotal();
 
@@ -74,6 +84,10 @@ export class OrderComponent implements OnInit, OnDestroy {
       client:  [ '', [Validators.required]], 
       comercialName:  [''], 
       phone:  [ ''], 
+      numeroLocal:  [ ''], 
+      extensionTelefono:  [ ''], 
+      telefonoCodigoArea:  [ ''], 
+      email1:  [ ''], 
       cuit:  [ ''], 
       discount:  [ 0, [Validators.required, Validators.min(0), Validators.max(99) ]], 
       ptoVenta:  [ '',[Validators.required]], 
@@ -86,15 +100,16 @@ export class OrderComponent implements OnInit, OnDestroy {
       ).subscribe(
       ({tempClient})=>{
           this.client = tempClient;
-          console.log(this.client);
-          const fullName = `${tempClient.nombre} ${tempClient.apellido}`
-          const phone = `${tempClient.telefonoCodigoArea} ${tempClient.numeroLocal}`
-          const comercialName = `${tempClient.razonSocial}`
+          const fullName = `${tempClient.nombre} ${tempClient.apellido}`;
+          const phone = `${tempClient.telefonoCodigoArea} ${tempClient.numeroLocal}`;
           this.myForm.controls['client']?.setValue(fullName);
-          this.myForm.controls['comercialName']?.setValue(comercialName);
+          this.myForm.controls['comercialName']?.setValue(tempClient.razonSocial);
           this.myForm.controls['phone']?.setValue(phone);
+          this.myForm.controls['numeroLocal']?.setValue(tempClient.numeroLocal);
+          this.myForm.controls['telefonoCodigoArea']?.setValue(tempClient.telefonoCodigoArea);
           this.myForm.controls['cuit']?.setValue(tempClient.cuit);
           this.myForm.controls['ptoVenta']?.setValue(tempClient.ptoVenta);
+          this.myForm.controls['email1']?.setValue(tempClient.email1);
           console.log(this.client);
       })
 
@@ -162,12 +177,10 @@ export class OrderComponent implements OnInit, OnDestroy {
 
       //hago el update con el nuevo valor del array
       this.localStorageService.saveStateToSessionStorage(updatedArticles, "arrArticles");
-    }
-
+  }
 
 // para elegir un producto si o si necesito tener un cliente seleccionado
   selectOption(option : string){
-
     
     switch (option) {
 
@@ -181,6 +194,10 @@ export class OrderComponent implements OnInit, OnDestroy {
                       this.openGenericMsgAlert('Primero debes seleccionar un cliente');
                     return
                   }
+                  if(this.enableEdition){
+                    this.openGenericMsgAlert('Primero debes terminar o cancelar la edición del cliente');
+                  return
+                }
                   this.showProduct = true;
                   this.showClient = false;
         break;
@@ -199,7 +216,6 @@ export class OrderComponent implements OnInit, OnDestroy {
    })
    return tempOrderItem
   }
-
 
   createOrder(saveOrSend : string){
 
@@ -247,13 +263,12 @@ console.log(body);
     })
   }
 
-
   resetOrder(){
 
     this.myForm.get('client')?.setValue('');
     this.myForm.markAsPristine();
     this.myForm.markAsUntouched();
-    this.client = null,
+    // this.client = {},
     this.arrArticles = [];
     this.arrItemSelected = [];
     this.store.dispatch(articleAction.unSetSelectedArticles());
@@ -264,7 +279,83 @@ console.log(body);
 
   }
 
+  editClient(){
 
+    if ( this.myForm.invalid ) {
+      this.myForm.markAllAsTouched();
+      return;
+    }
+ 
+    this.confirm = true;
+    this.isLoading = true;
+
+    let tempClient = {
+      archivarComo: this.client.archivarComo,
+      nombre: this.client.nombre ,
+      apellido: this.client.apellido ,
+      domicilio: this.client.domicilio ,
+      localidad: this.client.domicilio ,
+      codigoPostal: this.client.codigoPostal ,
+      provincia: this.client.provincia ,
+      pais: this.client.provincia ,
+      telefonoCodigoPais: this.client.telefonoCodigoPais,
+      telefonoCodigoArea: this.myForm.get('telefonoCodigoArea')?.value,
+      esMovil: this.client.esMovil,
+      numeroLocal:  this.myForm.get('numeroLocal')?.value,
+      extensionTelefono: this.client.extensionTelefono,
+      descripcionTelefono: this.client.descripcionTelefono ,
+      email1: this.myForm.get('email1')?.value ,
+      email2: this.client.email2,
+      email3: this.client.email3,
+      email4: this.client.email4,
+      emailAnotacion: this.client.emailAnotacion ,
+      emailEnvioComprobantes: this.client.emailEnvioComprobantes,
+      organizacion: this.client.organizacion,
+      razonSocial: this.myForm.get('razonSocial')?.value  ,
+      cuit: this.myForm.get('cuit')?.value ,
+      nroDocumento: this.client.nroDocumento ,
+      idCondicionIva: this.client.idCondicionIva,
+      esCliente: this.client.esCliente,
+      esProveedor: this.client.esProveedor,
+      esContacto: this.client.esContacto,
+      observaciones: this.client.observaciones,
+      id: this.client.id,
+      idListaPrecios: this.client.idListaPrecios,
+      idTipoDocumento: this.client.idTipoDocumento,
+
+    } 
+    console.log(tempClient);
+
+    this.authService.updateClientById(tempClient, tempClient.id).subscribe(
+      (res)=>{
+              if(res){
+                  this.isLoading = false;
+                  this.enableEdition = false;
+                  this.store.dispatch(authAction.setTempClient({client : tempClient}));
+                  saveDataSS('tempClient', tempClient);
+                  this.openGenericSuccess('Cliente editado con éxito!');
+              }
+      });
+  }
+
+  showEditOption(){
+    this.enableEdition = true;
+  }
+
+  close(){
+    let tempClient = this.client;
+    this.enableEdition = false;
+    const fullName = `${tempClient.nombre} ${tempClient.apellido}`;
+    const phone = `${tempClient.telefonoCodigoArea} ${tempClient.numeroLocal}`;
+    this.myForm.controls['client']?.setValue(fullName);
+    this.myForm.controls['comercialName']?.setValue(tempClient.razonSocial);
+    this.myForm.controls['phone']?.setValue(phone);
+    this.myForm.controls['numeroLocal']?.setValue(tempClient.numeroLocal);
+    this.myForm.controls['telefonoCodigoArea']?.setValue(tempClient.telefonoCodigoArea);
+    this.myForm.controls['cuit']?.setValue(tempClient.cuit);
+    // this.myForm.controls['ptoVenta']?.setValue(tempClient.ptoVenta);
+    this.myForm.controls['email1']?.setValue(tempClient.email1);
+  }
  
 
 // openGenericMessage(msg:string){
@@ -293,8 +384,6 @@ openGenericMsgAlert(msg : string){
 
 }
 
-
-
 openGenericSuccess(msg : string){
 
   let width : string = '';
@@ -314,7 +403,6 @@ openGenericSuccess(msg : string){
   });
 
 }
-
 
 
 }

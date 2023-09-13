@@ -1,190 +1,191 @@
 
 <div  fxLayout="row wrap"  fxLayoutAlign="center start" fxFlex="100">
     
-    <div  fxLayout="row wrap"  fxLayoutAlign.xs="space-between center" fxLayoutAlign="start center" fxFlex="97" style="margin-top: 30px;">
+    <div  fxLayout="row wrap"  fxLayoutAlign="center center" fxFlex.xs="97" fxFlex.sm="95" fxFlex="85" >
 
-        <!-- start form -->
-         <form  [formGroup]="myForm" autocomplete="off" style="margin-top: 24px;" > 
-            <mat-form-field  appearance="outline" class="font fs-4" >
-                <input type="text" matInput  placeholder="Buscar cliente"  name="itemSearch" formControlName="itemSearch">
-                <mat-icon matSuffix style="transform:scale(1.5); color: rgb(37, 150, 190); margin-right: 10px;" >search</mat-icon>
-            </mat-form-field>
-        </form>
+        <div  fxLayout="row wrap"  fxLayoutAlign.xs="space-between center" fxLayoutAlign="start center" fxFlex="97" style="margin-top: 30px;">
 
-        <!-- end form -->
+            <!-- start form -->
+            <form  [formGroup]="myForm" autocomplete="off" style="margin-top: 24px;" > 
+                <mat-form-field  appearance="outline" class="font fs-4" >
+                    <input type="text" matInput  placeholder="Buscar cliente"  name="itemSearch" formControlName="itemSearch">
+                    <mat-icon matSuffix style="transform:scale(1.5); color: rgb(37, 150, 190); margin-right: 10px;" >search</mat-icon>
+                </mat-form-field>
+            </form>
 
-        <!-- start select buttons -->
-        <div fxLayout="row wrap"  fxLayoutAlign="center center"  fxFlex.xs="20" fxFlex="10"  >
-            <div class="mainIcon" (click)="addClient()" >
-                <span class="material-symbols-outlined notranslate"> add </span>
-            </div>
+            <!-- end form -->
+
+            <!-- start select buttons -->
+            <div fxLayout="row wrap"  fxLayoutAlign="center center"  fxFlex.xs="20" fxFlex="10"  >
+                <div class="mainIcon" (click)="addClient()" >
+                    <span class="material-symbols-outlined notranslate"> add </span>
+                </div>
+            </div>  
+            <!-- end select buttons -->
         </div>  
-        <!-- end select buttons -->
-    </div>  
 
-    <!-- start no items -->
-      <div fxLayout="row wrap"  fxLayoutAlign="center center" fxFlex="100"  *ngIf="noMatches" >
-        
-        <div fxLayout="row wrap" fxLayoutAlign="start center"  fxFlex.xs="90" fxFlex.sm="80" fxFlex="30"  class="fs-4 whiteframe " style="border-radius: 10px; padding: 15px; color: white; background-color: black; margin-bottom: 20px; margin-top: 30px; height: 60px; border-left: 10px solid red; box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
-        -webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
-        -moz-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);">
-            <span class="material-icons" style="color: white;"> error </span>
-            <span class="font fs-4" style="color: white; text-align: center; margin-left: 20px;">Sin coincidencias...</span>
-        </div>
-      </div>
-    <!-- end no items -->
-
-
-    <!-- start suggested    -->
-    <div fxLayout="row wrap"  fxLayoutAlign.xs="start center" fxLayoutAlign="center center"  fxFlex="100" *ngIf="mostrarSugerencias" style="padding: 20px;" >
+        <!-- start no items -->
+        <div fxLayout="row wrap"  fxLayoutAlign="center center" fxFlex="100"  *ngIf="noMatches" >
             
-        <div fxLayout="row wrap"  fxLayoutAlign="center center"  fxFlex="100" *ngIf="spinner" style="margin-top: 30px;">
-            <mat-spinner diameter="48"></mat-spinner>
-        </div>
-                    
-        <div fxLayout="row wrap"  fxLayoutAlign.xs="start center"  fxLayoutAlign="center center" fxFlex="100" class="font mt-10" *ngFor="let item of suggested" >
-            <div fxLayout="row wrap" fxLayoutAlign="start center"  fxFlex="98"  class="fs-4 boxSelection" >
-                <mat-radio-button class="example-margin" (click)="Search(item)"></mat-radio-button>
-                <span  style="cursor: pointer; text-align: start; margin-left: 15px;">{{ item.archivarComo | capitalizeFirstLetter}}</span>
-            </div>    
-        </div>
-    </div>
-    <!-- end suggested    -->
-
-
-
-    <!-- start result search cards -->
-    <div  fxLayout="row wrap"  fxLayoutAlign="center start"  fxFlex="100" style="margin-top: 40px;" *ngIf="isClientFounded">
-        <div fxLayout="row wrap"  fxLayoutAlign="space-between center" style="margin-bottom: 30px;  padding: 10px; background-color: white;" fxFlex="97" class="whiteframe" >
-            <div  fxLayout="row wrap"  fxLayoutAlign="space-around center" fxFlex="100" style="background-color: rgb(37, 150, 190); color: white; height: 30px; padding: 5px;">
-                <span  class="font" fxFlex="50" > {{clientFounded.archivarComo| capitalizeFirstLetter }} </span>
-                <span  class="font" fxLayout="row wrap"  fxLayoutAlign="end center" fxFlex="50" > idAgenda: {{clientFounded.id}} </span>
-        
+            <div fxLayout="row wrap" fxLayoutAlign="start center"  fxFlex.xs="90" fxFlex.sm="80" fxFlex="30"  class="fs-4 whiteframe " style="border-radius: 10px; padding: 15px; color: white; background-color: black; margin-bottom: 20px; margin-top: 30px; height: 60px; border-left: 10px solid red; box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+            -webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+            -moz-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);">
+                <span class="material-icons" style="color: white;"> error </span>
+                <span class="font fs-4" style="color: white; text-align: center; margin-left: 20px;">Sin coincidencias...</span>
             </div>
-    
-            <span  class="font mt-20" fxFlex="100" > {{clientFounded.archivarComo| capitalizeFirstLetter }}</span>
-            <span  class="font mt-20" fxFlex="50" > Cuit: {{clientFounded.cuit || 'sin definir' }}</span>
-            <span  class="font mt-20" style="text-align: end;" fxFlex="50" > Tel: {{clientFounded.telefonoCodigoArea}} {{clientFounded.numeroLocal || 'sin definir' }}</span>
-
-            <span  class="font mt-20 " fxFlex="100" > Localidad: {{clientFounded.localidad || 'sin definir' }}</span>
-            
-            <div fxLayout="row wrap" fxLayoutAlign="end center" fxFlex="100">
-                <div class="icon mr-10" (click)="deleteClient(clientFounded)" >
-                    <span class="material-symbols-outlined notranslate cursor" style="color: red;"> delete </span>
-                </div>
-                
-                <div class="icon mr-10"  (click)="editClient(clientFounded)">
-                    <span class="material-symbols-outlined notranslate cursor" style="color: rgb(255, 176, 57);"> edit </span>
-                </div>
-
-                <div class="icon"  (click)="close()">
-                    <span class="material-symbols-outlined notranslate cursor" > close </span>
-                </div>
-            </div>
-            
         </div>
-    
-    </div>
-    <!-- end result search cards -->
+        <!-- end no items -->
 
-    <ng-container *ngIf="phone">
-        <!-- start cards -->
-        <div  fxLayout="row wrap"  fxLayoutAlign="center start" FxFlex="100" style="background-color: rgb(241, 241, 241); margin-top: 40px;" *ngIf="contactos.length !== 0">
-                    
-                <div fxLayout="row wrap"  fxLayoutAlign="space-between center" style="margin-bottom: 30px;  padding: 10px; background-color: white;" fxFlex="97" class="whiteframe" *ngFor="let client of contactos">
 
-                    <div  fxLayout="row wrap"  fxLayoutAlign="space-around center" fxFlex="100" style="background-color: rgb(37, 150, 190); color: white; height: 30px; padding: 5px;">
-                        <span  class="font" fxFlex="50" > {{client.archivarComo| capitalizeFirstLetter }} </span>
-                        <span  class="font" fxLayout="row wrap"  fxLayoutAlign="end center" fxFlex="50" > idAgenda: {{client.id}} </span>
+        <!-- start suggested    -->
+        <div fxLayout="row wrap"  fxLayoutAlign.xs="start center" fxLayoutAlign="center center"  fxFlex="100" *ngIf="mostrarSugerencias" style="padding: 20px;" >
                 
+            <div fxLayout="row wrap"  fxLayoutAlign="center center"  fxFlex="100" *ngIf="spinner" style="margin-top: 30px;">
+                <mat-spinner diameter="48"></mat-spinner>
+            </div>
+                        
+            <div fxLayout="row wrap"  fxLayoutAlign.xs="start center"  fxLayoutAlign="center center" fxFlex="100" class="font mt-10" *ngFor="let item of suggested" >
+                <div fxLayout="row wrap" fxLayoutAlign="start center"  fxFlex="98"  class="fs-4 boxSelection" >
+                    <mat-radio-button class="example-margin" (click)="Search(item)"></mat-radio-button>
+                    <span  style="cursor: pointer; text-align: start; margin-left: 15px;">{{ item.archivarComo | capitalizeFirstLetter}}</span>
+                </div>    
+            </div>
+        </div>
+        <!-- end suggested    -->
+
+        <!-- start result search cards -->
+        <div  fxLayout="row wrap"  fxLayoutAlign="center start"  fxFlex="100" style="margin-top: 40px;" *ngIf="isClientFounded">
+            <div fxLayout="row wrap"  fxLayoutAlign="space-between center" style="margin-bottom: 30px;  padding: 10px; background-color: white;" fxFlex="97" class="whiteframe" >
+                <div  fxLayout="row wrap"  fxLayoutAlign="space-around center" fxFlex="100" style="background-color: rgb(37, 150, 190); color: white; height: 30px; padding: 5px;">
+                    <span  class="font" fxFlex="50" > {{clientFounded.archivarComo| capitalizeFirstLetter }} </span>
+                    <span  class="font" fxLayout="row wrap"  fxLayoutAlign="end center" fxFlex="50" > idAgenda: {{clientFounded.id}} </span>
+            
+                </div>
+        
+                <span  class="font mt-20" fxFlex="100" > {{clientFounded.archivarComo| capitalizeFirstLetter }}</span>
+                <span  class="font mt-20" fxFlex="50" > Cuit: {{clientFounded.cuit || 'sin definir' }}</span>
+                <span  class="font mt-20" style="text-align: end;" fxFlex="50" > Tel: {{clientFounded.telefonoCodigoArea}} {{clientFounded.numeroLocal || 'sin definir' }}</span>
+
+                <span  class="font mt-20 " fxFlex="100" > Localidad: {{clientFounded.localidad || 'sin definir' }}</span>
+                
+                <div fxLayout="row wrap" fxLayoutAlign="end center" fxFlex="100">
+                    <div class="icon mr-10" (click)="deleteClient(clientFounded)" >
+                        <span class="material-symbols-outlined notranslate cursor" style="color: red;"> delete </span>
                     </div>
-            
-                    <!-- <span  class="font mt-20" fxFlex="100" > {{client.archivarComo| capitalizeFirstLetter }}</span> -->
-                    <span  class="font mt-20" fxFlex="50" > Cuit: {{client.cuit || 'sin definir' }}</span>
-                    <span  class="font mt-20" style="text-align: end;" fxFlex="50" > Tel: {{client.telefonoCodigoArea}} {{client.numeroLocal || 'sin definir' }}</span>
-
-                    <span  class="font mt-20 " fxFlex="100" > Dirección: {{client.domicilio || "sin definir"}}, {{client.localidad || "sin definir"}}, {{client.provincia || "sin definir"}}</span>
                     
-                    <div fxLayout="row wrap" fxLayoutAlign="end center" fxFlex="100">
-                        <div class="icon mr-10" (click)="deleteClient(client)" >
-                            <span class="material-symbols-outlined notranslate cursor" style="color: red;"> delete </span>
+                    <div class="icon mr-10"  (click)="editClient(clientFounded)">
+                        <span class="material-symbols-outlined notranslate cursor" style="color: rgb(255, 176, 57);"> edit </span>
+                    </div>
+
+                    <div class="icon"  (click)="close()">
+                        <span class="material-symbols-outlined notranslate cursor" > close </span>
+                    </div>
+                </div>
+                
+            </div>
+        
+        </div>
+        <!-- end result search cards -->
+
+        <ng-container *ngIf="phone">
+            <!-- start cards -->
+            <div  fxLayout="row wrap"  fxLayoutAlign="center start" FxFlex="100" style="background-color: rgb(241, 241, 241); margin-top: 40px;" *ngIf="contactos.length !== 0">
+                        
+                    <div fxLayout="row wrap"  fxLayoutAlign="space-between center" style="margin-bottom: 30px;  padding: 10px; background-color: white;" fxFlex="97" class="whiteframe" *ngFor="let client of contactos">
+
+                        <div  fxLayout="row wrap"  fxLayoutAlign="space-around center" fxFlex="100" style="background-color: rgb(37, 150, 190); color: white; height: 30px; padding: 5px;">
+                            <span  class="font" fxFlex="50" > {{client.archivarComo| capitalizeFirstLetter }} </span>
+                            <span  class="font" fxLayout="row wrap"  fxLayoutAlign="end center" fxFlex="50" > idAgenda: {{client.id}} </span>
+                    
+                        </div>
+                
+                        <!-- <span  class="font mt-20" fxFlex="100" > {{client.archivarComo| capitalizeFirstLetter }}</span> -->
+                        <span  class="font mt-20" fxFlex="50" > Cuit: {{client.cuit || 'sin definir' }}</span>
+                        <span  class="font mt-20" style="text-align: end;" fxFlex="50" > Tel: {{client.telefonoCodigoArea}} {{client.numeroLocal || 'sin definir' }}</span>
+
+                        <span  class="font mt-20 " fxFlex="100" > Dirección: {{client.domicilio || "sin definir"}}, {{client.localidad || "sin definir"}}, {{client.provincia || "sin definir"}}</span>
+                        
+                        <div fxLayout="row wrap" fxLayoutAlign="end center" fxFlex="100" style="margin-top: 15px;">
+                            <div class="icon mr-10" (click)="deleteClient(client)" >
+                                <span class="material-symbols-outlined notranslate cursor" style="color: red;"> delete </span>
+                            </div>
+                            
+                            <div class="icon"  (click)="editClient(client)">
+                                <span class="material-symbols-outlined notranslate cursor" style="color: rgb(255, 176, 57);"> edit </span>
+                            </div>
                         </div>
                         
-                        <div class="icon"  (click)="editClient(client)">
-                            <span class="material-symbols-outlined notranslate cursor" style="color: rgb(255, 176, 57);"> edit </span>
-                        </div>
                     </div>
-                    
-                </div>
 
-            
-        </div>
-        <!-- end cards     -->
-    </ng-container>
-
-    <ng-container *ngIf="!phone">
-    
-        <div class="example-container mat-elevation-z8 font mt-30" fxFlex="97">
-        
-            <table mat-table [dataSource]="dataTableActive" style="width: 100%;">
-        
-                <!-- img Column -->
-                <ng-container matColumnDef="action"  >
-                    <th mat-header-cell *matHeaderCellDef style="padding: 0px;">Accion</th>
-                    <td mat-cell *matCellDef="let element" > 
-                        <div style="width: 80%; display: flex;  justify-content: space-around;" >
-                                <div class="icon" (click)="editClient(element)">
-                                    <span class="material-symbols-outlined notranslate cursor" style="color: rgb(255, 176, 57);"> edit </span>
-                                </div>
-                                <div class="icon" (click)="deleteClient(element)">
-                                    <span class="material-symbols-outlined notranslate cursor" style="color: red"> delete </span>
-                                </div>
-                        </div>
-                    </td>
-                </ng-container>
-                    
-                <!-- Name Column -->
-                <ng-container matColumnDef="name">
-                    <th mat-header-cell *matHeaderCellDef > Nombre completo </th>
-                    <td mat-cell *matCellDef="let element" (click)="editClient(element)"  > {{element.archivarComo}} </td>
-                </ng-container>
-        
-                <!-- Comment Column -->
-                <ng-container matColumnDef="address">
-                    <th mat-header-cell *matHeaderCellDef> Dirección </th>
-                    <td mat-cell *matCellDef="let element" (click)="editClient(element)" style="font-size: 0.6em;"> <span style="text-align: start;"> {{element.domicilio || "sin definir"}}, {{element.localidad || "sin definir"}}, {{element.provincia || "sin definir"}} </span> </td>
-                </ng-container>
                 
-                <ng-container matColumnDef="phone" >
-                    <th mat-header-cell *matHeaderCellDef > Teléfono </th>
-                    <td mat-cell *matCellDef="let element" (click)="editClient(element)" style="font-size: 0.6em;" > <span style="text-align: start;">  {{element.extensionTelefono}}{{element.numeroLocal}} </span> </td>
-                </ng-container>
+            </div>
+            <!-- end cards     -->
+        </ng-container>
 
-                <ng-container matColumnDef="email" >
-                    <th mat-header-cell *matHeaderCellDef > Email </th>
-                    <td mat-cell *matCellDef="let element" (click)="editClient(element)" style="font-size: 0.6em;" > <span style="text-align: start;">  {{element.email}} </span> </td>
-                </ng-container>
+        <ng-container *ngIf="!phone">
+        
+            <div class="example-container mat-elevation-z8 font mt-30" fxFlex="97">
+            
+                <table mat-table [dataSource]="dataTableActive" style="width: 100%;">
+            
+                    <!-- img Column -->
+                    <ng-container matColumnDef="action"  >
+                        <th mat-header-cell *matHeaderCellDef style="padding: 0px;">Accion</th>
+                        <td mat-cell *matCellDef="let element" > 
+                            <div style="width: 80%; display: flex;  justify-content: space-around;" >
+                                    <div class="icon" (click)="editClient(element)">
+                                        <span class="material-symbols-outlined notranslate cursor" style="color: rgb(255, 176, 57);"> edit </span>
+                                    </div>
+                                    <div class="icon" (click)="deleteClient(element)">
+                                        <span class="material-symbols-outlined notranslate cursor" style="color: red"> delete </span>
+                                    </div>
+                            </div>
+                        </td>
+                    </ng-container>
+                        
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef > Nombre completo </th>
+                        <td mat-cell *matCellDef="let element" (click)="editClient(element)"  > {{element.archivarComo}} </td>
+                    </ng-container>
+            
+                    <!-- Comment Column -->
+                    <ng-container matColumnDef="address">
+                        <th mat-header-cell *matHeaderCellDef> Dirección </th>
+                        <td mat-cell *matCellDef="let element" (click)="editClient(element)" style="font-size: 0.6em;"> <span style="text-align: start;"> {{element.domicilio || "sin definir"}}, {{element.localidad || "sin definir"}}, {{element.provincia || "sin definir"}} </span> </td>
+                    </ng-container>
+                    
+                    <ng-container matColumnDef="phone" >
+                        <th mat-header-cell *matHeaderCellDef > Teléfono </th>
+                        <td mat-cell *matCellDef="let element" (click)="editClient(element)" style="font-size: 0.6em;" > <span style="text-align: start;">  {{element.extensionTelefono}}{{element.numeroLocal}} </span> </td>
+                    </ng-container>
 
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-            </table>
-        </div>
+                    <ng-container matColumnDef="email" >
+                        <th mat-header-cell *matHeaderCellDef > Email </th>
+                        <td mat-cell *matCellDef="let element" (click)="editClient(element)" style="font-size: 0.6em;" > <span style="text-align: start;">  {{element.email}} </span> </td>
+                    </ng-container>
 
-        <mat-paginator #paginator
-        class="demo-paginator"
-        (page)="handlePageEvent($event)"
-        [length]="length"
-        [pageSize]="pageSize"
-        [disabled]="disabled"
-        [showFirstLastButtons]="showFirstLastButtons"
-        [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
-        [hidePageSize]="hidePageSize"
-        [pageIndex]="pageIndex"
-        aria-label="Select page" style="margin-top: 30px;">
-        </mat-paginator>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div>
 
-    </ng-container>
+            <mat-paginator #paginator
+            class="demo-paginator"
+            (page)="handlePageEvent($event)"
+            [length]="length"
+            [pageSize]="pageSize"
+            [disabled]="disabled"
+            [showFirstLastButtons]="showFirstLastButtons"
+            [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
+            [hidePageSize]="hidePageSize"
+            [pageIndex]="pageIndex"
+            aria-label="Select page" style="margin-top: 30px;">
+            </mat-paginator>
 
+        </ng-container>
+
+    </div> 
 </div> 
     
   

@@ -5,47 +5,111 @@
         <span fxLayout="row wrap" fxLayoutAlign="start center" class="font fs-6" fxFlex="55">Editar cliente</span>
     </div>
             
-    <form  [formGroup]="myForm"  fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="95"  style="margin-top: 15px;">     
+    <form  [formGroup]="myForm"  fxLayout="row wrap" fxLayoutAlign="space-between center" fxFlex="95"  style="margin-top: 15px;">     
     
     
-         <mat-form-field appearance="outline" fxFlex="97" class="mt-10 font " >		
+         <mat-form-field appearance="outline" fxFlex="48" class="mt-10 font fs-4" >		
              <mat-label>Nombre </mat-label>
-             <input matInput type="text" required formControlName="firstName">
+             <input matInput type="text" required formControlName="nombre">
          </mat-form-field> 
          
-         <mat-form-field appearance="outline" fxFlex="97" class="mt-10 font " >		
+         <mat-form-field appearance="outline" fxFlex="49" class="mt-10 font " >		
             <mat-label>Apellido </mat-label>
-            <input matInput type="text" required formControlName="lastName" >
+            <input matInput type="text" required formControlName="apellido" >
         </mat-form-field> 
-     
-         <mat-form-field appearance="outline" fxFlex="97" class="mt-10 font " >		
+
+        <mat-form-field appearance="outline" fxFlex="49" class="mt-10 font " >		
+            <mat-label>Organización </mat-label>
+            <input matInput type="text" required formControlName="organizacion" >
+        </mat-form-field> 
+
+        <mat-form-field appearance="outline" fxFlex="49" class="mt-10 font " >		
+            <mat-label>Razón Social </mat-label>
+            <input matInput type="text" required formControlName="razonSocial" >
+        </mat-form-field> 
+
+        <mat-form-field appearance="outline" floatLabel="always" fxFlex="49" class="mt-10 font ">
+            <mat-label >Guardar Como</mat-label>
+            <mat-select  formControlName="archivarComo" class="font" [value]="defaultValue" >
+                        <mat-option value=""></mat-option>
+                        <mat-option *ngFor="let option of nameOptions" [value]="option" class="font fs-4"> {{option }}</mat-option>
+                    </mat-select>
+        </mat-form-field>
+  
+         <mat-form-field appearance="outline" fxFlex="49" class="mt-10 font " >		
             <mat-label>Email</mat-label>
-            <input matInput type="text" formControlName="email" readonly>
+            <input matInput type="text" formControlName="email1" >
           </mat-form-field>
+
+          <mat-form-field appearance="outline" floatLabel="always" fxFlex="49" class="mt-10 font">
+            <mat-label class="font fs-4">Tipo Doc.</mat-label>
+            <mat-select  formControlName="idTipoDocumento" class="font" >
+                        <mat-option value=""></mat-option>
+                        <mat-option *ngFor="let point of dniOption" [value]="point.idTipoDoc" class="font fs-4"> {{point.descripcion}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+          <mat-form-field appearance="outline" fxFlex="49" class="mt-10 font" >		
+            <mat-label>N° Documento</mat-label>
+            <input matInput type="text" formControlName="nroDocumento" >
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" floatLabel="always" fxFlex="49" class="mt-10 font">
+            <mat-label class="font fs-4">Punto de venta</mat-label>
+            <mat-select  formControlName="idListaPrecios" class="font" >
+                        <mat-option *ngFor="let point of salePoint" [value]="point.numero" class="font fs-4"> {{point.sucursal}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+
+          <mat-form-field appearance="outline" floatLabel="always" fxFlex="49" class="mt-10 font">
+            <mat-label class="font fs-4">Cond. de IVA</mat-label>
+            <mat-select  formControlName="idCondicionIva" class="font" >
+                        <mat-option value=""></mat-option>
+                        <mat-option *ngFor="let point of ivaOption" [value]="point.idCondicionIva" class="font fs-4"> {{point.descripcion}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+
         
-        <div fxLayout="row wrap" fxLayoutAlign="space-between" fxFlex="100" style="padding: 10px;" >
+        <div fxLayout="row wrap" fxLayoutAlign="space-between" fxFlex="100" >
 
             <mat-form-field appearance="outline" fxFlex="48" class="mt-10 font " >		
                 <mat-label>Cod. Area</mat-label>
-                <input matInput type="text"  formControlName="area">
+                <input matInput type="text"  formControlName="telefonoCodigoArea">
             </mat-form-field>
             <mat-form-field appearance="outline" fxFlex="48" class="mt-10 font " >		
                 <mat-label>Numero</mat-label>
-                <input matInput type="text"  formControlName="phone">
+                <input matInput type="text"  formControlName="numeroLocal">
             </mat-form-field>
             <!-- <mat-error  *ngIf ="validField ('phone')" class="font  mb-10">{{validatePhone}}</mat-error>  -->
         </div>
-        <mat-form-field appearance="outline" fxFlex="97" class="mt-10 font " >		
-            <mat-label>Dirección</mat-label>
-            <input matInput type="text" formControlName="address">
+
+        <mat-form-field appearance="outline" fxFlex="48" class="mt-10 font " >		
+            <mat-label>Domicilio</mat-label>
+            <input matInput type="text" formControlName="domicilio">
         </mat-form-field> 
         <!-- <mat-error  *ngIf ="validField ('address')" class="font  mb-10">Campo requerido</mat-error>  -->
 
-        <mat-form-field appearance="outline" fxFlex="97" class="mt-10 font " >		
-            <mat-label>Otro campo</mat-label>
-            <input matInput type="text" formControlName="address">
+        <mat-form-field appearance="outline" fxFlex="49" class="mt-10 font " >		
+            <mat-label>Localidad</mat-label>
+            <input matInput type="text" formControlName="localidad">
         </mat-form-field> 
-       
+
+        <mat-form-field appearance="outline" fxFlex="48" class="mt-10 font " >		
+            <mat-label>Cod. Postal</mat-label>
+            <input matInput type="text" formControlName="codigoPostal">
+        </mat-form-field> 
+
+        <mat-form-field appearance="outline" fxFlex="49" class="mt-10 font " >		
+            <mat-label>Provincia</mat-label>
+            <input matInput type="text" formControlName="codigoPostal">
+        </mat-form-field> 
+
+        <mat-form-field appearance="outline" fxFlex="49" class="mt-10 font " >		
+            <mat-label>Pais</mat-label>
+            <input matInput type="text" formControlName="codigoPostal">
+        </mat-form-field> 
    </form>
 
     <!-- save button -->
@@ -62,4 +126,10 @@
     <!-- end save button -->
 
 </div>
+
+<div *ngIf="isLoading" style="margin-top: 30px;" class="loading-overlay">
+    <mat-spinner diameter="80"></mat-spinner>
+  </div>
+  
+
   

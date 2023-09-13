@@ -58,12 +58,31 @@ updateOrderState( salePoint : any, nroOrder : any, state : string){
 
 getSalePoint(){
 
-  return this.http.get<any>(`${this.baseUrl}api/pedidos/pos`,)
+  return this.http.get<any>(`${this.baseUrl}api/pedidos/pos`)
   .pipe(
     map( res =>{ 
           console.log('desde service getSalePoint', res)
             return res} )
     );
+}
+
+condicionesIva(){
+  return this.http.get<any>(`${this.baseUrl}api/general/condicionesiva`)
+  .pipe(
+    map( res =>{ 
+          console.log('desde service condicionesIva', res)
+          return res  })
+    )
+
+}
+
+getDniOption(){
+  return this.http.get<any>(`${this.baseUrl}api/general/tiposdoc`)
+  .pipe(
+    map( res =>{ 
+          console.log('desde service getDniOption', res)
+          return res  })
+    )
 }
 
 getOpenOrders(){
