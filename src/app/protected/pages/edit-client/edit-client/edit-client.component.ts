@@ -1,5 +1,5 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
@@ -9,6 +9,7 @@ import { OrderService } from 'src/app/protected/services/order/order.service';
 import { ArticlesService } from 'src/app/protected/services/articles/articles.service';
 import { GenericSuccessComponent } from 'src/app/protected/messages/generic-success/generic-success/generic-success.component';
 import { ErrorService } from 'src/app/protected/services/error/error.service';
+import { CuitValidatorService } from 'src/app/protected/services/cuit-validator/cuit-validator.service';
 
 @Component({
   selector: 'app-edit-client',
@@ -40,14 +41,15 @@ export class EditClientComponent implements OnInit, OnDestroy {
                 private articleService : ArticlesService,
                 private authService : AuthService,
                 private dialog : MatDialog,
-                private errorService : ErrorService
+                private errorService : ErrorService,
+                private  cuitValidatorService : CuitValidatorService
 
   ) 
   { 
     this.isLoading = true;
     setTimeout(()=>{
       this.isLoading = false;
-    },5000)
+    },3500)
   }
 
   
@@ -89,9 +91,12 @@ export class EditClientComponent implements OnInit, OnDestroy {
       pais:[ this.client.pais || 'sin definir'],
       codigoPostal:[ this.client.codigoPostal || 'sin definir'],
       nroDocumento:[ this.client.nroDocumento || 'sin definir'],
-      cuit:[ this.client.cuit || 'sin definir'],
+      cuit: [ this.client.cuit || 'sin definir',    [Validators.required, (control: any) => this.validateCuit(control)],, 
+      ],
+      
   
     });          
+
 
     this.authSuscription = this.store.select('auth').subscribe(
       ({salePoint})=>{
@@ -100,6 +105,12 @@ export class EditClientComponent implements OnInit, OnDestroy {
         }
       })
   }
+
+  validateCuit(control: AbstractControl) {
+    const isValid = this.cuitValidatorService.verifyCuit(control.value);
+    return isValid ? null : { invalidCuit: true };
+  }
+
   
   autoGenerateName() {
     const nombre = this.myForm.get('nombre')?.value;
@@ -166,6 +177,12 @@ export class EditClientComponent implements OnInit, OnDestroy {
   }
 
   onSaveForm(){
+
+    if ( this.myForm.invalid  ) {
+      this.myForm.markAllAsTouched();
+ 
+      return;
+    }
 
     console.log(this.myForm.value);
     this.isLoading = true;
