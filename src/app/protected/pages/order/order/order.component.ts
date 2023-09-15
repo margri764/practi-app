@@ -1,5 +1,5 @@
 import { AfterViewChecked, ChangeDetectorRef, Component,  OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
@@ -16,6 +16,7 @@ import { Subscription, filter } from 'rxjs';
 import {getDataSS, saveDataSS } from 'src/app/protected/Storage';
 import { ErrorService } from 'src/app/protected/services/error/error.service';
 import { AuthService } from 'src/app/protected/services/auth/auth.service';
+import { CuitValidatorService } from 'src/app/protected/services/cuit-validator/cuit-validator.service';
 
 
 @Component({
@@ -57,7 +58,8 @@ export class OrderComponent implements OnInit, OnDestroy {
               private cdRef: ChangeDetectorRef,
               private localStorageService: LocalStorageService,
               private errorService : ErrorService,
-              private authService : AuthService
+              private authService : AuthService,
+              private cuitValidatorService : CuitValidatorService
   ) {
 
   }
@@ -87,7 +89,7 @@ export class OrderComponent implements OnInit, OnDestroy {
       extensionTelefono:  [ ''], 
       telefonoCodigoArea:  [ ''], 
       email1:  [ ''], 
-      cuit:  [ ''], 
+      cuit: [ '' , [Validators.required, (control: any) => this.validateCuit(control)]],
       discount:  [ 0, [Validators.required, Validators.min(0), Validators.max(99) ]], 
       // ptoVenta:  [ '',[Validators.required]], 
     });
@@ -128,6 +130,11 @@ export class OrderComponent implements OnInit, OnDestroy {
  
   }
 
+  validateCuit(control: AbstractControl) {
+    const isValid = this.cuitValidatorService.verifyCuit(control.value);
+    return isValid ? null : { invalidCuit: true };
+  }
+
 
   getSalePoint(){
 
@@ -137,7 +144,6 @@ export class OrderComponent implements OnInit, OnDestroy {
               this.salePoint = pos;
           }
       })
-
   }
 
   getTotal(): number {

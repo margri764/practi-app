@@ -104,6 +104,7 @@
             [pageIndex]="pageIndex"
             aria-label="Select page" style="margin-top: 30px;">
             </mat-paginator>
+
             <!-- start cards -->
             <div  fxLayout="row wrap"  fxLayoutAlign="center start" FxFlex="100" style="background-color: rgb(241, 241, 241); margin-top: 40px;" *ngIf="contactos.length !== 0">
                         
@@ -111,7 +112,7 @@
 
                         <div  fxLayout="row wrap"  fxLayoutAlign="space-around center" fxFlex="100" style="background-color: rgb(37, 150, 190); color: white; height: 30px; padding: 5px;">
                             <span  class="font" fxFlex="50" > {{client.archivarComo| capitalizeFirstLetter }} </span>
-                            <span  class="font" fxLayout="row wrap"  fxLayoutAlign="end center" fxFlex="50" > idAgenda: {{client.id}} </span>
+                            <span  class="font" fxLayout="row wrap"  fxLayoutAlign="end center" fxFlex="50" > N° de Cliente: {{client.id}} </span>
                     
                         </div>
                 

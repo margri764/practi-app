@@ -15,7 +15,7 @@ import { ErrorService } from 'src/app/protected/services/error/error.service';
 })
 export class ListByIdComponent implements OnInit {
 
-  arrArticles : articlePrice []=[];
+  arrArticles : any []=[];
   isLoading : boolean = false;
 
       // paginator
