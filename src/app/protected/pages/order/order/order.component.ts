@@ -45,7 +45,7 @@ export class OrderComponent implements OnInit, OnDestroy {
 
   confirm : boolean = false;
   saleOption : string[] =['Contado, Cuenta Corriente']
-  salePoint : any [] =[];
+  salePoint : any = {};
   isLoading : boolean = false;
 
 
@@ -74,7 +74,6 @@ export class OrderComponent implements OnInit, OnDestroy {
 
    this.errorService.closeIsLoading$.subscribe((emmited)=>{if(emmited){this.isLoading = false}})
 
-
    this.getSalePoint();
    this.getTotal();
 
@@ -90,7 +89,7 @@ export class OrderComponent implements OnInit, OnDestroy {
       email1:  [ ''], 
       cuit:  [ ''], 
       discount:  [ 0, [Validators.required, Validators.min(0), Validators.max(99) ]], 
-      ptoVenta:  [ '',[Validators.required]], 
+      // ptoVenta:  [ '',[Validators.required]], 
     });
     
 
@@ -108,7 +107,7 @@ export class OrderComponent implements OnInit, OnDestroy {
           this.myForm.controls['numeroLocal']?.setValue(tempClient.numeroLocal);
           this.myForm.controls['telefonoCodigoArea']?.setValue(tempClient.telefonoCodigoArea);
           this.myForm.controls['cuit']?.setValue(tempClient.cuit);
-          this.myForm.controls['ptoVenta']?.setValue(tempClient.ptoVenta);
+          // this.myForm.controls['ptoVenta']?.setValue(tempClient.ptoVenta);
           this.myForm.controls['email1']?.setValue(tempClient.email1);
           console.log(this.client);
       })
@@ -134,8 +133,8 @@ export class OrderComponent implements OnInit, OnDestroy {
 
     this.orderService.getSalePoint().subscribe(
       ({pos})=>{
-          if(pos.length !== 0){
-              this.salePoint = pos
+          if(pos){
+              this.salePoint = pos;
           }
       })
 
@@ -217,16 +216,16 @@ export class OrderComponent implements OnInit, OnDestroy {
    return tempOrderItem
   }
 
+  waitApi : boolean = false;
   createOrder(saveOrSend : string){
-
 
     if ( this.myForm.invalid  ) {
       this.myForm.markAllAsTouched();
        this.confirmE = false;
        this.confirmA = false;
-
       return;
     }
+    
     if(this.arrItemSelected.length === 0 ){
         this.openGenericMsgAlert('Elegí productos para generar el pedido');
         this.confirmE = false;
@@ -234,38 +233,45 @@ export class OrderComponent implements OnInit, OnDestroy {
         return;
     }
 
+    this.isLoading = true;
+    
     if(saveOrSend === "E"){
       this.confirmE = true;
     }else{
       this.confirmA = true;
     }
 
+    console.log(this.saleOption);
+
     const detalleItems = this.createItemsOrder();
     const body : Order ={
         idAgenda : this.client.id,
         estado :  saveOrSend,
-        ptoVenta: this.myForm.get('ptoVenta')?.value,
+        ptoVenta: this.salePoint.numero,
         descuentoPorcentaje: this.myForm.get('discount')?.value,
         detalleItems 
 
     }
+    this.waitApi = true;
     
-console.log(body);
     this.orderService.createOrder(body).subscribe((res)=>{
       if(res.msg === "success"){
         this.openGenericSuccess('Pedido generado con éxito!!');
+        this.waitApi = false;
+        this.isLoading = false;
+        this.resetOrder();
         //si el pedido se guardo qu vuelva a cargar las ordenes abiertas
         if(body.estado === "A"){
             this.orderService.getOpenOrders().subscribe()
-          }
-          this.resetOrder();
+        }
       }
     })
   }
 
   resetOrder(){
 
-    this.myForm.get('client')?.setValue('');
+
+    this.myForm.reset();
     this.myForm.markAsPristine();
     this.myForm.markAsUntouched();
     // this.client = {},
@@ -353,7 +359,7 @@ console.log(body);
     this.myForm.controls['numeroLocal']?.setValue(tempClient.numeroLocal);
     this.myForm.controls['telefonoCodigoArea']?.setValue(tempClient.telefonoCodigoArea);
     this.myForm.controls['cuit']?.setValue(tempClient.cuit);
-    // this.myForm.controls['ptoVenta']?.setValue(tempClient.ptoVenta);
+    this.myForm.controls['ptoVenta']?.setValue(tempClient.idListaPrecios);
     this.myForm.controls['email1']?.setValue(tempClient.email1);
   }
  

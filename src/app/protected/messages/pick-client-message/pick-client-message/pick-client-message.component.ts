@@ -59,7 +59,9 @@ noMatches : boolean = false;
   }
 
   onInput(event: any): void {
-    this.debouncer.next(event.target.value);
+    if(event.data !== null){
+      this.debouncer.next(event.target.value);
+    }
   }
 
 
@@ -141,8 +143,6 @@ Search( id : any ){
         this.spinner = false;
         this.close();
         this.isClientFounded = true;
-      }else{
-        // this.labelNoArticles = true;
       }
     }
     )

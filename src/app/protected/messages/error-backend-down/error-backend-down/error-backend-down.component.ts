@@ -24,16 +24,18 @@ action(value : string){
 
   switch (value) {
     case 'close':
-                  this.dialogRef.close();
-                  this.router.navigateByUrl('/home');
-                  // this.goBack();
+                  setTimeout(()=>{
+                    this.dialogRef.close();
+                    this.router.navigateByUrl('/home');
+                  },500)
       break;
 
       case 'login':
-                  this.selection = true;
-                  this.router.navigateByUrl('login');
-                  this.dialogRef.close();
-                  // setTimeout(()=>{ this.dialogRef.close(); },500)
+                  setTimeout(()=>{
+                    this.selection = true;
+                    this.router.navigateByUrl('login');
+                    this.dialogRef.close();
+                  }, 500)
       break;
     
       default:

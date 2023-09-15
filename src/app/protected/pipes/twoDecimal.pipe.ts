@@ -8,7 +8,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class TwoDecimalPipe implements PipeTransform {
 
   transform(value: number): number {
-    console.log(value);
     const decimalPart = value - Math.floor(value); // Obtener la parte decimal
 
     if (decimalPart === 0) {

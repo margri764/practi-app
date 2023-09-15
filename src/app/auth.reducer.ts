@@ -1,11 +1,12 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { setTempClient, setUser, unSetTempClient, unSetUser } from './auth.actions';
+import { setSalePoint, setTempClient, setUser, unSetSalePoint, unSetTempClient, unSetUser } from './auth.actions';
 import { User } from './protected/models/user.models';
 
 
 export interface Auth {
     user: User | null; 
     tempClient: any | null; 
+    salePoint : any
     // staff: Staff | null; 
     // verifyAccount : boolean,
     // path : string,
@@ -27,7 +28,8 @@ export interface Auth {
 
 export const initialState: Auth = {
      user: null,
-     tempClient: null
+     tempClient: null,
+     salePoint: null
     //  staff: null,
     //  verifyAccount: false,
     //  banner : true,
@@ -51,6 +53,9 @@ const _authReducer = createReducer(initialState,
 
     on( setTempClient, (state, { client }) => ({ ...state, tempClient: { ...client }  })),
     on( unSetTempClient, state => ({ ...state, tempClient: null  })),
+
+    on( setSalePoint, (state, { salePoint }) => ({ ...state, salePoint:  salePoint   })),
+    on( unSetSalePoint, state => ({ ...state, salePoint: null  })),
 
     
 );

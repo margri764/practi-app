@@ -5,6 +5,7 @@ import { AppState } from './app.reducer';
 import { OrderService } from './protected/services/order/order.service';
 import { Store } from '@ngrx/store';
 import * as articleActions from './article.actions';
+import * as authActions from './auth.actions';
 import { LocalStorageService } from './protected/services/localStorage/local-storage.service';
 import { getDataLS, getDataSS, saveDataLS } from './protected/Storage';
 import { CookieService } from 'ngx-cookie-service';
@@ -71,8 +72,16 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
 
    this.localStorageService.loadInitialState();
-   
-  //  this.isLoading = true;
+
+
+   this.orderService.getSalePoint().subscribe(
+    ({pos})=>{
+      if(pos){
+        let numero = parseFloat(pos.numero);
+        this.store.dispatch(authActions.setSalePoint( {salePoint : numero} ))
+      }
+    })
+    
    this.errorService.closeIsLoading$.subscribe((emmited)=>{if(emmited){this.isLoading = false}})
   
     this.store.select('auth')

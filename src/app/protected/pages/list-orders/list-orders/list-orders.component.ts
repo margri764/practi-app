@@ -1,9 +1,12 @@
-import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatAccordion } from '@angular/material/expansion';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import { AppState } from 'src/app/app.reducer';
 import { Pedido } from 'src/app/protected/interfaces/orders-posted';
 import { EditOrderComponent } from 'src/app/protected/messages/edit-order/edit-order/edit-order.component';
 import { GenericSuccessComponent } from 'src/app/protected/messages/generic-success/generic-success/generic-success.component';
@@ -17,7 +20,7 @@ import { WorkerService } from 'src/app/protected/services/worker/worker.service'
   templateUrl: './list-orders.component.html',
   styleUrls: ['./list-orders.component.scss']
 })
-export class ListOrdersComponent implements OnInit {
+export class ListOrdersComponent implements OnInit, OnDestroy {
 
 
 
@@ -36,6 +39,8 @@ export class ListOrdersComponent implements OnInit {
     currentPage: number = 1;
     itemsPerPage: number = 10; // Cambia según tus necesidades
     phone : boolean = false;
+
+    authSuscription! : Subscription;
 
     // table
     displayedColumns: string[] = ['id','socialName','items'];
@@ -57,9 +62,10 @@ export class ListOrdersComponent implements OnInit {
     myForm2! : FormGroup;
     send :  boolean = false;
     order : any;
-    salePoint : any [] =[]
-
+    salePoint : any = null;
     showOrderFounded : boolean = false;
+    noMatches : boolean = false;
+    showErrorNoSelection : boolean = false;
 
 
   constructor(
@@ -67,7 +73,9 @@ export class ListOrdersComponent implements OnInit {
               private articleService : ArticlesService,
               private dialog : MatDialog,
               private orderService : OrderService,
-              private errorService : ErrorService              
+              private errorService : ErrorService,
+              private store : Store <AppState>,
+
               
   ) { 
     (screen.width <= 800) ? this.phone = true : this.phone = false;
@@ -76,30 +84,20 @@ export class ListOrdersComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.getSalePoint();
     
 
     this.errorService.closeIsLoading$.subscribe((emitted)=>{if(emitted){this.isLoading = false}})
    
-    // despues de editar el pedido blaqueo todo ()
-      // this.articleService.initialStateAfterEditOrder$.subscribe((emitted)=>{
-      //     if(emitted){
-      //           this.arrOrders = [];
-      //           this.myForm.reset();
-      //           this.myForm2.reset();
-      //           this.showOrderFounded = false;
-      //           this.order = {};
-      //           this.isLoading = false;
-      //   }});
+    this.myForm = this.fb.group({
+      ptoVenta:  [ '' ],
+      nroOrder:  [  , Validators.pattern('^[0-9]*$')],
+    });   
 
-      // this.myForm = this.fb.group({
-      //   ptoVenta1:  [ ''],
-      // });   
+    this.authSuscription = this.store.select('auth').subscribe(
+      ({salePoint})=>{
+        this.salePoint = salePoint;
+      })
 
-      this.myForm = this.fb.group({
-        ptoVenta:  [ '' ],
-        nroOrder:  [ '' ],
-      });   
   }
 
   // getInitialOrders(){
@@ -117,42 +115,28 @@ export class ListOrdersComponent implements OnInit {
   //     })
   // }
 
-  getSalePoint(){
 
-    this.orderService.getSalePoint().subscribe(
-      ({pos})=>{
-          if(pos.length !== 0){
-              this.salePoint = pos
+  getAllOrders( ){
+
+      this.arrOrders = [];
+      this.showOrderFounded = false;
+      this.isLoading = true;
+      if(this.salePoint === undefined || this.salePoint === null ){
+        this.isLoading = false;
+        return
+      }
+      console.log(this.salePoint);
+
+      this.orderService.getOrdersByPtoVenta(this.salePoint, this.pageIndex, this.pageSize).subscribe(
+        ({pedidos, pagination})=>{
+          if(pedidos.length !== 0){
+            this.arrOrders = pedidos;
+            this.isLoading = false;
+            this.length = pagination.total_reg;
+            // this.myForm.reset();
           }
-      })
-
-  }
-
-  // selectSalePoint(){
-
-  //   if ( this.myForm.invalid ) {
-  //     this.myForm.markAllAsTouched();
-  //     return;
-  //   }
-  //     this.isLoading = true;
-  //     this.arrOrders = [];
-  //     this.showOrderFounded = false;
-
-  //     let ptoVenta = this.myForm.get('ptoVenta')?.value;
-  //     let ptoVentaNumber = parseFloat(ptoVenta);
-
-
-
-  //     this.orderService.getOrdersByPtoVenta(ptoVentaNumber, this.pageIndex, this.pageSize).subscribe(
-  //       ({pedidos, pagination})=>{
-  //         if(pedidos.length !== 0){
-  //           this.arrOrders = pedidos;
-  //           this.isLoading = false;
-  //           this.length = pagination.total_reg;
-  //           // this.myForm.reset();
-  //         }
-  //       })
-  //  }
+        })
+   }
 
   //  getSalePointByNumOrder(){
 
@@ -177,47 +161,21 @@ export class ListOrdersComponent implements OnInit {
   //     })
 
   //  }
-error : string = '';
    searchOrder(){
+
+    this.showErrorNoSelection = false;
     
-    this.error = '';
-    const ptoVenta = this.myForm.get('ptoVenta')?.value;
+    if ( this.myForm.invalid ) {
+      this.myForm.markAllAsTouched();
+      return;
+    }
+    
     const nroOrder = this.myForm.get('nroOrder')?.value;
-
-    if(ptoVenta == '' && nroOrder == ''){
-      this.error = "Sebes seleccionar pto de venta y/o n° de pedido"
-      // alert('debes seleccionar pto de venta y/o n° de pedido')
-      return
-    }
-
-    if(ptoVenta == '' && nroOrder !== ''){
-      this.error = "Primero debes seleccionar pto de venta"
-      return
-    }
-
-    // solo eligio las ordenes por punto de venta
-    if(ptoVenta !== '' && nroOrder == ''){
-
-      this.isLoading = true;
-      this.arrOrders = [];
-      this.showOrderFounded = false;
-
-   
-      this.orderService.getOrdersByPtoVenta(ptoVenta, this.pageIndex, this.pageSize).subscribe(
-        ({pedidos, pagination})=>{
-          if(pedidos.length !== 0){
-            this.arrOrders = pedidos;
-            this.isLoading = false;
-            this.length = pagination.total_reg;
-            // this.myForm.reset();
-          }
-        })
-   }else if( ptoVenta !== '' && nroOrder !== '' ){
 
     this.showOrderFounded = false;
     this.isLoading = true;
     this.arrOrders = [];
-    this.orderService.getSalePointByNumOrder(ptoVenta, nroOrder).subscribe(
+    this.orderService.getSalePointByNumOrder(this.salePoint, nroOrder).subscribe(
       ({Pedido})=>{
         if(Pedido){
           this.isLoading = false;
@@ -227,7 +185,6 @@ error : string = '';
       })
 
    }
-  }
  
 
   // loadOrders() {
@@ -245,14 +202,15 @@ error : string = '';
     this.length = e.length;
     this.pageSize = e.pageSize;
     this.pageIndex = e.pageIndex;
-  
-      this.isLoading= true;
+    this.isLoading= true;
 
-      const ptoVenta = this.myForm.get('ptoVenta')?.value;
-      let ptoVentaNumber = parseFloat(ptoVenta);
+    if(this.pageIndex === 0){
+      this.isLoading = false;
+      return
+    }
 
       
-      this.orderService.getOrdersByPtoVenta(ptoVentaNumber, this.pageIndex, this.pageSize,).subscribe(
+      this.orderService.getOrdersByPtoVenta(this.salePoint, this.pageIndex, this.pageSize,).subscribe(
         ({pedidos, pagination})=>{
           this.arrOrders = pedidos;
           this.isLoading = false
@@ -283,9 +241,6 @@ error : string = '';
 
   }
 
-  deleteOrder(order:any){
-
-  }
 
   sendOrder(order :any){
 
@@ -304,17 +259,16 @@ error : string = '';
       )
 
   }
-
-
   
+    
   openGenericSuccess(msg : string){
 
     let height : string = '';
     let width : string = '';
   
     if(screen.width >= 800) {
-      width = "600px";
-      height = "510px";
+      width = "400px";
+      height = "450px";
     }
 
     this.dialog.open(GenericSuccessComponent, {
@@ -344,11 +298,16 @@ error : string = '';
   }
   
   close(){
-    console.log('ff');
       this.showOrderFounded = false; 
       this.arrOrders = [];
       this.myForm.get('ptoVenta')?.setValue('');
       this.myForm.get('nroOrder')?.setValue('');
-      this.error = '';
   }
+
+  ngOnDestroy(): void {
+    if(this.authSuscription){
+      this.authSuscription.unsubscribe();
+    }
+  }
+
 }

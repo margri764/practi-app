@@ -30,7 +30,7 @@ export class ClientComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['action','name','address','phone', 'email'];
   dataTableActive : any = new MatTableDataSource<any>();
   myForm! : FormGroup;
-  
+  noMatches : boolean = false;
 
   itemSearch : string = '';
   mostrarSugerencias: boolean = false;
@@ -102,7 +102,6 @@ export class ClientComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getInitialClients();
 
-
         //para las busquedas
         this.myForm.get('itemSearch')?.valueChanges.subscribe(newValue => {
           this.itemSearch = newValue;
@@ -141,9 +140,8 @@ handlePageEvent(e: PageEvent) {
   this.length = e.length;
   this.pageSize = e.pageSize;
   this.pageIndex = e.pageIndex;
-    this.isLoading= true;
+  this.isLoading= true;
 
-    console.log(this.pageIndex);
     if(this.pageIndex === 0){
       this.isLoading = false;
       return
@@ -224,7 +222,6 @@ close(){
   this.noMatches = false;
 }
 
-noMatches : boolean = false;
 
 teclaPresionada(){
   this.noMatches = false;

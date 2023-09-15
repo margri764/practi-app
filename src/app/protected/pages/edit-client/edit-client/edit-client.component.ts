@@ -1,29 +1,34 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
 import { AppState } from 'src/app/app.reducer';
-import { User } from 'src/app/protected/models/user.models';
 import { AuthService } from 'src/app/protected/services/auth/auth.service';
 import { OrderService } from 'src/app/protected/services/order/order.service';
+import { ArticlesService } from 'src/app/protected/services/articles/articles.service';
+import { GenericSuccessComponent } from 'src/app/protected/messages/generic-success/generic-success/generic-success.component';
+import { ErrorService } from 'src/app/protected/services/error/error.service';
 
 @Component({
   selector: 'app-edit-client',
   templateUrl: './edit-client.component.html',
   styleUrls: ['./edit-client.component.scss']
 })
-export class EditClientComponent implements OnInit {
+export class EditClientComponent implements OnInit, OnDestroy {
 
   myForm! : FormGroup;
   save : boolean = false;
   // client! : User;
   client! : any;
-  nameOptions : string [] =[];
+  nameOptions : string [] = [];
+  priceListOpt : any [] = [];
   defaultValue : string = '';
   salePoint : any;
   ivaOption : any;
   dniOption : any;
   isLoading : boolean = false;
+  authSuscription! : Subscription;
 
   
   constructor(
@@ -31,64 +36,34 @@ export class EditClientComponent implements OnInit {
                 private fb : FormBuilder,
                 private orderService : OrderService,
                 private store : Store <AppState>,
+                private dialogRef: MatDialogRef<EditClientComponent>,
+                private articleService : ArticlesService,
                 private authService : AuthService,
                 private dialog : MatDialog,
-                private dialogRef: MatDialogRef<EditClientComponent>,
+                private errorService : ErrorService
 
-  ) { 
-
+  ) 
+  { 
     this.isLoading = true;
-
+    setTimeout(()=>{
+      this.isLoading = false;
+    },5000)
   }
 
-  contactos =  {
-                archivarComo: "LOPEZ, ALEJANDRO",
-                nombre: "ALEJANDRO",
-                apellido: "LOPEZ",
-                domicilio: "Francia 1234",
-                localidad: "San Basilio",
-                codigoPostal: "3456",
-                provincia: "Cordoba",
-                pais: "Argentina",
-                telefonoCodigoPais: "54",
-                telefonoCodigoArea: "294",
-                esMovil: 1,
-                numeroLocal: "9988787",
-                extensionTelefono: "",
-                descripcionTelefono: "Movil Particular",
-                email1: "email_de_prueba@gmail.com",
-                email2: "",
-                email3: "",
-                email4: "",
-                emailAnotacion: "",
-                emailEnvioComprobantes: 0,
-                organizacion: "Arcor",
-                razonSocial: "Arcor S.A",
-                cuit: "333456775",
-                nroDocumento: "19012023",
-                idCondicionIva: 3,
-                idListaPrecios: 1,
-                idTipoDocumento: 86,
-                esCliente: 1,
-                esProveedor: 0,
-                esContacto: 0,
-                observaciones: "",
-                id: 2764,
-
-    }
   
 
   ngOnInit(): void {
 
-    // this.client = this.data;
-    this.client = this.contactos;
+    this.client = this.data;
     console.log(this.client);
-    this.getSalePoint();
+    this.errorService.closeIsLoading$.subscribe((emmited)=>{if(emmited){this.isLoading = false; this.dialogRef.close();}})
+
     this.getCondicionesiva();
     this.getDniOption();
+    this.getAllPriceLists()
     
     setTimeout(()=>{
-      this.isLoading = false;
+      // this.isLoading = false;
       this.autoGenerateName();
     },1500)
     
@@ -114,8 +89,16 @@ export class EditClientComponent implements OnInit {
       pais:[ this.client.pais || 'sin definir'],
       codigoPostal:[ this.client.codigoPostal || 'sin definir'],
       nroDocumento:[ this.client.nroDocumento || 'sin definir'],
+      cuit:[ this.client.cuit || 'sin definir'],
   
     });          
+
+    this.authSuscription = this.store.select('auth').subscribe(
+      ({salePoint})=>{
+        if(salePoint !== null){
+          this.salePoint = salePoint;
+        }
+      })
   }
   
   autoGenerateName() {
@@ -150,17 +133,6 @@ export class EditClientComponent implements OnInit {
     this.defaultValue = formatOptions[0]
   }
   
-  getSalePoint(){
-
-    
-    this.orderService.getSalePoint().subscribe(
-      ({pos})=>{
-          if(pos.length !== 0){
-            this.salePoint = pos;
-          }
-      })
-
-  }
 
   getCondicionesiva(){
 
@@ -173,32 +145,69 @@ export class EditClientComponent implements OnInit {
 
   }
 
+  getAllPriceLists(){
+    this.articleService.getAllTruePriceList().subscribe(
+      ({listas})=>{
+        console.log(listas);
+        this.priceListOpt= listas;
+      })
+  }
+
   getDniOption(){
 
     this.orderService.getDniOption().subscribe(
       ({tipos})=>{
           if(tipos.length !== 0){
-               this.dniOption = tipos;
+               const newTipos = tipos.filter((item: { descripcion: string; })=> item.descripcion !== "CUIT")
+               this.dniOption = newTipos;
           }
       })
 
   }
-  
 
   onSaveForm(){
 
     console.log(this.myForm.value);
-    
-
-    // this.authService.updateClientById(this.myForm.value, "2739").subscribe(
-    //   (res)=>{
-    //     console.log(res);
-    //   })
+    this.isLoading = true;
+    this.authService.updateClientById(this.myForm.value, this.client.id).subscribe(
+      (res)=>{
+        if(res){
+            this.openGenericSuccess('Cliente editado con éxito');
+            this.isLoading = false;
+            this.dialogRef.close();
+        }
+      })
 
   }
 
   closeComponent(){
     this.dialogRef.close();
+  }
+
+  openGenericSuccess(msg : string){
+
+    let width : string = '';
+    let height : string = '';
+  
+    if(screen.width >= 800) {
+      width = "400px"
+      height ="450px";
+    }
+  
+    this.dialog.open(GenericSuccessComponent, {
+      data: msg,
+      width: `${width}`|| "",
+      height:`${height}`|| "",
+      disableClose: true,
+      panelClass:"custom-modalbox-NoMoreComponent", 
+    });
+  
+  }
+  ngOnDestroy(): void {
+    if(this.authSuscription){
+      this.authSuscription.unsubscribe();
+
+    }
   }
 
 }

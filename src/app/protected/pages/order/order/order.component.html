@@ -76,13 +76,13 @@
                 </mat-form-field> 
 
 
-                <mat-form-field appearance="outline" floatLabel="always" fxFlex="48" class="mt-10 font fs-5">
+                <!-- <mat-form-field appearance="outline" floatLabel="always" fxFlex="48" class="mt-10 font fs-5">
                     <mat-label>Selecciona Punto de venta</mat-label>
                     <mat-select  formControlName="ptoVenta" class="font" >
                          <mat-option></mat-option>
                          <mat-option *ngFor="let point of salePoint" [value]="point.numero" class="font fs-4"> {{point.sucursal}}</mat-option>
                     </mat-select>
-                </mat-form-field>
+                </mat-form-field> -->
 
                 <mat-form-field appearance="outline"  fxFlex="48" class="mt-10 font fs-5" >		
                     <mat-label>Email</mat-label>
@@ -93,9 +93,9 @@
     
 
             <div fxLayout="row wrap"  fxLayoutAlign="space-between center" fxFlex="100" style="margin-top: 30px;" *ngIf="!enableEdition">
-                <button mat-raised-button class="font fs-5" [ngClass]="confirmE ? 'btnMenuClicked':'btnMenu'" (click)="createOrder('E')" fxFlex="48">Enviar Pedido</button>
+                <button mat-raised-button class="font fs-5" [ngClass]="confirmE ? 'btnMenuClicked':'btnMenu'" (click)="createOrder('E')" fxFlex="48" [disabled]="waitApi">Enviar Pedido</button>
 
-                <button mat-raised-button class="font fs-5" [ngClass]="confirmA ? 'btnMenuClicked':'btnMenu'" (click)="createOrder('A')" fxFlex="48">Guardar Pedido</button>
+                <button mat-raised-button class="font fs-5" [ngClass]="confirmA ? 'btnMenuClicked':'btnMenu'" (click)="createOrder('A')" fxFlex="48" [disabled]="waitApi">Guardar Pedido</button>
             </div>
 
             <div fxLayout="row wrap"  fxLayoutAlign="space-between center" fxFlex="100" style="margin-top: 30px;" *ngIf="enableEdition">

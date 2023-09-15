@@ -44,31 +44,35 @@
           <mat-form-field appearance="outline" floatLabel="always" fxFlex="49" class="mt-10 font">
             <mat-label class="font fs-4">Tipo Doc.</mat-label>
             <mat-select  formControlName="idTipoDocumento" class="font" >
-                        <mat-option value=""></mat-option>
                         <mat-option *ngFor="let point of dniOption" [value]="point.idTipoDoc" class="font fs-4"> {{point.descripcion}}</mat-option>
             </mat-select>
         </mat-form-field>
 
-          <mat-form-field appearance="outline" fxFlex="49" class="mt-10 font" >		
+        <mat-form-field appearance="outline" fxFlex="49" class="mt-10 font" >		
             <mat-label>N° Documento</mat-label>
             <input matInput type="text" formControlName="nroDocumento" >
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" floatLabel="always" fxFlex="49" class="mt-10 font">
-            <mat-label class="font fs-4">Punto de venta</mat-label>
-            <mat-select  formControlName="idListaPrecios" class="font" >
-                        <mat-option *ngFor="let point of salePoint" [value]="point.numero" class="font fs-4"> {{point.sucursal}}</mat-option>
-            </mat-select>
         </mat-form-field>
 
-
-          <mat-form-field appearance="outline" floatLabel="always" fxFlex="49" class="mt-10 font">
+        <mat-form-field appearance="outline" floatLabel="always" fxFlex="49" class="mt-10 font">
             <mat-label class="font fs-4">Cond. de IVA</mat-label>
             <mat-select  formControlName="idCondicionIva" class="font" >
-                        <mat-option value=""></mat-option>
                         <mat-option *ngFor="let point of ivaOption" [value]="point.idCondicionIva" class="font fs-4"> {{point.descripcion}}</mat-option>
             </mat-select>
         </mat-form-field>
+
+        <mat-form-field appearance="outline" fxFlex="49" class="mt-10 font" >		
+            <mat-label>Cuit </mat-label>
+            <input matInput type="text" formControlName="cuit" >
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="always" fxFlex="49" class="mt-10 font">
+            <mat-label class="font fs-4">Lista de Precios</mat-label>
+            <mat-select  formControlName="idListaPrecios" class="font" >
+                        <mat-option *ngFor="let point of priceListOpt" [value]="point.id" class="font fs-4"> {{point.nombreLista}}</mat-option>
+            </mat-select>
+        </mat-form-field>    
+
+    
 
 
         

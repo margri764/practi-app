@@ -10,20 +10,25 @@
         <mat-form-field  appearance="outline" fxFlex="90" class="font">
             <input type="text" matInput  placeholder="Buscar Cliente"  name="itemSearch"
             [(ngModel)]="itemSearch"
-            (input)="onInput($event)"
-            (keyup.enter)="Search( itemSearch )" >
+            (input)="onInput($event)">
             <mat-icon matSuffix style="transform:scale(1.7); color: rgb(37, 150, 190); margin-right: 20px;" >search</mat-icon>
         </mat-form-field>
     </form> 
     <!-- end form -->
 
-      <!-- no user   -->
-      <div fxLayout="row wrap"  fxLayoutAlign="center center" fxFlex="100" *ngIf="noMatches" style="padding: 20px;" class="whiteframe" >
-        
-        <div fxLayout="row wrap" fxLayoutAlign="space-between center"  fxFlex="98"  class="fs-4 boxSelection" >
-            <span class="font fs-4" style="color: red; text-align: center; width: 100%;">Sin coincidencias...</span>
-        </div> 
-     </div>
+         <!-- no user   -->
+         <div fxLayout="row wrap"  fxLayoutAlign="center center" fxFlex="100"  *ngIf="noMatches" >
+            
+            <div fxLayout="row wrap" fxLayoutAlign="start center"  fxFlex.xs="90" fxFlex.sm="80" fxFlex="30"  class="fs-4 whiteframe " style="border-radius: 10px; padding: 15px; color: white; background-color: black; margin-bottom: 20px; margin-top: 30px; height: 60px; border-left: 10px solid red; box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+            -webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+            -moz-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);">
+                <span class="material-icons" style="color: white;"> error </span>
+                <span class="font fs-3" style="color: white; text-align: center; margin-left: 20px;">Sin coincidencias...</span>
+            </div>
+        </div>
+        <!-- end no items -->
+
+
 
 
     <!-- start suggested    -->

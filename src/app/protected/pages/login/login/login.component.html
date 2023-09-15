@@ -43,7 +43,17 @@
           </div>
       </div>
 
-      <span class="font fs-5" style="color: red; border: 1px solid red; border-radius: 7px; padding: 10px; text-align: center; margin-top: 30px;" *ngIf="showLabelInvalidCredential"> Credenciales Incorrectas</span>
+        <div fxLayout="row wrap"  fxLayoutAlign="center center" fxFlex="100"  *ngIf="showLabelInvalidCredential" >
+        
+          <div fxLayout="row wrap" fxLayoutAlign="start center"  fxFlex="90"  class="whiteframe " style="border-radius: 10px; padding: 15px; color: white; background-color: black; margin-bottom: 20px; margin-top: 30px; height: 60px; border-left: 10px solid red; box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+          -webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+          -moz-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);">
+              <span class="material-icons" style="color: white;"> error </span>
+              <span class="font fs-3" style="color: white; text-align: center; margin-left: 20px;">Sin coincidencias...</span>
+          </div>
+      </div>
+
+
       
       <button type="button" fxLayout="row wrap" fxLayoutAlign="center center" [ngClass]="confirm ? 'btnMenuClicked':'btnMenu'" style="margin-top: 80px; margin-bottom: 40px;" fxFlex="90"  (click)="onSaveForm()">  Ingresar
       </button>
