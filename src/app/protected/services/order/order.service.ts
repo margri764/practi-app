@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
-import { map, tap } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Order } from '../../interfaces/order.interface';
 import { AppState } from 'src/app/app.reducer';
@@ -86,6 +86,7 @@ getDniOption(){
 }
 
 getOpenOrders(){
+
   return this.http.get<any>(`${this.baseUrl}api/pedidos/abiertos`)
   .pipe(
     tap( ({pedidos})=>{

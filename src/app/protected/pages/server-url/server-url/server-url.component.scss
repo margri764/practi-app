@@ -1,0 +1,101 @@
+
+.video-container {
+    position: relative;
+    width: 100%;
+    max-height: 100vh;
+    background-color: #000;
+  }
+  
+  .close{
+    right: 20%;
+    top: 40px;
+    color: white;
+    transform: scale(1.4);
+    opacity: 0.6; position: absolute; 
+  }
+
+  .camera{
+    right: 40%;
+    top: 40px;
+    color: white;
+    transform: scale(1.4);
+    opacity: 0.6; position: absolute; 
+  }
+
+
+
+@media only screen and (max-width: 800px) {
+
+    video{
+        width: 99vw;
+    }
+    
+    .close{
+        right: 3vw;
+    }
+
+    .camera{
+        right: 12vw;
+    }
+
+  
+            
+  
+}
+
+//Extra small devices (phones, 600px and down) */
+@media only screen and (min-width: 800px) {
+
+    video{
+        width: 95vw;
+    }
+    
+    .close{
+        right: 5vw;
+    }
+
+    .camera{
+        right: 10vw;
+    }
+
+
+
+  }
+
+  
+//Extra small devices (phones, 600px and down) */
+@media only screen and (min-width: 1200px) {
+
+   video{
+    width: 90%;
+   }
+
+
+    .close{
+        right: 12%;
+    }
+
+    .camera{
+        right: 16%;
+    }
+
+
+}
+
+//Extra small devices (phones, 600px and down) */
+@media only screen and (min-width: 1400px) {
+
+    video{
+        width: 70%;
+       }
+
+    .close{
+      right: 17%;
+    }
+
+    .camera{
+        right: 21%;
+    }
+    
+
+}

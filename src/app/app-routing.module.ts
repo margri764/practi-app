@@ -14,6 +14,7 @@ import { ListOrdersComponent } from './protected/pages/list-orders/list-orders/l
 import { ListByIdComponent } from './protected/pages/list-by-id/list-by-id/list-by-id.component';
 import { RoleGuard } from './protected/guards/role.guard';
 import { SettingsComponent } from './pages/settings/settings/settings.component';
+import { ServerUrlComponent } from './protected/pages/server-url/server-url/server-url.component';
 
 
 const routes: Routes = [
@@ -62,6 +63,9 @@ const routes: Routes = [
     path: 'articulo/:id',  component: ViewMoreArticleComponent
   },
 
+  {
+    path: 'seleccionar-servidor',  component: ServerUrlComponent
+  },
   {
     path: 'configuraciones',  component: SettingsComponent
   },

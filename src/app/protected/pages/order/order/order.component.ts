@@ -89,7 +89,7 @@ export class OrderComponent implements OnInit, OnDestroy {
       extensionTelefono:  [ ''], 
       telefonoCodigoArea:  [ ''], 
       email1:  [ ''], 
-      cuit: [ '' , [Validators.required, (control: any) => this.validateCuit(control)]],
+      cuit: [ '' , [ (control: any) => this.validateCuit(control)]],
       discount:  [ 0, [Validators.required, Validators.min(0), Validators.max(99) ]], 
       // ptoVenta:  [ '',[Validators.required]], 
     });
@@ -121,11 +121,12 @@ export class OrderComponent implements OnInit, OnDestroy {
       ).subscribe(({arrSelectedArticles})=>{
         this.arrItemSelected = arrSelectedArticles; //este es el pedido q se envia a BD
         this.arrArticles = arrSelectedArticles; // este se muestra en el front con otras propiedades
+        console.log(this.arrArticles);
         // cuando vuelvo de los productos quiero q se muestre la opcion de productos
        if( this.arrArticles.length !==0 && this.client){
           this.showProduct = true;
           this.showClient = false;
-       }
+                 }
       })
  
   }
@@ -150,7 +151,7 @@ export class OrderComponent implements OnInit, OnDestroy {
     if (!this.arrArticles || this.arrArticles.length === 0) {
       return 0;
     }
-    return this.arrArticles.reduce((total, article) => total + article.ventaTotal, 0);
+    return this.arrArticles.reduce((total, article) => total + (article.ventaTotal * article.cantidad), 0);
   
   }
 

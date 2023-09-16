@@ -117,7 +117,7 @@ producto : string = "Producto añadido"
       this.itemSearch = newValue;
 
       const option = this.myForm.get('searchOption')?.value;
-      if(this.itemSearch !== null){
+      if(this.itemSearch !== null && this.itemSearch !== ''){
 
             if( option === "Por descripción"){
                  this.teclaPresionada();
@@ -182,6 +182,8 @@ producto : string = "Producto añadido"
           //quitar esta logica de aca
           const suggestedWithShowIncrementer = precios.map((item: any) => ({ ...item, showIncrementer: false, cantidad:0 }));
           this.suggested = suggestedWithShowIncrementer;
+            // this.itemSearch = '';
+            this.myForm.get('itemSearch')?.setValue('');
 
             this.spinner = false;
             }else{

@@ -124,12 +124,16 @@ export class HeaderComponent implements OnInit, AfterViewChecked{
     break; 
 
     case '/armar-pedido/':
-      this.labelHeader = "Lista Precios";
+           this.labelHeader = "Lista Precios";
      break; 
 
      case '/configuraciones':
-      this.labelHeader = "Configuraciones";
+           this.labelHeader = "Configuraciones";
      break; 
+
+     case '/seleccionar-servidor':
+      this.labelHeader = "Servidores";
+    break; 
   
     default:  this.labelHeader = "";
     break;

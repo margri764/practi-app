@@ -18,7 +18,6 @@ import { GenericMessageComponent } from '../../messages/generic-message/generic-
 import { MatDialog } from '@angular/material/dialog';
 import { MantainMessageComponent } from '../../messages/maintain-message/mantain-message/mantain-message.component';
 import { AskOpenOrderComponent } from '../../messages/ask-open-order/ask-open-order/ask-open-order.component';
-import jsQR from "jsqr";
 
 @Component({
   selector: 'app-dashboard',
@@ -28,55 +27,8 @@ import jsQR from "jsqr";
 
 export class DashboardComponent implements OnInit, OnDestroy {
 
-//   encender(){
-//     navigator.mediaDevices.getUserMedia({
-//         audio: false,
-//         video: {width: 300, height: 300}
-//     }).then(stream =>{
 
-//         let videoNode.srcObject = stream;
-//         let streamR= stream;
-//     });
-// }
 
-async encender() {
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-    // Aquí puedes mostrar el video en una vista previa si es necesario
-    this.empezarLecturaQR(stream);
-  } catch (error) {
-    console.error('Error al acceder a la cámara: ', error);
-  }
-}
-
-empezarLecturaQR(stream: MediaStream) {
-  const video = document.createElement('video');
-  document.body.appendChild(video);
-  video.srcObject = stream;
-  
-  video.onloadedmetadata = () => {
-    video.play();
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    
-    const leerQR = () => {
-      context?.drawImage(video, 0, 0, canvas.width, canvas.height);
-      const imageData = context?.getImageData(0, 0, canvas.width, canvas.height);
-      const codigoQR = jsQR(imageData!.data, imageData!.width, imageData!.height);
-      
-      if (codigoQR) {
-        this.qrData = codigoQR.data; // Asignar el dato del código QR a la propiedad
-        console.log('Código QR detectado:', codigoQR.data);
-      }
-      
-      requestAnimationFrame(leerQR);
-    };
-    
-    leerQR();
-  };
-}
 
 
 

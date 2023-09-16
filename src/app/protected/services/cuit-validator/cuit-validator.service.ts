@@ -9,9 +9,14 @@ export class CuitValidatorService {
 
     verifyCuit (cuit : any) {
 
+    if(cuit === '' || cuit === null){
+      return true
+    }  
+
     if (cuit.length !== 11) {
       return false;
     }
+
   
     let acumulado = 0;
     let digitos = cuit.split('');

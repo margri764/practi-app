@@ -139,7 +139,8 @@
 
                     <div fxLayout="row wrap" fxLayoutAlign="space-between center" fxFlex="100" class="font fs-5 mt-40" >
                         <span fxFlex="50" fxLayoutAlign="start center" > <b>Sub Total</b> </span>
-                        <span fxFlex="50" fxLayoutAlign="end"><b> {{article.ventaTotal | currency:'$':'symbol':'1.2-2' }}</b></span>
+                        <!-- <span fxFlex="50" fxLayoutAlign="end"><b> {{article.ventaTotal | currency:'$':'symbol':'1.2-2' }}</b></span> -->
+                        <span fxFlex="50" fxLayoutAlign="end"><b> {{article.ventaTotal * article.cantidad | currency:'$':'symbol':'1.2-2' }}</b></span>
                     </div>    
         
                     <div fxLayout="row wrap" fxLayoutAlign="end center" fxFlex="100" class="mt-20">

@@ -1,0 +1,102 @@
+<div  fxLayout="row wrap" fxLayoutAlign="center center" style="overflow-y: hidden; max-height: 100vh;" *ngIf="!phone">
+
+    <div fxLayout="row wrap" fxLayoutAlign="center start" fxFlex="24" style="height: 100vh; background-color: rgb(237, 237, 237); overflow: hidden; border-right: 2px solid rgb(225, 225, 225);" >
+    
+        <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="100" style="margin-top: 100px; cursor: pointer;" (click)="encender()" >
+            <span class="material-symbols-outlined notranslate " style=" transform: scale(2);" >   qr_code_scanner </span>
+            <span class="font fs-4 mt-10" style="text-align: center; margin-left: 30px; " > Escanear QR</span>   
+        </div>
+    
+        <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="100" style="margin-top: 70px; cursor: pointer;" (click)="getUrl()" >
+            <span class="material-symbols-outlined notranslate cursor" style=" transform: scale(2);" > keyboard </span>
+            <span class="font fs-4 mt-10" style="text-align: center; margin-left: 30px;"> Ingresar URL</span>   
+        </div>
+
+        <div fxLayout="row wrap" fxLayoutAlign="center center" style="position: absolute; bottom: 20px;">
+            <img src="assets/logo.png" alt="logo menu" fxFlex="60">
+        </div>
+    </div>
+
+   
+    <div fxLayout="row wrap" fxLayoutAlign="center start" fxFlex="76" >
+
+        <div fxLayout="row wrap" fxLayoutAlign="center start" fxFlex="100" *ngIf="showInput">
+
+            <form  [formGroup]="myForm"  fxLayout="row wrap" fxLayoutAlign="center center" fxFlex.xs="90" fxFlex.sm="60" fxFlex="30" style="   border: 1px solid rgb(197, 197, 197); border-radius: 10px; padding: 10px;">     
+  
+                <mat-form-field appearance="outline"  fxFlex="90" class="mt-10 font " >		
+                    <mat-label>URL</mat-label>
+                    <input matInput type="email" required formControlName="url">
+                </mat-form-field> 
+<!--                       
+                  <button type="button" fxLayout="row wrap" fxLayoutAlign="center center" [ngClass]="confirm ? 'btnMenuClicked':'btnMenu'" style="margin-top: 80px; margin-bottom: 40px;" fxFlex="90"  (click)="onSaveForm()">  Ingresar
+                  </button> -->
+            
+              </form>
+            
+        </div>
+
+            <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="100"  [ngStyle]="(showCamera) ? {'display':'block'}:{'display':'none'} "  style="margin-top: 30px; position: sticky; ">
+                <video #videoElement autoplay > </video>
+
+                <div class="text-overlay material-symbols-outlined notranslate close cursor" (click)="close()">close</div>
+                
+                <div class="material-symbols-outlined notranslate camera" >photo_camera</div>
+            </div>
+
+            <span class="font fs-3" style="color: blue; cursor: pointer;">{{qrData}}</span>
+
+     
+    </div>
+
+</div>
+
+<div  fxLayout="row wrap" fxLayoutAlign="center center" style="overflow-y: hidden; max-height: 100vh;" *ngIf="phone">
+
+    <div fxLayout="row wrap" fxLayoutAlign="space-between center" fxFlex="100" style="margin-top: 60px;" >
+    
+        <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="50" style="cursor: pointer;" (click)="encender()" >
+            <span class="material-symbols-outlined notranslate " style=" transform: scale(2);" >   qr_code_scanner </span>
+            <span class="font fs-4 mt-10" style="text-align: center; " fxFlex="100" > Escanear QR</span>   
+        </div>
+    
+        <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="50" style=" cursor: pointer;" (click)="getUrl()" >
+            <span class="material-symbols-outlined notranslate cursor" style=" transform: scale(2);" > keyboard </span>
+            <span class="font fs-4 mt-10" style="text-align: center;" fxFlex="100"> Ingresar URL</span>   
+        </div>
+
+    
+    </div>
+
+
+
+        <div fxLayout="row wrap" fxLayoutAlign="center start" fxFlex="100" *ngIf="showInput" style="margin-top: 30px;">
+
+            <form  [formGroup]="myForm"  fxLayout="row wrap" fxLayoutAlign="center center" fxFlex.xs="90" fxFlex.sm="60" fxFlex="30" style="   border: 1px solid rgb(197, 197, 197); border-radius: 10px; padding: 10px;">     
+  
+                <mat-form-field appearance="outline"  fxFlex="90" class="mt-10 font " >		
+                    <mat-label>URL</mat-label>
+                    <input matInput type="email" required formControlName="url">
+                </mat-form-field> 
+<!--                       
+                  <button type="button" fxLayout="row wrap" fxLayoutAlign="center center" [ngClass]="confirm ? 'btnMenuClicked':'btnMenu'" style="margin-top: 80px; margin-bottom: 40px;" fxFlex="90"  (click)="onSaveForm()">  Ingresar
+                  </button> -->
+            
+              </form>
+            
+        </div>
+
+            <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="100"  [ngStyle]="(showCamera) ? {'display':'block'}:{'display':'none'} "  style="margin-top: 30px; position: sticky; ">
+                <video #videoElement autoplay > </video>
+
+                <div class="text-overlay material-symbols-outlined notranslate close cursor" (click)="close()">close</div>
+                
+                <div class="material-symbols-outlined notranslate camera" >photo_camera</div>
+            </div>
+
+
+            <span class="font fs-3" style="color: blue; cursor: pointer; margin-top: 40px;">{{qrData}}</span>
+     
+
+</div>
+    

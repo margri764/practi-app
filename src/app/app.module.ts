@@ -69,6 +69,7 @@ import { AddItemComponent } from './protected/add-item/add-item/add-item.compone
 import { AskOpenOrderComponent } from './protected/messages/ask-open-order/ask-open-order/ask-open-order.component';
 import { AskSendOrderComponent } from './protected/messages/ask-send-order/ask-send-order/ask-send-order.component';
 import { SettingsComponent } from './pages/settings/settings/settings.component';
+import { ServerUrlComponent } from './protected/pages/server-url/server-url/server-url.component';
 
 registerLocaleData( localeEs );
 
@@ -113,7 +114,8 @@ registerLocaleData( localeEs );
     AddItemComponent,
     AskOpenOrderComponent,
     AskSendOrderComponent,
-    SettingsComponent
+    SettingsComponent,
+    ServerUrlComponent
   ],
   imports: [
     BrowserModule,
