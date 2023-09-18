@@ -63,11 +63,11 @@
         <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="50" style=" cursor: pointer;" (click)="getUrl()" >
             <span class="material-symbols-outlined notranslate cursor" style=" transform: scale(2);" > keyboard </span>
             <span class="font fs-4 mt-10" style="text-align: center;" fxFlex="100"> Ingresar URL</span>   
-        </div>
+            
+                 </div>
 
     
     </div>
-
 
 
         <div fxLayout="row wrap" fxLayoutAlign="center start" fxFlex="100" *ngIf="showInput" style="margin-top: 30px;">
@@ -78,9 +78,10 @@
                     <mat-label>URL</mat-label>
                     <input matInput type="email" required formControlName="url">
                 </mat-form-field> 
-<!--                       
-                  <button type="button" fxLayout="row wrap" fxLayoutAlign="center center" [ngClass]="confirm ? 'btnMenuClicked':'btnMenu'" style="margin-top: 80px; margin-bottom: 40px;" fxFlex="90"  (click)="onSaveForm()">  Ingresar
-                  </button> -->
+                <button mat-raised-button  [ngClass]="confirm ? 'btnMenuClicked':'btnMenu'" fxFlex="90" (click)="sendUrl()" style="margin-top: 30px; height: 50px!important ;"> <i class="material-symbols-outlined notranslate">login</i> &nbsp; Continuar
+                </button>
+
+                <mat-error class="font fs-3 mt-20">{{ urlError }}</mat-error>
             
               </form>
             
@@ -94,9 +95,16 @@
                 <div class="material-symbols-outlined notranslate camera" >photo_camera</div>
             </div>
 
+            <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="100" style="margin-top: 60px;" *ngIf="qrData !== '' ">
+                
+                <span class="font fs-3" style="color: blue; cursor: pointer; ">{{qrData}}</span>
 
-            <span class="font fs-3" style="color: blue; cursor: pointer; margin-top: 40px;">{{qrData}}</span>
-     
+                <button mat-raised-button  [ngClass]="confirm ? 'btnMenuClicked':'btnMenu'" fxFlex="80" (click)="continue()" style="margin-top: 30px; height: 50px!important ;">
+                    <i class="material-symbols-outlined notranslate">login</i> 
+                    &nbsp; Continuar
+                </button>
+            </div>    
+        
 
 </div>
     

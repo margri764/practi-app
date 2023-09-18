@@ -11,6 +11,7 @@ import { User } from '../../models/user.models';
 import { ErrorService } from '../error/error.service';
 import { Router } from '@angular/router';
 import { LocalStorageService } from '../localStorage/local-storage.service';
+import { getDataLS } from '../../Storage';
 
 @Injectable({
   providedIn: 'root'
@@ -39,10 +40,23 @@ export class AuthService {
                 private router : Router
                 // private dialog : MatDialog
               )
-{ }
+{ 
+  console.log('desde auth');
+  this.baseUrl = getDataLS('baseUrl') || environment.baseUrl;
+}
 
+
+getUrl(){
+  return this.baseUrl;
+}
+
+setBaseUrl(newUrl: string) {
+  this.baseUrl = newUrl;
+}
 
 login(username: string, password : string){
+
+console.log(this.baseUrl);
 
 const base64Credentials = btoa(`${username}:${password}`);
 
@@ -85,7 +99,7 @@ getUser(){
                     }           
         }),            
     map( res =>{ 
-      // console.log('desde service getUser', res)
+      console.log('desde service getUser', res)
         return res} )
   )
   

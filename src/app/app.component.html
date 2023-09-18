@@ -18,10 +18,8 @@
             </div>
             
             <div class="footer">
-              <app-footer *ngIf="!(router.url === '/seleccionar-servidor')"></app-footer>
-              <!-- <app-footer *ngIf="!(router.url === '/start' || router.url === '/register'|| router.url === '/dashboard' || router.url === '/dashboard/order-managment' || router.url === '/login' || id )">
-              </app-footer> -->
-            </div> 
+              <app-footer *ngIf="(router.url === '/seleccionar-servidor') && phone"></app-footer>
+          
             
           </div> 
 

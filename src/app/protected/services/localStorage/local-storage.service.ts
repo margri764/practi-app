@@ -4,7 +4,6 @@ import { AppState } from 'src/app/app.reducer';
 import * as articleAction from 'src/app/article.actions'
 import * as authAction from 'src/app/auth.actions'
 import { getDataLS, getDataSS, saveDataLS, saveDataSS } from '../../Storage';
-import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +12,10 @@ export class LocalStorageService {
 
 
   constructor(
-              private store: Store<AppState>,
-              ) {
-  }
+               private store: Store<AppState>,
+               ) 
+  {
+    }
 
    loadInitialState() {
     const storedState = getDataSS("arrArticles");
@@ -38,6 +38,8 @@ export class LocalStorageService {
     if(tempUser !== undefined && tempUser !== null){
       this.store.dispatch(authAction.setTempClient({ client: tempUser }));
     }
+
+
  
   }
 

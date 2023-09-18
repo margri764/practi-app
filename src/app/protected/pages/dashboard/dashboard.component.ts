@@ -191,9 +191,11 @@ openDialogOpenOrder(){
 
 logout() {
 
+  //   this.errorService.logoutInvalidToken();
+  // }
   this.errorService.logout().subscribe(
-     (res)=>{if(res)this.login = false;});
-  }
+      (res)=>{if(res)this.login = false;});
+   }
 
 ngOnDestroy(): void {
 

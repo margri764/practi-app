@@ -1,6 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import jsQR from "jsqr";
+import { AuthService } from 'src/app/protected/services/auth/auth.service';
+import { LocalStorageService } from 'src/app/protected/services/localStorage/local-storage.service';
+import { OrderService } from 'src/app/protected/services/order/order.service';
 
 
 @Component({
@@ -13,15 +17,22 @@ export class ServerUrlComponent implements OnInit {
   
   @ViewChild('videoElement') videoElement!: ElementRef;
 
-  qrData : any;
+  qrData : string = '';
   private cameraStream: MediaStream | null = null;
   showCamera : boolean = true;
   myForm!: FormGroup;
   showInput : boolean = false;
   phone :  boolean = false;
+  confirm : boolean = false;
+  urlError : string = ''
+
 
   constructor(
-                private fb: FormBuilder,
+                private fb: FormBuilder, 
+                private authService : AuthService,
+                private orderService : OrderService,
+                private localStorageService : LocalStorageService,
+                private router : Router
   ) {
 
   (screen.width <= 600) ? this.phone = true : this.phone = false;
@@ -29,19 +40,20 @@ export class ServerUrlComponent implements OnInit {
 
     this.myForm = this.fb.group({
 
-      url:  [ '', [Validators.required]],
+      url:  ['', [Validators.required, Validators.pattern(/^(http|https):\/\/.*\/$/)]],
     });
     
    }
 
   ngOnInit(): void {
-    // this.encender()
+   console.log( this.authService.getUrl() );
   }
 
   async encender() {
     try {
       this.showCamera = true;
       this.showInput = false;
+      this.myForm.get('url')?.setValue('');
       const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
       this.videoElement.nativeElement.srcObject = stream;
       this.cameraStream = stream;
@@ -69,8 +81,8 @@ export class ServerUrlComponent implements OnInit {
           if (this.qrData) {
             this.apagarCamara();
             this.showCamera = false;
-            console.log('deberi apágar');
           }
+          this.setBaseURL(codigoQR.data);
           console.log('Código QR detectado:', codigoQR.data);
         }
   
@@ -99,23 +111,64 @@ export class ServerUrlComponent implements OnInit {
 
   close(){
     this.showCamera = false;
-    this.qrData = null;
+    this.qrData = '';
     this.showInput = false;
+    this.apagarCamara();
+    this.myForm.get('url')?.setValue('');
     
   }
 
-  onSaveForm(){
-    if ( this.myForm.invalid ) {
-      this.myForm.markAllAsTouched();
-      return;
-    }
-  }
+
 
   getUrl(){
     this.showInput = true;
     this.showCamera = false;
-    this.qrData = null;
+    this.qrData = '';
 
   }
+
+  setBaseURL(url:string){
+    this.authService.setBaseUrl(url);
+    this.orderService.setBaseUrl(url);
+    this.localStorageService.saveStateToLocalStorage( url, 'baseUrl');
+    
+  }
+  
+  continue(){
+
+    this.confirm = true;
+    setTimeout(()=>{ this.router.navigateByUrl('/login')}, 500);
+  }
+
+  sendUrl() {
+    const urlControl = this.myForm.get('url') ;
+  
+    // Marcar el campo URL como tocado
+    urlControl?.markAsTouched();
+  
+    if (urlControl?.invalid) {
+      if (urlControl?.errors?.['required']) {
+        // El campo URL es requerido
+        this.urlError = 'Este campo es requerido.';
+      } else if (urlControl?.errors?.['pattern']) {
+        // La URL tiene un formato incorrecto
+        this.urlError = 'La URL debe comenzar con http o https y terminar en "/"';
+      }
+      
+      return;
+    }
+  
+    const baseUrl = urlControl?.value;
+      
+      this.confirm = true;
+      this.setBaseURL(baseUrl);
+  
+      setTimeout(() => {
+        this.router.navigateByUrl('/login');
+      }, 500);
+    }
+  
+
+
 
 }

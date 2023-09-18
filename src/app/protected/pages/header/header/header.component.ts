@@ -150,10 +150,15 @@ export class HeaderComponent implements OnInit, AfterViewChecked{
                  this.router.navigateByUrl('/listado-precios');
             break;
           case '/buscar-articulos':
-              this.router.navigateByUrl('/armar-pedido');
-              // quiero la opcion de productos cuando salgo de este path y regreso al crear-pedidos
-              this.orderService.selectProductOption$.emit(true);
+                this.router.navigateByUrl('/armar-pedido');
+                // quiero la opcion de productos cuando salgo de este path y regreso al crear-pedidos
+                this.orderService.selectProductOption$.emit(true);
           break;
+
+          case '/seleccionar-servidor':
+            this.router.navigateByUrl('/login');
+
+           break;
                  
           default: this.router.navigateByUrl('/home');
             break;

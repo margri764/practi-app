@@ -7,6 +7,7 @@ import { AppState } from 'src/app/app.reducer';
 import { Store } from '@ngrx/store';
 import { LocalStorageService } from '../localStorage/local-storage.service';
 import * as articleActions from 'src/app/article.actions';
+import { getDataLS } from '../../Storage';
 
 
 @Injectable({
@@ -28,7 +29,15 @@ export class OrderService {
                 // private cookieService: CookieService
                 // private dialog : MatDialog
               )
-{ }
+{ 
+  console.log('desde order');
+  this.baseUrl = getDataLS('baseUrl') || environment.baseUrl;
+}
+
+
+setBaseUrl(newUrl: string) {
+  this.baseUrl = newUrl;
+}
 
 createOrder(order : Order){
 

@@ -63,6 +63,7 @@ ngOnInit() {
 
   this.errorService.labelInvalidCredential$.subscribe((emmited)=>{if(emmited){this.showLabelInvalidCredential = true; this.isLoading = false}});
   this.errorService.closeIsLoading$.emit(true); //esto lo tengo para cerrar el isLoading del app q lo tengo para los hard reload
+  this.errorService.closeIsLoading$.subscribe((emmited)=>{if(emmited){this.isLoading = false }});
   
   this.myForm = this.fb.group({
     // user:     [ 'marcelo', [Validators.required] ],

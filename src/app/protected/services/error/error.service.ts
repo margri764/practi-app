@@ -67,10 +67,21 @@ export class ErrorService {
       return of(null);
     }
 
+    if (error.status === 401 && error.error.message === "Invalid Token") {
+        this.logoutInvalidToken();
+        this.openDialogLogin();
+        this.close$.next(true);
+        this.close$.next(false);
+        this.closeIsLoading$.emit(true);
+      return of(null);
+
+
+    }
+
+
     if (error.status === 401) {
-        console.log('aca no deberia entrar');
-      this.openDialogLogin();
       this.logout();
+      this.openDialogLogin();
       this.close$.next(true);
       this.close$.next(false);
       // this.closeIsLoading$.emit(true);
@@ -115,6 +126,18 @@ export class ErrorService {
       return of(null);
     }
 
+    if (error.status === 404 ) {
+      this.closeIsLoading$.emit(true);
+      this.openGenericMsgAlert('Parece en error involuntario. Contacte al administrador')
+      return of(null);
+    }
+
+    if (error.statusText === "Unknown Error" ) {
+      this.closeIsLoading$.emit(true);
+      this.openGenericMsgAlert('Parece en error involuntario. Contacte al administrador')
+      return of(null);
+    }
+
     // Devuelve un observable que emite el error original
     return throwError(() => error);
 
@@ -124,6 +147,7 @@ export class ErrorService {
     return this.http.get<any>(`${this.baseUrl}api/logout`) 
     .pipe(
       tap( (res)=>{
+                 console.log('desde logout');
                  sessionStorage.removeItem("token");
                  this.close$.next(true);
                  this.close$.next(false);
@@ -146,6 +170,25 @@ export class ErrorService {
       ),
       map( res => res )
     )
+  }
+
+  logoutInvalidToken(){
+    sessionStorage.removeItem("token");
+    this.close$.next(true);
+    this.close$.next(false);
+    localStorage.removeItem("logged");
+    localStorage.removeItem("user");
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("openOrders");
+    this.cookieService.delete('token');
+    this.store.dispatch(articleActions.unSetArticles());
+    this.store.dispatch(articleActions.unSetSelectedArticles());
+    this.store.dispatch(articleActions.unSetTempOrder());
+    this.store.dispatch(authActions.unSetTempClient());
+    this.store.dispatch(authActions.unSetUser());
+    this.store.dispatch(authActions.unSetSalePoint());
+   //  setTimeout(()=>{location.reload()},100)
+    this.router.navigateByUrl('login'); 
   }
   
   checkDisplaysizes(){

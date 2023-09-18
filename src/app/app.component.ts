@@ -23,28 +23,11 @@ export class AppComponent implements OnInit {
   title = 'practigestion-app';
   @Output () currentUrl : any = '';
   @Output () login : boolean = false;
+
    isLoading : boolean = false;
    user : any;
+   phone : boolean = false;
 
-  @HostListener('window:beforeunload')
-  doSomething() {
-
-    // let userUpdate = this.authService.user;
-    // let userToLS = {nombre: userUpdate.nombre, permisos: userUpdate.permisos}
-
-    // if(userToLS !== undefined && userToLS !== null){
-    //   this.localStorageService.saveStateToLocalStorage(userToLS, 'user');
-    // }
-    // else{
-    //   // este usuario sale de redux
-    //   this.localStorageService.saveStateToLocalStorage(this.user, 'user');
-    //   this.isLoading = true;
-
-    // }
-
-  }
-  
-  
 
   constructor(
               private localStorageService: LocalStorageService,
@@ -63,9 +46,17 @@ export class AppComponent implements OnInit {
     const userLS = getDataLS('user');
     if(token !== '' && userLS === undefined){
       this.authService.getUser().subscribe();
+      this.orderService.getSalePoint().subscribe(
+        ({pos})=>{
+          if(pos){
+            let numero = parseFloat(pos.numero);
+            this.store.dispatch(authActions.setSalePoint( {salePoint : numero} ))
+          }
+        })
 
     }
 
+    (screen.width <= 800) ? this.phone = true : this.phone = false;
 
   }
 
@@ -74,13 +65,7 @@ export class AppComponent implements OnInit {
    this.localStorageService.loadInitialState();
 
 
-   this.orderService.getSalePoint().subscribe(
-    ({pos})=>{
-      if(pos){
-        let numero = parseFloat(pos.numero);
-        this.store.dispatch(authActions.setSalePoint( {salePoint : numero} ))
-      }
-    })
+
     
    this.errorService.closeIsLoading$.subscribe((emmited)=>{if(emmited){this.isLoading = false}})
   
