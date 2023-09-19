@@ -92,10 +92,9 @@
             
     
 
-            <div fxLayout="row wrap"  fxLayoutAlign="space-between center" fxFlex="100" style="margin-top: 30px;" *ngIf="!enableEdition">
-                <button mat-raised-button class="font fs-5" [ngClass]="confirmE ? 'btnMenuClicked':'btnMenu'" (click)="createOrder('E')" fxFlex="48" [disabled]="waitApi">Enviar Pedido</button>
+            <div fxLayout="row wrap"  fxLayoutAlign="start center" fxFlex="100" style="margin-top: 30px;" *ngIf="!enableEdition">
 
-                <button mat-raised-button class="font fs-5" [ngClass]="confirmA ? 'btnMenuClicked':'btnMenu'" (click)="createOrder('A')" fxFlex="48" [disabled]="waitApi">Guardar Pedido</button>
+                <button mat-raised-button class="font fs-5" [ngClass]="confirm ? 'btnMenuClicked':'btnMenu'" (click)="createOrder()" fxFlex="100" [disabled]="waitApi">Guardar Pedido</button>
             </div>
 
             <div fxLayout="row wrap"  fxLayoutAlign="space-between center" fxFlex="100" style="margin-top: 30px;" *ngIf="enableEdition">

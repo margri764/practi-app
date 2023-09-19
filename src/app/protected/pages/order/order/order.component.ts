@@ -39,9 +39,10 @@ export class OrderComponent implements OnInit, OnDestroy {
   client! : User;
   showClient : boolean = true;
   showProduct : boolean = false;
-  confirmE: boolean= false;
-  confirmA: boolean= false;
+
   enableEdition : boolean = false;
+  waitApi : boolean = false;
+
 
 
   confirm : boolean = false;
@@ -223,37 +224,28 @@ export class OrderComponent implements OnInit, OnDestroy {
    return tempOrderItem
   }
 
-  waitApi : boolean = false;
-  createOrder(saveOrSend : string){
-
+  createOrder(){
     if ( this.myForm.invalid  ) {
       this.myForm.markAllAsTouched();
-       this.confirmE = false;
-       this.confirmA = false;
       return;
     }
     
     if(this.arrItemSelected.length === 0 ){
         this.openGenericMsgAlert('Elegí productos para generar el pedido');
-        this.confirmE = false;
-        this.confirmA = false;
         return;
     }
 
     this.isLoading = true;
+    this.confirm = true;
     
-    if(saveOrSend === "E"){
-      this.confirmE = true;
-    }else{
-      this.confirmA = true;
-    }
+
 
     console.log(this.saleOption);
 
     const detalleItems = this.createItemsOrder();
     const body : Order ={
         idAgenda : this.client.id,
-        estado :  saveOrSend,
+        estado :  "A",
         ptoVenta: this.salePoint.numero,
         descuentoPorcentaje: this.myForm.get('discount')?.value,
         detalleItems 
@@ -267,10 +259,8 @@ export class OrderComponent implements OnInit, OnDestroy {
         this.waitApi = false;
         this.isLoading = false;
         this.resetOrder();
-        //si el pedido se guardo qu vuelva a cargar las ordenes abiertas
-        if(body.estado === "A"){
-            this.orderService.getOpenOrders().subscribe()
-        }
+        this.orderService.getOpenOrders().subscribe();
+        this.confirm = false;
       }
     })
   }
