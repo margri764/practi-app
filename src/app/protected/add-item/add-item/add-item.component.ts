@@ -53,6 +53,8 @@ export class AddItemComponent implements OnInit {
 
   noMatch : boolean = false;
   defaultValue : string = 'Por descripción';
+  idListaPrecios : any;
+
 
   myForm! : FormGroup;
   searchOptions : string [] = ["Por descripción", "Por código"]
@@ -77,17 +79,7 @@ export class AddItemComponent implements OnInit {
     });   
    }
 
-  ngOnDestroy() {
-    // Aquí cancela tus suscripciones
-    if (this.authSuscription) {
-      this.authSuscription.unsubscribe();
-    }
-    if (this.articleSuscription) {
-      this.articleSuscription.unsubscribe();
-    }
-  }
 
-  idListaPrecios : any;
   ngOnInit(): void {
 
     // // despues de seleccionar el articulo con mas opciones como bonificacion, cierro el card de /buscar-pedidos
@@ -98,6 +90,8 @@ export class AddItemComponent implements OnInit {
     //     this.itemSearch = '';
     //   }
     // })
+
+    console.log(this.item);
 
     this.errorService.labelInvalidCode$.subscribe((emmited)=>{if(emmited){this.noMatch = true}})
 
@@ -195,6 +189,17 @@ export class AddItemComponent implements OnInit {
   //   )
   // }
 
+  
+  ngOnDestroy() {
+    // Aquí cancela tus suscripciones
+    if (this.authSuscription) {
+      this.authSuscription.unsubscribe();
+    }
+    if (this.articleSuscription) {
+      this.articleSuscription.unsubscribe();
+    }
+  }
+
       // search by description
        
       close(){
@@ -266,6 +271,7 @@ export class AddItemComponent implements OnInit {
     this.articleService.getArtListPriceByCode(this.idListaPrecios, codigoInterno)
         .subscribe ( ({precio} )=>{
           if(precio){
+            console.log(precio);
             this.orderService.emitedItem$.emit(precio);
             this.articleFounded = precio;
             this.spinner = false;

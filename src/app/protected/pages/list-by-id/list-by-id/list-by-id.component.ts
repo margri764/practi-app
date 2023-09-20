@@ -21,7 +21,7 @@ export class ListByIdComponent implements OnInit {
       // paginator
       length = 150;
       pageSize = 10;
-      pageIndex = 1;
+      pageIndex = 0;
       pageSizeOptions = [5, 10, 25];
       hidePageSize = false;
       showPageSizeOptions = true;

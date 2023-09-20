@@ -191,11 +191,18 @@ openDialogOpenOrder(){
 
 logout() {
 
-  //   this.errorService.logoutInvalidToken();
-  // }
-  this.errorService.logout().subscribe(
-      (res)=>{if(res)this.login = false;});
-   }
+    this.errorService.logoutInvalidToken();
+    this.store.dispatch(articleActions.unSetArticles());
+    this.store.dispatch(articleActions.unSetSelectedArticles());
+    this.store.dispatch(articleActions.unSetTempOrder());
+    this.store.dispatch(authActions.unSetTempClient());
+    this.store.dispatch(authActions.unSetUser());
+    this.store.dispatch(authActions.unSetSalePoint());
+  }
+  
+  // this.errorService.logout().subscribe(
+  //     (res)=>{if(res)this.login = false;});
+  //  }
 
 ngOnDestroy(): void {
 

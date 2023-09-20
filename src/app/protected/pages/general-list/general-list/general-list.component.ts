@@ -24,7 +24,7 @@ export class GeneralListComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // this.errorService.close$.subscribe(  (emitted)=>{if(emitted)this._bottomSheet.dismiss()})
+    this.errorService.closeIsLoading$.subscribe(  (emitted)=>{if(emitted)this.isLoading = false;})
     this.getAllTruePriceList();
   }
 

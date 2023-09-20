@@ -3,6 +3,7 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { Observable, map, tap, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Order } from '../../interfaces/order.interface';
+import { getDataLS } from '../../Storage';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,13 @@ export class ArticlesService {
                 // private store : Store <AppState>,
                 // private dialog : MatDialog
               )
-{ }
+{ 
+  this.baseUrl = getDataLS('baseUrl') || environment.baseUrl;
+}
+
+setBaseUrl(newUrl: string) {
+  this.baseUrl = newUrl;
+}
 
 getAllArticles(){
 
@@ -115,7 +122,7 @@ getArtListPriceByCode( idListaPrecios : any, codeInt : any ){
   return this.http.get<any>(`${this.baseUrl}api/precios/${idListaPrecios}/${code}/${tempCode}`)
 .pipe(
   map( res =>{ 
-        console.log('desde service getArtListPriceByDesc', res)
+        console.log('desde service getArtListPriceByCode', res)
           return res} )
   );
 

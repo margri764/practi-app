@@ -44,16 +44,19 @@ export class AppComponent implements OnInit {
     // si se borra el user del LS pero tengo la cookie que llame al user del back
     const token = this.cookieService.get('token');
     const userLS = getDataLS('user');
+    
     if(token !== '' && userLS === undefined){
       this.authService.getUser().subscribe();
-      this.orderService.getSalePoint().subscribe(
-        ({pos})=>{
-          if(pos){
-            let numero = parseFloat(pos.numero);
-            this.store.dispatch(authActions.setSalePoint( {salePoint : numero} ))
-          }
-        })
-
+    }
+    if(token !== '' && userLS !== undefined ){
+      console.log(userLS);
+      orderService.getSalePoint().subscribe(
+      ({pos})=>{
+        if(pos){
+          let numero = parseFloat(pos.numero);
+          this.store.dispatch(authActions.setSalePoint( {salePoint : numero} ))
+        }
+      })
     }
 
     (screen.width <= 800) ? this.phone = true : this.phone = false;

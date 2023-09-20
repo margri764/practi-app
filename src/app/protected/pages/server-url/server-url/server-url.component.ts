@@ -1,7 +1,10 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import jsQR from "jsqr";
+import { CookieService } from 'ngx-cookie-service';
+import { getDataLS } from 'src/app/protected/Storage';
+import { ArticlesService } from 'src/app/protected/services/articles/articles.service';
 import { AuthService } from 'src/app/protected/services/auth/auth.service';
 import { LocalStorageService } from 'src/app/protected/services/localStorage/local-storage.service';
 import { OrderService } from 'src/app/protected/services/order/order.service';
@@ -12,7 +15,7 @@ import { OrderService } from 'src/app/protected/services/order/order.service';
   templateUrl: './server-url.component.html',
   styleUrls: ['./server-url.component.scss']
 })
-export class ServerUrlComponent implements OnInit {
+export class ServerUrlComponent implements OnInit, OnDestroy {
 
   
   @ViewChild('videoElement') videoElement!: ElementRef;
@@ -32,7 +35,8 @@ export class ServerUrlComponent implements OnInit {
                 private authService : AuthService,
                 private orderService : OrderService,
                 private localStorageService : LocalStorageService,
-                private router : Router
+                private articleService : ArticlesService,
+                private router : Router,
   ) {
 
   (screen.width <= 600) ? this.phone = true : this.phone = false;
@@ -44,6 +48,7 @@ export class ServerUrlComponent implements OnInit {
     });
     
    }
+
 
   ngOnInit(): void {
    console.log( this.authService.getUrl() );
@@ -103,9 +108,9 @@ export class ServerUrlComponent implements OnInit {
     if (this.cameraStream) {
       const tracks = this.cameraStream.getTracks();
       tracks.forEach(track => {
-        track.stop(); // Detener cada pista de la cámara
+        track.stop(); 
       });
-      this.cameraStream = null; // Limpiar la referencia al flujo de cámara
+      this.cameraStream = null; 
     }
   }
 
@@ -116,6 +121,11 @@ export class ServerUrlComponent implements OnInit {
     this.apagarCamara();
     this.myForm.get('url')?.setValue('');
     
+  }
+
+  ngOnDestroy(): void {
+    this.apagarCamara();
+    this.close();
   }
 
 
@@ -130,6 +140,7 @@ export class ServerUrlComponent implements OnInit {
   setBaseURL(url:string){
     this.authService.setBaseUrl(url);
     this.orderService.setBaseUrl(url);
+    this.articleService.setBaseUrl(url);
     this.localStorageService.saveStateToLocalStorage( url, 'baseUrl');
     
   }
@@ -168,6 +179,8 @@ export class ServerUrlComponent implements OnInit {
       }, 500);
     }
   
+
+
 
 
 

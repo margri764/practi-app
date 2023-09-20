@@ -10,7 +10,6 @@ import { OrderService } from 'src/app/protected/services/order/order.service';
 import { GenericMessageComponent } from '../../generic-message/generic-message/generic-message.component';
 import { GenericSuccessComponent } from '../../generic-success/generic-success/generic-success.component';
 import { Router } from '@angular/router';
-
 @Component({
   selector: 'app-edit-order',
   templateUrl: './edit-order.component.html',
@@ -129,15 +128,21 @@ export class EditOrderComponent implements OnInit {
     // this.isLoading = true;
     let tempOrder = this.orderForm.value;
 
+    // let tempTotal;
+    // this.data.detalleItems.forEach((item:any)=>{tempTotal = item.impTotal})
+    // console.log(tempTotal);
+    // console.log(tempOrder);
+    
+    
     const editedData = {
               idAgenda: this.data.idAgenda,
-              estado : this.data.estado,
+              estado : "A",
               descuentoPorcentaje : tempOrder.descuentoPorcentaje,
-              detalleItems : tempOrder.detalleItems
+              detalleItems : tempOrder.detalleItems,
+              cbteNro: this.data.cbteNro,
+              fecha: new Date()
 
     }
-
-    console.log(editedData);
 
     const cbteNro = this.data.cbteNro;
     const ptoVenta = this.data.ptoVenta;
@@ -150,7 +155,8 @@ export class EditOrderComponent implements OnInit {
             this.orderService.getOpenOrders().subscribe(
               (res)=>{ 
                 if(res){ 
-                        this.openGenericSuccess("Pedido actualizado con exito")
+                        this.openGenericSuccess("Pedido actualizado con exito");
+                        this.errorService.loadAllOrders$.emit(true);
                       }})
 
             this.close(); 
@@ -180,6 +186,7 @@ delItem : boolean = false;
 
   addItem(){
       this.addItemSelected = true;
+      console.log(this.data);
       this.item = this.data;
   }
 

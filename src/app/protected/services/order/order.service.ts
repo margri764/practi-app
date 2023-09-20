@@ -52,8 +52,6 @@ createOrder(order : Order){
   
 }
 
-
-
 updateOrderState( salePoint : any, nroOrder : any, state : string){
   const emptyBody = {}
   return this.http.put<any>(`${this.baseUrl}api/pedidos/estado/${salePoint}/${nroOrder}?e=${state}`, emptyBody)
@@ -124,7 +122,6 @@ getAllOrders( ){
   );
 }
 
-//  / return this.http.get<any>(`${this.baseUrl}api/precios/${id}?p=${from}&r=${to}`)
 
 getOrdersByPtoVenta( id :  any, from : any, to : any){
 
@@ -143,7 +140,7 @@ getSalePointByNumOrder( salePoint :  any, nroOrder : any ){
       console.log('desde service getSalePointByNumOrder', res)
       return res} )
       );
-    }
+}
 
 editOrderBySalePointAndNumOrder( body:any, salePoint : any, nroOrder : any){
 console.log(body);

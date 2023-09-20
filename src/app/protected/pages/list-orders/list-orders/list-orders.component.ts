@@ -49,7 +49,7 @@ export class ListOrdersComponent implements OnInit, OnDestroy {
     // paginator
     length = 150;
     pageSize = 10;
-    pageIndex = 1;
+    pageIndex = 0;
     pageSizeOptions = [5, 10, 25];
     hidePageSize = false;
     showPageSizeOptions = true;
@@ -86,7 +86,8 @@ export class ListOrdersComponent implements OnInit, OnDestroy {
 
     
 
-    this.errorService.closeIsLoading$.subscribe((emitted)=>{if(emitted){this.isLoading = false}})
+    this.errorService.closeIsLoading$.subscribe((emitted)=>{if(emitted){this.isLoading = false}});
+    this.errorService.loadAllOrders$.subscribe((emitted)=>{if(emitted){this.isLoading = false; this.getAllOrders()}});
    
     this.myForm = this.fb.group({
       ptoVenta:  [ '' ],
@@ -125,7 +126,6 @@ export class ListOrdersComponent implements OnInit, OnDestroy {
         this.isLoading = false;
         return
       }
-      console.log(this.salePoint);
 
       this.orderService.getOrdersByPtoVenta(this.salePoint, this.pageIndex, this.pageSize).subscribe(
         ({pedidos, pagination})=>{
@@ -282,7 +282,8 @@ export class ListOrdersComponent implements OnInit, OnDestroy {
   }
 
   calculateTotal(detalleItems: any[]): number {
-    return detalleItems.reduce((total, item) => total + item.importeNetoTotal, 0);
+
+    return detalleItems.reduce((total, item) => total + item.impTotal, 0);
   }
 
 

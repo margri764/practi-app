@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-wrong-action-message',
@@ -14,6 +15,7 @@ export class WrongActionMessageComponent implements OnInit {
   constructor( 
               private dialogRef : MatDialogRef<WrongActionMessageComponent>,
               @Inject(MAT_DIALOG_DATA) private data: any,
+              private router : Router
               )
    { }
 
@@ -23,7 +25,8 @@ export class WrongActionMessageComponent implements OnInit {
 
   continue(){
     this.confirm = true;
-    setTimeout(()=>{ this.dialogRef.close() },300)
+    setTimeout(()=>{ this.dialogRef.close() },300);
+    this.router.navigateByUrl('/home')
     
   }
 

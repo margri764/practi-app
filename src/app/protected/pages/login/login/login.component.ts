@@ -4,13 +4,13 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { filter, Subscription } from 'rxjs';
 import { AppState } from 'src/app/app.reducer';
-import { Location } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from 'src/app/protected/services/auth/auth.service';
 import { getDataLS, getDataSS, saveDataLS, saveDataSS } from 'src/app/protected/Storage';
 import { CookieService } from 'ngx-cookie-service';
 import { OrderService } from 'src/app/protected/services/order/order.service';
 import { ErrorService } from 'src/app/protected/services/error/error.service';
+import * as authActions from 'src/app/auth.actions';
 
 
 @Component({
@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                  private store: Store<AppState>,
                  private dialog : MatDialog,
                  private cookieService : CookieService,
-                 private orderService : OrderService
+                 private orderService : OrderService,
                 )
   {
     const token = this.cookieService.get('token');
@@ -55,6 +55,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     if ( (token !== '') && logged) {
       this.router.navigateByUrl('/home')
     }
+        
+
 
 
   }
@@ -106,13 +108,34 @@ ngOnInit() {
 
  }  
 
+ getSalePoint(){
+
+  const token = this.cookieService.get('token');
+  const userLS = getDataLS('user')
+  if(token !== '' && userLS !== undefined ){
+    this.orderService.getSalePoint().subscribe(
+    ({pos})=>{
+      if(pos){
+        let numero = parseFloat(pos.numero);
+        this.store.dispatch(authActions.setSalePoint( {salePoint : numero} ))
+      }
+    })
+  }
+
+ }
+
 
 validField( field: string ) {
     return this.myForm.controls[field].errors && this.myForm.controls[field].touched;
 }
 
 getUser(){
-  this.authservice.getUser().subscribe((res)=>{if(res){this.isLoading=false;this.router.navigateByUrl('/home');}});
+  this.authservice.getUser().subscribe(
+    (res)=>{
+        if(res){
+          this.isLoading=false;
+          this.getSalePoint();
+          this.router.navigateByUrl('/home');}});
                       
 }
 

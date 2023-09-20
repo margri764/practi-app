@@ -33,6 +33,7 @@ export class ErrorService {
   closeIsLoading$ : EventEmitter<boolean> = new EventEmitter<boolean>; 
   labelInvalidCredential$ : EventEmitter<boolean> = new EventEmitter<boolean>; 
   labelInvalidCode$ : EventEmitter<boolean> = new EventEmitter<boolean>; // en las
+  loadAllOrders$ : EventEmitter<boolean> = new EventEmitter<boolean>; // en las
   
   constructor(
               private dialog : MatDialog,

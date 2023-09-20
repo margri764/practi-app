@@ -8,21 +8,20 @@
 
             <form  [formGroup]="myForm" fxLayout="row wrap" fxLayoutAlign="start center" fxFlex="100"  > 
     
-                        <mat-form-field appearance="outline" floatLabel="always">
-                            <mat-label class="font fs-4">seleccion</mat-label>
-                            <mat-select  formControlName="searchOption" class="font" [value]="defaultValue" >
-                                        <mat-option value=""></mat-option>
-                                        <mat-option *ngFor="let option of searchOptions" [value]="option" class="font fs-4"> {{option}}</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-    
-                   
-                            <mat-form-field  appearance="outline" fxFlex="96" class="font fs-5" >
-                                <input type="text" matInput  placeholder="Buscar artículo"  name="itemSearch"
-                                formControlName="itemSearch"
-                                >
-                                <mat-icon matSuffix style="transform:scale(1.7); color: rgb(37, 150, 190); margin-right: 20px;" (click)="searchByCode()">search</mat-icon>
-                            </mat-form-field>
+                <mat-form-field appearance="outline" floatLabel="always">
+                    <mat-label class="font fs-4">seleccion</mat-label>
+                    <mat-select  formControlName="searchOption" class="font" [value]="defaultValue" >
+                                <mat-option value=""></mat-option>
+                                <mat-option *ngFor="let option of searchOptions" [value]="option" class="font fs-4"> {{option}}</mat-option>
+                            </mat-select>
+                </mat-form-field>
+            
+                <mat-form-field  appearance="outline" fxFlex="96" class="font fs-5" >
+                    <input type="text" matInput  placeholder="Buscar artículo"  name="itemSearch"
+                    formControlName="itemSearch"
+                    >
+                    <mat-icon matSuffix style="transform:scale(1.7); color: rgb(37, 150, 190); margin-right: 20px;" (click)="searchByCode()">search</mat-icon>
+                </mat-form-field>
             </form>
     
             <span class="font fs-5" style="color: red; border-radius: 7px; padding: 20px; margin-top: 20px; border: 1px solid red;" *ngIf="noMatch">Sin coincidencias</span>

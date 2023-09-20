@@ -11,7 +11,6 @@ export class TwoDecimalPipe implements PipeTransform {
     const decimalPart = value - Math.floor(value); // Obtener la parte decimal
 
     if (decimalPart === 0) {
-      console.log(decimalPart);
       return parseFloat(value.toFixed(2)) + 0.00; // Agregar dos ceros si no hay decimales
     } else if (decimalPart === 0.1) {
       return parseFloat(value.toFixed(2)) + 0.0; // Agregar un cero si hay un solo decimal

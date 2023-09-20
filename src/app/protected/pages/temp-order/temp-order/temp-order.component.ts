@@ -107,6 +107,7 @@ export class TempOrderComponent implements OnInit {
 
     this.orderService.getSalePointByNumOrder(ptoVenta, cbteNro ).subscribe(
       ({Pedido})=>{
+        console.log(Pedido);
                 if(Pedido){
                   this.dialog.open(EditOrderComponent, {
                   data: Pedido,
