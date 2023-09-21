@@ -114,6 +114,21 @@ export class ErrorService {
       this.closeIsLoading$.emit(true);
       return of(null);
     }
+
+    if (error.status === 500 && /El CUIT \d+ ya existe en la agenda/.test(error.error.message)) {
+      this.labelInvalidCode$.emit(true);
+      this.closeIsLoading$.emit(true);
+      this.openGenericMsgAlert(error.error.message);
+      return of(null);
+    }
+    
+    
+    // if (error.status === 500 && error.error.message.includes("El CUIT 20277527473 ya existe en la agenda") ) {
+    //   this.labelInvalidCode$.emit(true);
+    //   this.closeIsLoading$.emit(true);
+    //   alert("cuit")
+    //   return of(null);
+    // }
     
     if (error.status === 500) {
       this.openDialogBackendDown();
@@ -129,6 +144,7 @@ export class ErrorService {
 
     if (error.status === 404 ) {
       this.closeIsLoading$.emit(true);
+      // ojo esto va en duro en el componente para redirigir al login!!
       this.openGenericMsgAlert('Parece en error involuntario. Contacte al administrador')
       return of(null);
     }

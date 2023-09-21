@@ -8,6 +8,7 @@ import { ArticlesService } from 'src/app/protected/services/articles/articles.se
 import { AuthService } from 'src/app/protected/services/auth/auth.service';
 import { LocalStorageService } from 'src/app/protected/services/localStorage/local-storage.service';
 import { OrderService } from 'src/app/protected/services/order/order.service';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -27,7 +28,8 @@ export class ServerUrlComponent implements OnInit, OnDestroy {
   showInput : boolean = false;
   phone :  boolean = false;
   confirm : boolean = false;
-  urlError : string = ''
+  urlError : string = '';
+  baseUrl = environment.baseUrl;
 
 
   constructor(
@@ -52,6 +54,8 @@ export class ServerUrlComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
    console.log( this.authService.getUrl() );
+
+   this.baseUrl = getDataLS('baseUrl') || environment.baseUrl;
   }
 
   async encender() {
@@ -148,7 +152,7 @@ export class ServerUrlComponent implements OnInit, OnDestroy {
   continue(){
 
     this.confirm = true;
-    setTimeout(()=>{ this.router.navigateByUrl('/login')}, 500);
+    setTimeout(()=>{ this.router.navigateByUrl('/login')}, 1000);
   }
 
   sendUrl() {

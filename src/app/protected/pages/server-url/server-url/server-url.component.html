@@ -69,6 +69,21 @@
     
     </div>
 
+           <!-- no user   -->
+           <div fxLayout="row wrap"  fxLayoutAlign="center center" fxFlex="100" *ngIf="qrData === '' "  >
+            
+                <div fxLayout="row wrap" fxLayoutAlign="start center"  fxFlex.xs="90" fxFlex.sm="80" fxFlex="30"  class="fs-4 whiteframe " style="border-radius: 10px; padding: 15px; margin-bottom: 20px; margin-top: 30px; height: 60px; border-left: 10px solid green; 
+                border-top: 1px solid green; border-bottom: 1px solid green; border-right: 1px solid green;  box-shadow: 2px 2px 5px 0px rgba(163, 163, 163, 0.45);  -webkit-box-shadow: 2px 2px 5px 0px rgba(163, 163, 163,0.45);
+                -moz-box-shadow: 2px 2px 5px 0px rgba(163, 163, 163,0.45);">
+                    <span class="font fs-3" style=" text-align: start; margin-bottom: 5px; width: 100%;">Url actual</span> 
+                    <span class="material-icons" style="color: green;"> done </span>
+                    <span class="font fs-2" style=" text-align: center; margin-left: 20px;">{{baseUrl}}</span>
+                </div>
+        </div>
+        <!-- end no items -->
+
+
+
 
         <div fxLayout="row wrap" fxLayoutAlign="center start" fxFlex="100" *ngIf="showInput" style="margin-top: 30px;">
 
@@ -78,10 +93,12 @@
                     <mat-label>URL</mat-label>
                     <input matInput type="email" required formControlName="url">
                 </mat-form-field> 
+                
+                <mat-error class="font fs-3 mt-20">{{ urlError }}</mat-error>
+
                 <button mat-raised-button  [ngClass]="confirm ? 'btnMenuClicked':'btnMenu'" fxFlex="90" (click)="sendUrl()" style="margin-top: 30px; height: 50px!important ;"> <i class="material-symbols-outlined notranslate">login</i> &nbsp; Continuar
                 </button>
 
-                <mat-error class="font fs-3 mt-20">{{ urlError }}</mat-error>
             
               </form>
             

@@ -25,7 +25,7 @@
 
         <mat-form-field appearance="outline" fxFlex="49" class="mt-10 font " >		
             <mat-label>Razón Social </mat-label>
-            <input matInput type="text" required formControlName="razonSocial" >
+            <input matInput type="text"  formControlName="razonSocial" >
         </mat-form-field> 
 
         <mat-form-field appearance="outline" floatLabel="always" fxFlex="49" class="mt-10 font ">
@@ -81,7 +81,7 @@
 
             <mat-form-field appearance="outline" fxFlex="48" class="mt-10 font " >		
                 <mat-label>Cod. Area</mat-label>
-                <input matInput type="text"  formControlName="telefonoCodigoArea">
+                <input matInput type="text"  formControlName="telefonoCodigoArea" >
             </mat-form-field>
             <mat-form-field appearance="outline" fxFlex="48" class="mt-10 font " >		
                 <mat-label>Numero</mat-label>
@@ -125,7 +125,7 @@
         </button>
         <button mat-raised-button  [ngClass]="save ? 'btnMenuClicked':'btnMenu'" fxFlex="48" (click)="onSaveForm()">
             <i class="material-symbols-outlined notranslate">login</i> 
-            &nbsp; Editar
+            &nbsp; Guardar
         </button>
     </div>
     <!-- end save button -->

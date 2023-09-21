@@ -41,7 +41,6 @@ export class AuthService {
                 // private dialog : MatDialog
               )
 { 
-  console.log('desde auth');
   this.baseUrl = getDataLS('baseUrl') || environment.baseUrl;
 }
 

@@ -36,7 +36,7 @@ export class OrderComponent implements OnInit, OnDestroy {
   onlyDate: string = this.date.toLocaleDateString(); // Muestra solo la fecha
   authSuscription! : Subscription;
   articleSuscription! : Subscription;
-  client! : User;
+  client! : User | null;
   showClient : boolean = true;
   showProduct : boolean = false;
 
@@ -244,7 +244,7 @@ export class OrderComponent implements OnInit, OnDestroy {
 
     const detalleItems = this.createItemsOrder();
     const body : Order ={
-        idAgenda : this.client.id,
+        idAgenda : this.client!.id,
         estado :  "A",
         ptoVenta: this.salePoint.numero,
         descuentoPorcentaje: this.myForm.get('discount')?.value,
@@ -271,7 +271,7 @@ export class OrderComponent implements OnInit, OnDestroy {
     this.myForm.reset();
     this.myForm.markAsPristine();
     this.myForm.markAsUntouched();
-    // this.client = {},
+    this.client = null,
     this.arrArticles = [];
     this.arrItemSelected = [];
     this.store.dispatch(articleAction.unSetSelectedArticles());
@@ -293,38 +293,38 @@ export class OrderComponent implements OnInit, OnDestroy {
     this.isLoading = true;
 
     let tempClient = {
-      archivarComo: this.client.archivarComo,
-      nombre: this.client.nombre ,
-      apellido: this.client.apellido ,
-      domicilio: this.client.domicilio ,
-      localidad: this.client.domicilio ,
-      codigoPostal: this.client.codigoPostal ,
-      provincia: this.client.provincia ,
-      pais: this.client.provincia ,
-      telefonoCodigoPais: this.client.telefonoCodigoPais,
+      archivarComo: this.client?.archivarComo,
+      nombre: this.client?.nombre ,
+      apellido: this.client?.apellido ,
+      domicilio: this.client?.domicilio ,
+      localidad: this.client?.domicilio ,
+      codigoPostal: this.client?.codigoPostal ,
+      provincia: this.client?.provincia ,
+      pais: this.client?.provincia ,
+      telefonoCodigoPais: this.client?.telefonoCodigoPais,
       telefonoCodigoArea: this.myForm.get('telefonoCodigoArea')?.value,
-      esMovil: this.client.esMovil,
+      esMovil: this.client?.esMovil,
       numeroLocal:  this.myForm.get('numeroLocal')?.value,
-      extensionTelefono: this.client.extensionTelefono,
-      descripcionTelefono: this.client.descripcionTelefono ,
+      extensionTelefono: this.client?.extensionTelefono,
+      descripcionTelefono: this.client?.descripcionTelefono ,
       email1: this.myForm.get('email1')?.value ,
-      email2: this.client.email2,
-      email3: this.client.email3,
-      email4: this.client.email4,
-      emailAnotacion: this.client.emailAnotacion ,
-      emailEnvioComprobantes: this.client.emailEnvioComprobantes,
-      organizacion: this.client.organizacion,
+      email2: this.client?.email2,
+      email3: this.client?.email3,
+      email4: this.client?.email4,
+      emailAnotacion: this.client?.emailAnotacion ,
+      emailEnvioComprobantes: this.client?.emailEnvioComprobantes,
+      organizacion: this.client?.organizacion,
       razonSocial: this.myForm.get('razonSocial')?.value  ,
       cuit: this.myForm.get('cuit')?.value ,
-      nroDocumento: this.client.nroDocumento ,
-      idCondicionIva: this.client.idCondicionIva,
-      esCliente: this.client.esCliente,
-      esProveedor: this.client.esProveedor,
-      esContacto: this.client.esContacto,
-      observaciones: this.client.observaciones,
-      id: this.client.id,
-      idListaPrecios: this.client.idListaPrecios,
-      idTipoDocumento: this.client.idTipoDocumento,
+      nroDocumento: this.client?.nroDocumento ,
+      idCondicionIva: this.client?.idCondicionIva,
+      esCliente: this.client?.esCliente,
+      esProveedor: this.client?.esProveedor,
+      esContacto: this.client?.esContacto,
+      observaciones: this.client?.observaciones,
+      id: this.client?.id,
+      idListaPrecios: this.client?.idListaPrecios,
+      idTipoDocumento: this.client?.idTipoDocumento,
 
     } 
     console.log(tempClient);
@@ -348,16 +348,16 @@ export class OrderComponent implements OnInit, OnDestroy {
   close(){
     let tempClient = this.client;
     this.enableEdition = false;
-    const fullName = `${tempClient.nombre} ${tempClient.apellido}`;
-    const phone = `${tempClient.telefonoCodigoArea} ${tempClient.numeroLocal}`;
+    const fullName = `${tempClient?.nombre} ${tempClient?.apellido}`;
+    const phone = `${tempClient?.telefonoCodigoArea} ${tempClient?.numeroLocal}`;
     this.myForm.controls['client']?.setValue(fullName);
-    this.myForm.controls['comercialName']?.setValue(tempClient.razonSocial);
+    this.myForm.controls['comercialName']?.setValue(tempClient?.razonSocial);
     this.myForm.controls['phone']?.setValue(phone);
-    this.myForm.controls['numeroLocal']?.setValue(tempClient.numeroLocal);
-    this.myForm.controls['telefonoCodigoArea']?.setValue(tempClient.telefonoCodigoArea);
-    this.myForm.controls['cuit']?.setValue(tempClient.cuit);
-    this.myForm.controls['ptoVenta']?.setValue(tempClient.idListaPrecios);
-    this.myForm.controls['email1']?.setValue(tempClient.email1);
+    this.myForm.controls['numeroLocal']?.setValue(tempClient?.numeroLocal);
+    this.myForm.controls['telefonoCodigoArea']?.setValue(tempClient?.telefonoCodigoArea);
+    this.myForm.controls['cuit']?.setValue(tempClient?.cuit);
+    this.myForm.controls['ptoVenta']?.setValue(tempClient?.idListaPrecios);
+    this.myForm.controls['email1']?.setValue(tempClient?.email1);
   }
  
 

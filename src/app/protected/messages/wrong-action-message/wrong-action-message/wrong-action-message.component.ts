@@ -21,12 +21,17 @@ export class WrongActionMessageComponent implements OnInit {
 
   ngOnInit(): void {
     this.msg = this.data;
+    
   }
 
   continue(){
     this.confirm = true;
     setTimeout(()=>{ this.dialogRef.close() },300);
-    this.router.navigateByUrl('/home')
+
+    if(this.msg === 'Parece en error involuntario. Contacte al administrador'){
+      this.router.navigateByUrl('/login');
+      return
+    }
     
   }
 

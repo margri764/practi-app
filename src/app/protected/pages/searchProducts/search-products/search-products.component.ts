@@ -95,14 +95,6 @@ producto : string = "Producto añadido"
     });   
   }
 
-  ngOnDestroy() {
-    if (this.authSuscription) {
-      this.authSuscription.unsubscribe();
-    }
-    if (this.articleSuscription) {
-      this.articleSuscription.unsubscribe();
-    }
-  }
 
   ngOnInit(): void {
 
@@ -115,6 +107,7 @@ producto : string = "Producto añadido"
     //para las busquedas
     this.myForm.get('itemSearch')?.valueChanges.subscribe(newValue => {
       this.itemSearch = newValue;
+      this.noMatches = false;
 
       const option = this.myForm.get('searchOption')?.value;
       if(this.itemSearch !== null && this.itemSearch !== ''){
@@ -405,5 +398,15 @@ openDialogArticle(article : any){
   });
 
 }
+
+ngOnDestroy() {
+  if (this.authSuscription) {
+    this.authSuscription.unsubscribe();
+  }
+  if (this.articleSuscription) {
+    this.articleSuscription.unsubscribe();
+  }
+}
+
 
 }
