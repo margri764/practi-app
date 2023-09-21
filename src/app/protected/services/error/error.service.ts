@@ -109,11 +109,6 @@ export class ErrorService {
       return of(null);
     }
 
-    if (error.status === 500 && error.error.message === "Codigo no encontrado") {
-      this.labelInvalidCode$.emit(true);
-      this.closeIsLoading$.emit(true);
-      return of(null);
-    }
 
     if (error.status === 500 && /El CUIT \d+ ya existe en la agenda/.test(error.error.message)) {
       this.labelInvalidCode$.emit(true);

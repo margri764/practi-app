@@ -103,9 +103,8 @@ getPriceListById( id:any, from : any, to : any ){
 
 getArtListPriceByDesc( idListaPrecios : any, value : string ){
 
-  const descripcion = 'descripcion';
   console.log(idListaPrecios, value);
-  return this.http.get<any>(`${this.baseUrl}api/precios/${idListaPrecios}/${descripcion}/${value}`)
+  return this.http.get<any>(`${this.baseUrl}api/precios/${idListaPrecios}/busqueda/${value}`)
 .pipe(
   map( res =>{ 
         console.log('desde service getArtListPriceByDesc', res)

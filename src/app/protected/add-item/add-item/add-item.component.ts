@@ -75,21 +75,13 @@ export class AddItemComponent implements OnInit {
 
     this.myForm = this.fb.group({
       itemSearch:  [ '',  ],
-      searchOption:  [ this.defaultValue ],
     });   
    }
 
 
   ngOnInit(): void {
 
-    // // despues de seleccionar el articulo con mas opciones como bonificacion, cierro el card de /buscar-pedidos
-    // this.orderService.selectProductOption$.subscribe((emmited)=>{
-    //   if(emmited){
-    //     setTimeout(()=>{this.isArticleFounded = false},400);
-    //     this.itemSearchCode = '';
-    //     this.itemSearch = '';
-    //   }
-    // })
+
 
     console.log(this.item);
 
@@ -106,14 +98,9 @@ export class AddItemComponent implements OnInit {
       this.myForm.get('itemSearch')?.valueChanges.subscribe(newValue => {
         this.itemSearch = newValue;
   
-        const option = this.myForm.get('searchOption')?.value;
         if(this.itemSearch !== null){
   
-              if( option === "Por descripción"){
-                   this.teclaPresionada();
-              }else{
-                return
-              }
+          this.teclaPresionada();
         }
       });
 
@@ -133,61 +120,6 @@ export class AddItemComponent implements OnInit {
       }
     })
   }
-
-
-  // fastSelect( article :  Articulo){
-
-  //   let articlesInLStorage = getDataLS("arrArticles");
-
-  //   // creo el objeto para guarda en ls y redux, tiene propiedades para mostrar en el front y otras para el BD
-  //   const fastSelect = {
-  //                       descripcionLarga : article.descripcionLarga,
-  //                       precioCostoConIva: article.precioCostoConIva,
-  //                       cantidad: 1,
-  //                       codigoInterno : article.codigoArticulo,
-  //                       id : article.idArticulo,
-  //                       bonificacionPorciento: 0,
-  //                       ventaTotal: (1 * article.precioCostoConIva) 
-  //   }
-
-  //   if(articlesInLStorage == undefined){
-  //     articlesInLStorage = [];
-  //   }
-
-  //   articlesInLStorage.push(fastSelect);
-
-  //   //hago el update en redux y LS 
-  //   let updatedArr = [...this.arrItemSelected, fastSelect];
-  //   this.store.dispatch(articleAction.setSelectedArticles({ arrSelectedArticles: updatedArr }));
-  //   this.localStorageService.saveStateToSessionStorage(articlesInLStorage, "arrArticles");
-  //   //guardo en el ss los articulos temporalmente, el concat lo uso para q no se sobreescriban los datos
-  //   let tempData = getDataSS("arrArticles");
-  //   updatedArr.concat(tempData);
-  //   this.localStorageService.saveStateToSessionStorage(updatedArr, "arrArticles");
-  //   this.openGenericSuccess('1 Producto añadido con éxito');
-
-  //   setTimeout(()=>{this.isArticleFounded = false},400);
-  //   this.itemSearchCode = '';
-  //   this.itemSearch = '';
-  // }
-
-  // getProducts(){
-  //   this.labelNoArticles= false;
-  //   this.isLoading = true;
-  //   this.articleService.getAllArticles().subscribe(
-  //     ({articulos})=>{
-  //       console.log(articulos);
-  //       this.isLoading = false;
-  //       if(articulos.length !== 0){
-  //           this.arrArticles = articulos;
-  //       }else{
-  //         this.labelNoArticles = true;
-  
-  //       }
-  
-  //     }
-  //   )
-  // }
 
   
   ngOnDestroy() {
@@ -219,8 +151,7 @@ export class AddItemComponent implements OnInit {
         this.spinner = true;
         this.itemSearch = value;
         this.mostrarSugerencias = true;  
-        const option = this.myForm.get('searchOption')?.value;
-        if( option === "Por descripción"){
+
           this.articleService.getArtListPriceByDesc(this.idListaPrecios, value)
           .subscribe ( ({precios} )=>{
             console.log(precios);
@@ -234,59 +165,22 @@ export class AddItemComponent implements OnInit {
               }
             }
           )
-        }
       
         }
-     
          
-    // este codigo no trabaja con el debounce (puse un condicional en el debouncer) es el enter de la lupa
-  searchByCode(){
-    this.noMatch = false;
-    this.isLoading = true;
-    const option = this.myForm.get('searchOption')?.value;
-    const itemSearch = this.myForm.get('itemSearch')?.value;
-    if( option === "Por descripción" || itemSearch === ''){
-        return
-    }else{    
 
-      this.articleService.getArtListPriceByCode(this.idListaPrecios, itemSearch)
-      .subscribe ( ({precio} )=>{
-        if(precio){
-          this.orderService.emitedItem$.emit(precio);
-          this.articleFounded = precio;
-          this.spinner = false;
-          this.isLoading = false;
-          this.isArticleFounded = true;
-          this.mostrarSugerencias = false;
-          this.itemSearch = '';
-          this.suggested = [];
-
-        }
-      }
-    )
-  }
-  }
      
-  Search( codigoInterno: any ){
-    this.articleService.getArtListPriceByCode(this.idListaPrecios, codigoInterno)
-        .subscribe ( ({precio} )=>{
-          if(precio){
-            console.log(precio);
-            this.orderService.emitedItem$.emit(precio);
-            this.articleFounded = precio;
-            this.spinner = false;
-            this.isArticleFounded = true;
-            this.mostrarSugerencias = false;
-            this.itemSearch = '';
-            this.suggested = [];
 
-          }
-        }
-        )
-}
     
 searchSuggested( item: any ) {
-  this.Search( item );
+  this.orderService.emitedItem$.emit(item);
+  this.articleFounded = item;
+  this.spinner = false;
+  this.isArticleFounded = true;
+  this.mostrarSugerencias = false;
+  this.itemSearch = '';
+  this.suggested = [];
+ 
 }
     
 

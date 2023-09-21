@@ -58,16 +58,6 @@ export class SearchProductsComponent implements OnInit, OnDestroy {
   product  : any[] = [];
   // search
 
-  // search by code
-  itemSearchCode : string = '';
-  mostrarSugerenciasCode: boolean = false;
-  sugestedCode : string= "";
-  suggestedCode : any[] = [];
-  spinnerCode : boolean = false;
-  alertCode:boolean = false;
-  searchCode : boolean = true;
-  productCode  : any[] = [];
-  // search by code
 
   // new search
 productQuantity : number = 0;
@@ -112,11 +102,11 @@ producto : string = "Producto añadido"
       const option = this.myForm.get('searchOption')?.value;
       if(this.itemSearch !== null && this.itemSearch !== ''){
 
-            if( option === "Por descripción"){
-                 this.teclaPresionada();
-            }else{
-              return
-            }
+        this.teclaPresionada();
+            // if( option === "Por descripción"){
+            // }else{
+            //   return
+            // }
       }
     });
 
@@ -162,11 +152,10 @@ producto : string = "Producto añadido"
      tempClient = getDataSS("tempClient")
     }
 
+
     this.spinner = true;
     this.itemSearch = value;
     this.mostrarSugerencias = true;  
-    const option = this.myForm.get('searchOption')?.value;
-    if( option === "Por descripción"){
       this.articleService.getArtListPriceByDesc(tempClient.idListaPrecios, value)
       .subscribe ( ({precios} )=>{
         console.log(precios);
@@ -177,7 +166,6 @@ producto : string = "Producto añadido"
           this.suggested = suggestedWithShowIncrementer;
             // this.itemSearch = '';
             this.myForm.get('itemSearch')?.setValue('');
-
             this.spinner = false;
             }else{
             this.spinner = false;
@@ -186,43 +174,42 @@ producto : string = "Producto añadido"
           }
         }
       )
-    }
   
   }
   
   // este codigo no trabaja con el debounce (puse un condicional en el debouncer) es el enter de la lupa
-  searchByCode(){
+  // searchByCode(){
 
-    const option = this.myForm.get('searchOption')?.value;
-    const itemSearch = this.myForm.get('itemSearch')?.value;
-    if( option === "Por descripción" || itemSearch === ''){
-        return
-    }else{    
-      let tempClient : any;
-      this.noMatch = false;
-      this.spinner = true;
-      if(getDataSS("tempClient" ) !== undefined){
-      tempClient = getDataSS("tempClient")
-      }
+  //   const option = this.myForm.get('searchOption')?.value;
+  //   const itemSearch = this.myForm.get('itemSearch')?.value;
+  //   if( option === "Por descripción" || itemSearch === ''){
+  //       return
+  //   }else{    
+  //     let tempClient : any;
+  //     this.noMatch = false;
+  //     this.spinner = true;
+  //     if(getDataSS("tempClient" ) !== undefined){
+  //     tempClient = getDataSS("tempClient")
+  //     }
 
-      this.articleService.getArtListPriceByCode(tempClient.idListaPrecios, itemSearch)
-      .subscribe ( ({precio} )=>{
-        if(precio){
-          this.articleFounded.push(precio);
-          const suggestedWithShowIncrementer = this.articleFounded.map((item: any) => ({ ...item, showIncrementer: false, cantidad:0 }));
-          this.articleFounded = suggestedWithShowIncrementer;
-          this.spinner = false;
-          this.isArticleFounded = true;
-          this.mostrarSugerencias = false;
-          this.itemSearch = '';
-          this.suggested = [];
-        }else{
-          this.noMatch = true;
-        }
-      }
-    )
-  }
-  }
+  //     this.articleService.getArtListPriceByCode(tempClient.idListaPrecios, itemSearch)
+  //     .subscribe ( ({precio} )=>{
+  //       if(precio){
+  //         this.articleFounded.push(precio);
+  //         const suggestedWithShowIncrementer = this.articleFounded.map((item: any) => ({ ...item, showIncrementer: false, cantidad:0 }));
+  //         this.articleFounded = suggestedWithShowIncrementer;
+  //         this.spinner = false;
+  //         this.isArticleFounded = true;
+  //         this.mostrarSugerencias = false;
+  //         this.itemSearch = '';
+  //         this.suggested = [];
+  //       }else{
+  //         this.noMatch = true;
+  //       }
+  //     }
+  //   )
+  // }
+  // }
      
 
 
@@ -290,68 +277,68 @@ counter( article : any, value :  string ){
 
 }
 
-counterItemCode( article : any, value :  string ){
+// counterItemCode( article : any, value :  string ){
  
-  let articlesInSStorage = getDataSS("arrArticles");
-  article.showIncrementer = true; // es para mostrar el incrementer
+//   let articlesInSStorage = getDataSS("arrArticles");
+//   article.showIncrementer = true; // es para mostrar el incrementer
 
 
-  if(value === 'inc'){
-    article.cantidad = article.cantidad + 1;
-  }else{
-    // this.productQuantity = this.productQuantity - 1;
-    ( article.cantidad >= 1) ?  article.cantidad  =  article.cantidad  - 1 : "";
-  }
+//   if(value === 'inc'){
+//     article.cantidad = article.cantidad + 1;
+//   }else{
+//     // this.productQuantity = this.productQuantity - 1;
+//     ( article.cantidad >= 1) ?  article.cantidad  =  article.cantidad  - 1 : "";
+//   }
 
-  // si es 0 quita el counter y tiene que eliminar el item del SS y redux
-  if( article.cantidad == 0){
-    article.showIncrementer = false;
-    let noCeroQuantity = articlesInSStorage.filter((item: any) => item.codigoInterno !== article.codigoInterno);
-    this.localStorageService.saveStateToSessionStorage(noCeroQuantity, "arrArticles");
-    this.store.dispatch(articleAction.deleteArticle({ articleId: article.codigoInterno }));
-    return
-  }
+//   // si es 0 quita el counter y tiene que eliminar el item del SS y redux
+//   if( article.cantidad == 0){
+//     article.showIncrementer = false;
+//     let noCeroQuantity = articlesInSStorage.filter((item: any) => item.codigoInterno !== article.codigoInterno);
+//     this.localStorageService.saveStateToSessionStorage(noCeroQuantity, "arrArticles");
+//     this.store.dispatch(articleAction.deleteArticle({ articleId: article.codigoInterno }));
+//     return
+//   }
 
-  const itemSelect = {
-                    descripcionLarga : article.descripcionLarga,
-                    precioBrutoFinal: article.precioBrutoFinal,
-                    cantidad: article.cantidad,
-                    codigoInterno : article.codigoInterno,
-                    id : article.idArticulo,
-                    bonificacionPorciento: 0,
-                    ventaTotal: (1 * article.precioBrutoFinal) 
-}
+//   const itemSelect = {
+//                     descripcionLarga : article.descripcionLarga,
+//                     precioBrutoFinal: article.precioBrutoFinal,
+//                     cantidad: article.cantidad,
+//                     codigoInterno : article.codigoInterno,
+//                     id : article.idArticulo,
+//                     bonificacionPorciento: 0,
+//                     ventaTotal: (1 * article.precioBrutoFinal) 
+// }
 
-  // obtengo del LS el array de articulos seleccionados
-  if(articlesInSStorage == undefined){
-    articlesInSStorage = [];
-  }
+//   // obtengo del LS el array de articulos seleccionados
+//   if(articlesInSStorage == undefined){
+//     articlesInSStorage = [];
+//   }
 
-  // si el item ya esta en LS y en redux quiere decir q es un update de la cantidad (lo elimina)
-  let noRepetidedArticles = articlesInSStorage.filter((item: any) => item.codigoInterno !== article.codigoInterno);
-  this.store.dispatch(articleAction.deleteArticle({ articleId: article.codigoInterno }));
+//   // si el item ya esta en LS y en redux quiere decir q es un update de la cantidad (lo elimina)
+//   let noRepetidedArticles = articlesInSStorage.filter((item: any) => item.codigoInterno !== article.codigoInterno);
+//   this.store.dispatch(articleAction.deleteArticle({ articleId: article.codigoInterno }));
 
-  // agrego el item seleccionado al SS
-  noRepetidedArticles.push(itemSelect);
+//   // agrego el item seleccionado al SS
+//   noRepetidedArticles.push(itemSelect);
 
-  //hago el update en redux y LS 
-  let updatedArr = [...this.arrItemSelected, itemSelect];
-  this.store.dispatch(articleAction.setSelectedArticles({ arrSelectedArticles: updatedArr }));
-  this.localStorageService.saveStateToSessionStorage(noRepetidedArticles, "arrArticles");
+//   //hago el update en redux y LS 
+//   let updatedArr = [...this.arrItemSelected, itemSelect];
+//   this.store.dispatch(articleAction.setSelectedArticles({ arrSelectedArticles: updatedArr }));
+//   this.localStorageService.saveStateToSessionStorage(noRepetidedArticles, "arrArticles");
 
-  this.quantity = this.arrItemSelected.length;
-  if(this.arrItemSelected.length > 0){
-    this.producto = "Productos añadidos"
-  }
+//   this.quantity = this.arrItemSelected.length;
+//   if(this.arrItemSelected.length > 0){
+//     this.producto = "Productos añadidos"
+//   }
 
-  //guardo en el ss los articulos temporalmente, el concat lo uso para q no se sobreescriban los datos
-  // let tempData = getDataSS("arrArticles");
-  // updatedArr.concat(tempData);
-  // this.localStorageService.saveStateToSessionStorage(updatedArr, "arrArticles");
-  // this.openGenericSuccess('1 Producto añadido con éxito');
-  // this.close();
+//   //guardo en el ss los articulos temporalmente, el concat lo uso para q no se sobreescriban los datos
+//   // let tempData = getDataSS("arrArticles");
+//   // updatedArr.concat(tempData);
+//   // this.localStorageService.saveStateToSessionStorage(updatedArr, "arrArticles");
+//   // this.openGenericSuccess('1 Producto añadido con éxito');
+//   // this.close();
 
-}
+// }
 
 goBack(){
   this.router.navigateByUrl('/armar-pedido')

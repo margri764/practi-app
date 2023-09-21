@@ -3,24 +3,14 @@
     <h1 class="font fs-5" style="text-align: center; margin-top: 40px;" fxFlex="100">Seleccionar tipo de búsqueda</h1>
     
      <!-- start menu search -->
-     <div fxLayout="row wrap" fxLayoutAlign="center center" class="font whiteframe mt-20" fxFlex.xs="97" fxFlex.sm="80" fxFlex="30" style="padding: 10px;">
+     <div fxLayout="row wrap" fxLayoutAlign="center center" class="font whiteframe mt-20" fxFlex.xs="97" fxFlex.sm="80" fxFlex="50" style="padding: 10px;">
 
-        <form  [formGroup]="myForm" fxLayout="row wrap" fxLayoutAlign="start center" fxFlex="100"  > 
+        <form  [formGroup]="myForm" fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="100" style="margin-top: 13px;"  > 
 
-                    <mat-form-field appearance="outline" floatLabel="always">
-                        <mat-label class="font fs-4">seleccion</mat-label>
-                        <mat-select  formControlName="searchOption" class="font" [value]="defaultValue" >
-                                    <mat-option *ngFor="let option of searchOptions" [value]="option" class="font fs-4"> {{option}}</mat-option>
-                                </mat-select>
-                    </mat-form-field>
-
-               
-                    <mat-form-field  appearance="outline" fxFlex="96" class="font fs-4" >
-                        <input type="text" matInput  placeholder="Buscar artículo"  name="itemSearch"
-                        formControlName="itemSearch"
-                        >
-                        <mat-icon matSuffix style="transform:scale(1.7); color: rgb(37, 150, 190); margin-right: 20px;" (click)="searchByCode()">search</mat-icon>
-                    </mat-form-field>
+             <mat-form-field  appearance="outline" fxFlex="96" class="font fs-4" >
+                 <input type="text" matInput  placeholder="Buscar artículo"  name="itemSearch" formControlName="itemSearch" >
+                 <mat-icon matSuffix style="transform:scale(1.7); color: rgb(37, 150, 190); margin-right: 20px;">search</mat-icon>
+             </mat-form-field>
         </form>
 
      </div>
@@ -28,9 +18,9 @@
 
     
     <!-- start no items -->
-    <div fxLayout="row wrap"  fxLayoutAlign="center center" fxFlex="100"  *ngIf="noMatches" >
+    <div fxLayout="row wrap"  fxLayoutAlign="center center" fxFlex="100" *ngIf="noMatches" >
         
-            <div fxLayout="row wrap" fxLayoutAlign="start center"  fxFlex.xs="90" fxFlex.sm="80" fxFlex="30"  class="fs-4 whiteframe " style="border-radius: 10px; padding: 15px; color: white; background-color: black; margin-bottom: 20px; margin-top: 30px; height: 60px; border-left: 10px solid red; box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+            <div fxLayout="row wrap" fxLayoutAlign="start center"  fxFlex.xs="90" fxFlex.sm="80" fxFlex="40"  class="fs-4 whiteframe " style="border-radius: 10px; padding: 15px; color: white; background-color: black; margin-bottom: 20px; margin-top: 30px; height: 60px; border-left: 10px solid red; box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
             -webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
             -moz-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);">
                 <span class="material-icons" style="color: white;"> error </span>
@@ -114,7 +104,7 @@
                 </div>    
 
             <!-- counter -->
-                <div fxLayout="row wrap" fxLayoutAlign="end center" fxFlex="30" >
+                <!-- <div fxLayout="row wrap" fxLayoutAlign="end center" fxFlex="30" >
                 
                     <div fxLayout="row wrap" fxLayoutAlign="space-between center"  class="incrementer" *ngIf="item.showIncrementer " >
                     
@@ -137,7 +127,7 @@
                     
 
                 
-                </div>
+                </div> -->
             <!-- end counter -->
 
         
