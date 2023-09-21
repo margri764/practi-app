@@ -28,6 +28,8 @@ export class EditOrderComponent implements OnInit {
   addItemSelected : boolean = false;
   element : any;
   confirm : boolean = false;
+  waitApi : boolean = false;
+
 
   
   constructor(
@@ -47,7 +49,7 @@ export class EditOrderComponent implements OnInit {
   }
     ngOnInit(): void {
 
-      this.errorService.closeIsLoading$.subscribe((emitted)=>{if(emitted){this.isLoading = false;}})
+      this.errorService.closeIsLoading$.subscribe((emitted)=>{if(emitted){this.isLoading = false; this.waitApi = false}})
 
       this.orderService.emitedItem$.subscribe((emitted)=>{
         if (emitted) {
@@ -125,8 +127,9 @@ export class EditOrderComponent implements OnInit {
 
     this.confirm = true;
 
-    // this.isLoading = true;
+    this.isLoading = true;
     let tempOrder = this.orderForm.value;
+    this.waitApi = true;
 
     // let tempTotal;
     // this.data.detalleItems.forEach((item:any)=>{tempTotal = item.impTotal})
@@ -157,6 +160,8 @@ export class EditOrderComponent implements OnInit {
                 if(res){ 
                         this.openGenericSuccess("Pedido actualizado con exito");
                         this.errorService.loadAllOrders$.emit(true);
+                        this.waitApi = false;
+                        this.isLoading = false;
                       }})
 
             this.close(); 

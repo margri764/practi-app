@@ -72,7 +72,7 @@
 
 
         <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="100" class="mt-20">
-                <button mat-raised-button  [ngClass]="confirm ? 'btnMenuClicked':'btnMenu'" fxFlex="95" (click)="onSaveForm()">
+                <button mat-raised-button  [ngClass]="confirm ? 'btnMenuClicked':'btnMenu'" fxFlex="95" (click)="onSaveForm()" [disabled]="waitApi">
                     <i class="material-symbols-outlined notranslate" style="transform: scale(1.3);">edit</i> 
                     &nbsp; Editar Orden
                 </button>
