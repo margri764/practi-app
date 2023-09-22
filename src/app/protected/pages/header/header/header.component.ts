@@ -87,7 +87,6 @@ export class HeaderComponent implements OnInit, AfterViewChecked{
  }
 
  updateLabelHeader( url : string){
-
   switch (url) {
     case '/listado-pedidos':
           this.labelHeader = "Pedidos";

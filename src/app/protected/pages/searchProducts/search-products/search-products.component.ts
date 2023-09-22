@@ -81,7 +81,6 @@ producto : string = "Producto añadido"
 
     this.myForm = this.fb.group({
       itemSearch:  [ '',  ],
-      searchOption:  [ this.defaultValue ],
     });   
   }
 
@@ -177,41 +176,6 @@ producto : string = "Producto añadido"
   
   }
   
-  // este codigo no trabaja con el debounce (puse un condicional en el debouncer) es el enter de la lupa
-  // searchByCode(){
-
-  //   const option = this.myForm.get('searchOption')?.value;
-  //   const itemSearch = this.myForm.get('itemSearch')?.value;
-  //   if( option === "Por descripción" || itemSearch === ''){
-  //       return
-  //   }else{    
-  //     let tempClient : any;
-  //     this.noMatch = false;
-  //     this.spinner = true;
-  //     if(getDataSS("tempClient" ) !== undefined){
-  //     tempClient = getDataSS("tempClient")
-  //     }
-
-  //     this.articleService.getArtListPriceByCode(tempClient.idListaPrecios, itemSearch)
-  //     .subscribe ( ({precio} )=>{
-  //       if(precio){
-  //         this.articleFounded.push(precio);
-  //         const suggestedWithShowIncrementer = this.articleFounded.map((item: any) => ({ ...item, showIncrementer: false, cantidad:0 }));
-  //         this.articleFounded = suggestedWithShowIncrementer;
-  //         this.spinner = false;
-  //         this.isArticleFounded = true;
-  //         this.mostrarSugerencias = false;
-  //         this.itemSearch = '';
-  //         this.suggested = [];
-  //       }else{
-  //         this.noMatch = true;
-  //       }
-  //     }
-  //   )
-  // }
-  // }
-     
-
 
 
 counter( article : any, value :  string ){

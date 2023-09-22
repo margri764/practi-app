@@ -1,18 +1,23 @@
-import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Articulo } from '../../../interfaces/articulo.interface'
 import { ArticlesService } from 'src/app/protected/services/articles/articles.service';
-import { Subject } from 'rxjs';
+import { Subject, Subscription, debounceTime } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { EditArticleComponent } from '../../edit-article/edit-article/edit-article.component';
 import { MatAccordion } from '@angular/material/expansion';
 import { MatTableDataSource } from '@angular/material/table';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { getDataSS } from 'src/app/protected/Storage';
+import { OrderService } from 'src/app/protected/services/order/order.service';
+import { AppState } from 'src/app/app.reducer';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-articles',
   templateUrl: './articles.component.html',
   styleUrls: ['./articles.component.scss']
 })
-export class ArticlesComponent implements OnInit {
+export class ArticlesComponent implements OnInit, OnDestroy {
 
   @Output() onDebounce: EventEmitter<string> = new EventEmitter();
   @Output() onEnter   : EventEmitter<string> = new EventEmitter();
@@ -45,17 +50,68 @@ dataTableActive : any = new MatTableDataSource<any>();
   articleFounded : any = {};
   isArticleFounded : boolean = false;
   phone : boolean = false;
+  myForm!: FormGroup;
+  noMatches : boolean = false;
+  salePoint : any;
+  authSuscription! : Subscription;
 
   constructor(
               private articleService : ArticlesService,
-              private dialog : MatDialog
+              private dialog : MatDialog,
+              private fb : FormBuilder,
+              private orderService : OrderService,
+              private store : Store <AppState>,
   ) { 
     (screen.width <= 600) ? this.phone = true : this.phone = false;
 
+      this.myForm = this.fb.group({
+        itemSearch:  [ '',  ],
+      });  
   }
 
-  ngOnInit(): void {
 
+  ngOnInit(): void {
+    
+        this.authSuscription = this.store.select('auth').subscribe(
+          ({salePoint})=>{
+            if(salePoint === null){
+              this.getSalePoint();
+            }else{
+              this.salePoint = salePoint;
+            }
+          })
+
+        //para las busquedas
+        this.myForm.get('itemSearch')?.valueChanges.subscribe(newValue => {
+          this.itemSearch = newValue;
+    
+          if(this.itemSearch !== null && this.itemSearch !== ''){
+    
+            this.teclaPresionada();
+            
+          }
+        });
+
+        this.debouncer
+        .pipe(debounceTime(400))
+        .subscribe( valor => {
+    
+          this.sugerencias(valor);
+        });
+    
+      
+
+  }
+
+  
+  getSalePoint(){
+
+    this.orderService.getSalePoint().subscribe(
+      ({pos})=>{
+          if(pos){
+              this.salePoint = pos.numero;
+          }
+      })
   }
 
   getAllArticles(){
@@ -91,91 +147,83 @@ dataTableActive : any = new MatTableDataSource<any>();
     });
   }
 
-  deleteArticle( id:any ){}
+  deleteArticle( article:any ){
 
-  editArticle( id:any ){
+  }
 
- // para edita abro un dialog 
- // este es el endpoint editProductById()
-    
+  editArticle( article:any){ 
+    console.log(article);
+
+    let width;
+    let height;
+    if(screen.width >= 800) {
+      width = "600px";
+      height ="720px";
+    }
+  
+    this.dialog.open(EditArticleComponent, {
+      data: article,
+      width: `${width}`|| "",
+      height:`${height}`|| "",
+      panelClass:"custom-modalbox-NoMoreComponent", 
+    });
   }
 
 
-       // search
-       close(){
-        this.mostrarSugerencias = false;
-        this.itemSearch = '';
-        this.suggested = [];
-        this.spinner= false;
-      }
+  close(){
+    this.mostrarSugerencias = false;
+    this.itemSearch = '';
+    this.suggested = [];
+    this.spinner= false;
+    this.myForm.reset();
+    this.isArticleFounded = false;
+  }
     
-      teclaPresionada(){
+  teclaPresionada(){
+    this.noMatches = false;
+      this.debouncer.next( this.itemSearch ); 
+
+  }
     
-        console.log(this.mostrarSugerencias);
-         
-         this.debouncer.next( this.itemSearch );  
-         this.sugerencias(this.itemSearch)
-         if(this.itemSearch == ''){
-           this.suggested=[];
-           this.mostrarSugerencias = false  
-         }
-         if(this.suggested.length === 0) {
-           this.spinner= true;
-         }
-     
-       };
-    
-       sugerencias(value : string){
-          this.spinner = true;
-          this.itemSearch = value;
-          this.mostrarSugerencias = true;  
-          const valueSearch = value.toUpperCase();
-          const field = "desc_larga";
-          this.articleService.searchArticle(field, valueSearch)
-          .subscribe ( ({articulos} )=>{
-            if(articulos.length !== 0){
-              // this.arrArticlesSugested = articulos;
-              this.suggested = articulos.splice(0,10);
-              console.log(this.suggested);
-                this.spinner = false;
-              }else{
-                // this.labelNoArticles = true;
-              }
-            }
-          )
-        }
-     
-      buscar(){
-       this.onEnter.emit( this.itemSearch );
-     
-      }
-    
-       
-       Search( id : any ){
-        
-         this.mostrarSugerencias = true;
-         this.alert = false;
-         this.spinner = true;
-         this.fade = false;
-         this.articleService.searchProductById(id)
-         .subscribe ( ({articulos} )=>{
-            console.log(articulos);
-            if(articulos){
-              this.articleFounded = articulos;
-              this.spinner = false;
-              this.close();
-              this.isArticleFounded = true;
+  sugerencias(value : string){
+
+      
+    this.spinner = true;
+    this.itemSearch = value;
+    this.mostrarSugerencias = true;  
+      this.articleService.getArtListPriceByDesc(this.salePoint, value)
+      .subscribe ( ({precios} )=>{
+        console.log(precios);
+        if(precios.length !== 0){
+          this.suggested = precios;
+          //quitar esta logica de aca
+          const suggestedWithShowIncrementer = precios.map((item: any) => ({ ...item, showIncrementer: false, cantidad:0 }));
+          this.suggested = suggestedWithShowIncrementer;
+            // this.itemSearch = '';
+            this.myForm.get('itemSearch')?.setValue('');
+            this.spinner = false;
             }else{
-              // this.labelNoArticles = true;
-            }
+            this.spinner = false;
+            this.mostrarSugerencias = false
+            this.noMatches = true;
           }
-         )
-    
-      }
-    
-      searchSuggested( id: any ) {
-        this.Search( id );
-      }
+        }
+      )
+  
+  }
+
+  getItem(item :any){
+    this.isArticleFounded = true;
+    this.articleFounded = item;
+    this.mostrarSugerencias = false;
+  }
       // search
-    
+
+  ngOnDestroy(): void {
+    if (this.authSuscription) {
+      this.authSuscription.unsubscribe();
+    }
+  
+  }
+
 }

@@ -49,8 +49,8 @@ notificationsDone! : boolean;
 login : boolean = false;
 phone : boolean = false;
 isLoading : boolean = false;
-
 cookie : boolean= false;
+
 constructor(
               private store : Store <AppState>,
               private cookieService : CookieService,

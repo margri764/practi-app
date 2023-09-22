@@ -262,7 +262,7 @@ mat-form-field  {
 .btnMenuClicked, .btnMenu {
   font-size: min(1.3em, 6vw); /* tamaño de fuente máximo: 16px o 5% del ancho de la pantalla */
   padding: 8px 10px; /* espaciado interno del botón */
-  height: 60px !important;
+  height: 50px !important;
   border-radius: 6px !important;
   font-family: 'poppins-light';
   white-space: nowrap !important;
@@ -556,11 +556,11 @@ h1.font{
 //Extra small devices (phones, 600px and down) */
 @media only screen and (min-width: 800px) {
   .btnMenuClicked, .btnMenu {
-    font-size: min(1.1em, 6vw); /* tamaño de fuente máximo: 16px o 5% del ancho de la pantalla */
+    font-size: min(1em, 6vw); /* tamaño de fuente máximo: 16px o 5% del ancho de la pantalla */
   }
   
   .btnMenuClicked i, .btnMenu i {
-    font-size: min(1.1em, 6vw); /* tamaño del icono máximo: 20px o 6% del ancho de la pantalla */
+    font-size: min(1em, 6vw); /* tamaño del icono máximo: 20px o 6% del ancho de la pantalla */
   }
 
   .header{
