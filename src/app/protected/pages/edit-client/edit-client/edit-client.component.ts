@@ -97,8 +97,6 @@ export class EditClientComponent implements OnInit, OnDestroy {
   
     });          
 
-    console.log(this.myForm.get('idCondicionIva')?.value);
-    console.log(this.myForm.get('idTipoDocumento')?.value);
 
     this.authSuscription = this.store.select('auth').subscribe(
       ({salePoint})=>{
@@ -224,6 +222,7 @@ export class EditClientComponent implements OnInit, OnDestroy {
     });
   
   }
+  
   ngOnDestroy(): void {
     if(this.authSuscription){
       this.authSuscription.unsubscribe();

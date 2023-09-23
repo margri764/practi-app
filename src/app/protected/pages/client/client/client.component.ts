@@ -53,7 +53,7 @@ export class ClientComponent implements OnInit, OnDestroy {
   // paginator
   length = 50;
   pageSize = 10;
-  pageIndex = 0;
+  pageIndex = 1;
   pageSizeOptions = [5, 10, 25];
   hidePageSize = false;
   showPageSizeOptions = true;
@@ -63,12 +63,12 @@ export class ClientComponent implements OnInit, OnDestroy {
   // paginator
 
   // accordion
+  @ViewChild(MatAccordion)  accordion!: MatAccordion;
   panelOpenState = false;
   showLabelTempOrder : boolean = false;
   articleSuscription!: Subscription;
   alert : string = '';
   toogle : boolean = false;
-  @ViewChild(MatAccordion)  accordion!: MatAccordion;
   hidden : boolean = false;
   login : boolean = false;
   // accordion
@@ -100,7 +100,8 @@ export class ClientComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    this.authService.updateEditingUser$.subscribe( (emmited)=>{ if(emmited){this.getInitialClients()} })
+    this.errorService.closeIsLoading$.subscribe( (emmited)=>{ this.isLoading = false});
+    this.authService.updateEditingUser$.subscribe( (emmited)=>{ if(emmited){this.isLoading = true; this.getInitialClients()} })
     this.getInitialClients();
 
         //para las busquedas

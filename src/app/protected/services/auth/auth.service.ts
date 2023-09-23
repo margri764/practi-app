@@ -162,29 +162,8 @@ deleteClientById( id:any){
 
 addNewClient( body : User){
 
-  //no cuales son obligatorias
-  const bodys = {
-    "archivarComo": "Ruloso Zarpaso",
-    "nombre": "Rulo",
-    "apellido": "Zarpaso",
-    "domicilio": "pehues 22",
-    "localidad": "carilo",
-    "codigoPostal": "8407",
-    "provincia": "buenos aires",
-    "pais": "argentina",
-    "telefonoCodigoPais": "54",
-    "telefonoCodigoArea": "294",
-    "esMovil": 1,
-    "numeroLocal": "4569787",
-    "email1": "mailejemplo@gmail.com",
-    "organizacion": "arcor",
-    "razonSocial": "arcor sa",
-    "cuit": "20206665085",
-    "esCliente": 1,
-    "esProveedor": 0
-  }
-  console.log(body);
-return this.http.post<any>(`${this.baseUrl}api/agenda`, bodys)
+
+return this.http.post<any>(`${this.baseUrl}api/agenda`, body)
 .pipe(
   map( res =>{ 
          console.log('desde service addNewClient', res)

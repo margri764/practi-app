@@ -70,6 +70,7 @@ import { AskOpenOrderComponent } from './protected/messages/ask-open-order/ask-o
 import { AskSendOrderComponent } from './protected/messages/ask-send-order/ask-send-order/ask-send-order.component';
 import { SettingsComponent } from './pages/settings/settings/settings.component';
 import { ServerUrlComponent } from './protected/pages/server-url/server-url/server-url.component';
+import { NewArticleComponent } from './protected/pages/new-article/new-article/new-article.component';
 
 registerLocaleData( localeEs );
 
@@ -115,7 +116,8 @@ registerLocaleData( localeEs );
     AskOpenOrderComponent,
     AskSendOrderComponent,
     SettingsComponent,
-    ServerUrlComponent
+    ServerUrlComponent,
+    NewArticleComponent
   ],
   imports: [
     BrowserModule,

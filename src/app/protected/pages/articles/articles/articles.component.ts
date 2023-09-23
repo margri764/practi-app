@@ -12,6 +12,8 @@ import { OrderService } from 'src/app/protected/services/order/order.service';
 import { AppState } from 'src/app/app.reducer';
 import { Store } from '@ngrx/store';
 import { PageEvent } from '@angular/material/paginator';
+import { NewArticleComponent } from '../../new-article/new-article/new-article.component';
+import { ErrorService } from 'src/app/protected/services/error/error.service';
 
 @Component({
   selector: 'app-articles',
@@ -50,7 +52,7 @@ dataTableActive : any = new MatTableDataSource<any>();
     // paginator
     length = 50;
     pageSize = 10;
-    pageIndex = 1;
+    pageIndex = 0;
     pageSizeOptions = [5, 10, 25];
     hidePageSize = false;
     showPageSizeOptions = true;
@@ -68,12 +70,14 @@ dataTableActive : any = new MatTableDataSource<any>();
   salePoint : any;
   authSuscription! : Subscription;
 
+  // no anda la paginacion
   constructor(
               private articleService : ArticlesService,
               private dialog : MatDialog,
               private fb : FormBuilder,
               private orderService : OrderService,
               private store : Store <AppState>,
+              private errorService : ErrorService
   ) { 
     (screen.width <= 600) ? this.phone = true : this.phone = false;
 
@@ -85,11 +89,20 @@ dataTableActive : any = new MatTableDataSource<any>();
 
   ngOnInit(): void {
 
+    this.errorService.closeIsLoading$.subscribe( (emmited)=>{ if(emmited){this.isLoading = false} });
+    this.articleService.updateAllArticle$.subscribe( (emmited )=>{ if(emmited){ this.getAllArticles()} } );
+  
     this.getAllArticles();
+
 
         this.articleService.updateEditingArticle$.subscribe( 
           (articulo )=>{
+            
+            if(articulo.reload === "reloadArticles"){
+              this.getAllArticles();
+            }
              if(articulo){
+                this.isLoading = true;
                 this.getItem(articulo)
               }
              })
@@ -164,6 +177,7 @@ dataTableActive : any = new MatTableDataSource<any>();
       this.isLoading = false;
       return
     }
+    console.log(this.pageIndex, this.pageSize);
 
     this.articleService.getAllArticles(this.pageIndex, this.pageSize).subscribe(
       ({articulos})=>{
@@ -189,11 +203,19 @@ dataTableActive : any = new MatTableDataSource<any>();
 
 
   addArticle(){
-    // this.dialog.open(EditArticleComponent, {
-    //   // data: msg,
-    //   disableClose: true,
-    //   panelClass:"custom-modalbox-NoMoreComponent", 
-    // });
+
+    let width;
+    let height;
+    if(screen.width >= 800) {
+      width = "650px";
+      height ="550px";
+    }
+  
+    this.dialog.open(NewArticleComponent, {
+      width: `${width}`|| "",
+      height:`${height}`|| "",
+      panelClass: "custom-modalbox-EditArticleComponent", 
+    });
   }
 
   deleteArticle( article:any ){

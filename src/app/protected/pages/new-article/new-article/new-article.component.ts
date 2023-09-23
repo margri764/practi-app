@@ -1,24 +1,28 @@
-import { Component, InjectionToken, OnInit, Inject } from '@angular/core';
+import { Component, InjectionToken, OnInit, Inject, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
 import { AppState } from 'src/app/app.reducer';
 import { GenericSuccessComponent } from 'src/app/protected/messages/generic-success/generic-success/generic-success.component';
 import { ArticlesService } from 'src/app/protected/services/articles/articles.service';
 import { AuthService } from 'src/app/protected/services/auth/auth.service';
 import { ErrorService } from 'src/app/protected/services/error/error.service';
 
+
 @Component({
-  selector: 'app-edit-article',
-  templateUrl: './edit-article.component.html',
-  styleUrls: ['./edit-article.component.scss']
+  selector: 'app-new-article',
+  templateUrl: './new-article.component.html',
+  styleUrls: ['./new-article.component.scss']
 })
-export class EditArticleComponent implements OnInit {
+export class NewArticleComponent implements OnInit, OnDestroy {
 
   myForm! : FormGroup;
   save : boolean = false;
   isLoading : boolean = false;
   article : any;
+  authSuscription! : Subscription;
+  salePoint : any;
  
   
   constructor(
@@ -28,7 +32,7 @@ export class EditArticleComponent implements OnInit {
                 private dialog : MatDialog,
                 private articleService : ArticlesService,
                 private errorService : ErrorService,
-                private dialogRef: MatDialogRef<EditArticleComponent>,
+                private dialogRef: MatDialogRef<NewArticleComponent>,
                 @Inject(MAT_DIALOG_DATA) public data: any,
 
   ) { 
@@ -36,23 +40,33 @@ export class EditArticleComponent implements OnInit {
 
   }
 
+
   ngOnInit(): void {
 
+    this.authSuscription = this.store.select('auth').subscribe(
+      ({salePoint})=>{
+        if(salePoint !== null){
+          this.salePoint = salePoint;
+        }
+      })
+
     this.errorService.closeIsLoading$.subscribe((emmited)=>{if(emmited){this.isLoading = false}})
-    this.article = this.data;
-    console.log(this.data);
+
 
     this.myForm = this.fb.group({
-      descripcionLarga: [this.article.descripcionLarga  ],
-      codigoInterno: [this.article.codigoInterno  ],
-      iva: [ this.article.iva  ],
-      precioBrutoFinal: [ this.article.precioBrutoFinal ],
-      cantidadStock: [ this.article.cantidadStock ],
+      descripcionLarga: ['' ],
+      codigoInterno: [ '' ],
+      iva: [ '' ],
+      precioBrutoFinal: [ 0 ],
+      cantidadStock: [ 0 ],
+      idListaPrecio: [ this.salePoint],
+
     });   
 
-
-          
+ 
   }
+
+  
   
 
   onSaveForm(){
@@ -63,17 +77,13 @@ export class EditArticleComponent implements OnInit {
     }
     this.isLoading = true;
     
-    this.articleService.editArticleById(this.myForm.value,  this.article._id).subscribe( 
+    this.articleService.createNewArticle(this.myForm.value).subscribe( 
       (res)=>{
         if(res){
-          this.articleService.getArticleById(this.article._id).subscribe( 
-            ({articulo}) =>{
-              console.log(articulo);
-              this.articleService.updateEditingArticle$.emit(articulo)
-            });
-          this.closeComponent();
-          this.openGenericSuccess('Articulo editado correctamente');
           this.isLoading = false;  
+          this.articleService.updateAllArticle$.emit(true)
+          this.closeComponent();
+          this.openGenericSuccess('Articulo creado correctamente');
 
         }})
     // this.authService.updateClientById(this.myForm.value, "2739").subscribe(
@@ -109,7 +119,11 @@ export class EditArticleComponent implements OnInit {
   
   }
 
-
+  ngOnDestroy(): void {
+    if(this.authSuscription){
+      this.authSuscription.unsubscribe();
+    }
+  }
 
 
 }

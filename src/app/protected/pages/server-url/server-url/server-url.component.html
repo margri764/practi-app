@@ -1,5 +1,6 @@
-<div  fxLayout="row wrap" fxLayoutAlign="center center" style="overflow-y: hidden; max-height: 100vh;" *ngIf="!phone">
+<div  fxLayout="row wrap" fxLayoutAlign="center start" style="overflow-y: hidden; max-height: 100vh;" *ngIf="!phone">
 
+    <!-- start left panel -->
     <div fxLayout="row wrap" fxLayoutAlign="center start" fxFlex="24" style="height: 100vh; background-color: rgb(237, 237, 237); overflow: hidden; border-right: 2px solid rgb(225, 225, 225);" >
     
         <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="100" style="margin-top: 100px; cursor: pointer;" (click)="encender()" >
@@ -16,10 +17,25 @@
             <img src="assets/logo.png" alt="logo menu" fxFlex="60">
         </div>
     </div>
+    <!-- end left panel -->
 
-   
+    <!-- start right panel -->
     <div fxLayout="row wrap" fxLayoutAlign="center start" fxFlex="76" >
 
+        <!-- url  -->
+        <div fxLayout="row wrap"  fxLayoutAlign="center center" fxFlex="100" *ngIf="qrData === '' "  style="margin-top: 30px;">
+        
+            <div fxLayout="row wrap" fxLayoutAlign="start center"  fxFlex.xs="90" fxFlex.sm="80" fxFlex="50"  class="fs-4 whiteframe " style="border-radius: 10px; padding: 15px; margin-bottom: 20px; margin-top: 30px; height: 60px; border-left: 10px solid green; 
+            border-top: 1px solid green; border-bottom: 1px solid green; border-right: 1px solid green;  box-shadow: 2px 2px 5px 0px rgba(163, 163, 163, 0.45);  -webkit-box-shadow: 2px 2px 5px 0px rgba(163, 163, 163,0.45);
+            -moz-box-shadow: 2px 2px 5px 0px rgba(163, 163, 163,0.45);">
+                <span class="font fs-3" style=" text-align: start; margin-bottom: 5px; width: 100%;">Url actual</span> 
+                <span class="material-icons" style="color: green;"> done </span>
+                <span class="font fs-2" style=" text-align: center; margin-left: 20px;">{{baseUrl}}</span>
+            </div>
+        </div>
+        <!-- url -->
+
+        <!-- start form -->
         <div fxLayout="row wrap" fxLayoutAlign="center start" fxFlex="100" *ngIf="showInput">
 
             <form  [formGroup]="myForm"  fxLayout="row wrap" fxLayoutAlign="center center" fxFlex.xs="90" fxFlex.sm="60" fxFlex="30" style="   border: 1px solid rgb(197, 197, 197); border-radius: 10px; padding: 10px;">     
@@ -35,7 +51,9 @@
               </form>
             
         </div>
+        <!-- end form -->
 
+        <!-- start camera -->
             <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="100"  [ngStyle]="(showCamera) ? {'display':'block'}:{'display':'none'} "  style="margin-top: 30px; position: sticky; ">
                 <video #videoElement autoplay > </video>
 
@@ -43,11 +61,14 @@
                 
                 <div class="material-symbols-outlined notranslate camera" >photo_camera</div>
             </div>
+        <!-- end camera -->
 
             <span class="font fs-3" style="color: blue; cursor: pointer;">{{qrData}}</span>
 
      
     </div>
+    <!-- end right panel -->
+
 
 </div>
 
@@ -69,7 +90,7 @@
     
     </div>
 
-           <!-- no user   -->
+           <!-- url  -->
            <div fxLayout="row wrap"  fxLayoutAlign="center center" fxFlex="100" *ngIf="qrData === '' "  >
             
                 <div fxLayout="row wrap" fxLayoutAlign="start center"  fxFlex.xs="90" fxFlex.sm="80" fxFlex="30"  class="fs-4 whiteframe " style="border-radius: 10px; padding: 15px; margin-bottom: 20px; margin-top: 30px; height: 60px; border-left: 10px solid green; 
@@ -80,7 +101,7 @@
                     <span class="font fs-2" style=" text-align: center; margin-left: 20px;">{{baseUrl}}</span>
                 </div>
         </div>
-        <!-- end no items -->
+        <!-- url -->
 
 
 

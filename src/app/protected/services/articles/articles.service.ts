@@ -12,6 +12,7 @@ export class ArticlesService {
 
   initialStateAfterEditOrder$ : EventEmitter<boolean> = new EventEmitter<boolean>; 
   updateEditingArticle$ : EventEmitter<any> = new EventEmitter<any>; 
+  updateAllArticle$ : EventEmitter<any> = new EventEmitter<any>; 
 
 
   token : string = '';
@@ -38,7 +39,6 @@ getAllArticles(from : any, to : any){
     )
 }
 
-
 getArticleById(id : string){
   return this.http.get<any>(`${this.baseUrl}api/articulos/${id}`) 
     
@@ -64,7 +64,7 @@ searchArticle( field : string, value : any) {
     );
 }
 
-searchProductById( id : any){
+searchArticleById( id : any){
   return this.http.get<any>(`${this.baseUrl}api/articulos/${id}`)
   .pipe(
     map( res =>{ 
@@ -73,11 +73,20 @@ searchProductById( id : any){
     );
 }
 
-editProductById( body: any, codigo_interno : string){
+editArticleById( body: any, codigo_interno : string){
   return this.http.put<any>(`${this.baseUrl}api/articulos/${codigo_interno}`, body)
 .pipe(
   map( res =>{ 
         console.log('desde service searchProductById', res)
+          return res} )
+  );
+}
+
+createNewArticle( body: any){
+  return this.http.post<any>(`${this.baseUrl}api/articulos`, body)
+.pipe(
+  map( res =>{ 
+        console.log('desde service createNewArticle', res)
           return res} )
   );
 }
@@ -100,7 +109,6 @@ getPriceListById( id:any, from : any, to : any ){
   );
 
 }
-
 
 getArtListPriceByDesc( idListaPrecios : any, value : string ){
 
