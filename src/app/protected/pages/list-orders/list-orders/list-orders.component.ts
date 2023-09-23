@@ -101,21 +101,7 @@ export class ListOrdersComponent implements OnInit, OnDestroy {
 
   }
 
-  // getInitialOrders(){
-  //   this.isLoading = true;
-  //   this.showOrderFounded = false;
-  //   this.arrOrders = [];
-  //   // this.dataTableActive = this.articleService.getOrdersPaginator(this.pageIndex, this.pageSize,)
-
-  //   this.orderService.getOrdersPaginator(this.pageIndex, this.pageSize).subscribe(
-  //     ({Pedidos})=>{
-  //       this.arrOrders = Pedidos;
-  //       this.isLoading = false;
-  //       this.myForm.reset();
-  //       this.myForm2.reset();
-  //     })
-  // }
-
+  
 
   getAllOrders( ){
 
@@ -138,29 +124,7 @@ export class ListOrdersComponent implements OnInit, OnDestroy {
         })
    }
 
-  //  getSalePointByNumOrder(){
 
-  //   if ( this.myForm2.invalid ) {
-  //     this.myForm2.markAllAsTouched();
-  //     return;
-  //   }
-  //   this.showOrderFounded = false;
-  //   this.isLoading = true;
-  //   this.arrOrders = [];
-  //   const ptoVenta2 = this.myForm2.get('ptoVenta2')?.value;
-  //   const nroOrder = this.myForm2.get('nroOrder')?.value;
-
-  //   this.orderService.getSalePointByNumOrder(ptoVenta2, nroOrder).subscribe(
-  //     ({Pedido})=>{
-  //       if(Pedido){
-  //         this.isLoading = false;
-  //         this.order = Pedido;
-  //         this.myForm2.reset();
-  //         this.showOrderFounded = true;
-  //       }
-  //     })
-
-  //  }
    searchOrder(){
 
     this.showErrorNoSelection = false;
@@ -187,16 +151,6 @@ export class ListOrdersComponent implements OnInit, OnDestroy {
    }
  
 
-  // loadOrders() {
-  //   this.isLoading= true;
-  //   this.orderService.getOrdersPaginator(this.pageIndex, this.pageSize,).subscribe(
-  //     ({pedidos, pagination})=>{
-  //           this.arrOrders = pedidos;
-  //           this.isLoading = false;
-  //           this.length = pagination.total_reg;
-  //   })
-  // }
-
   handlePageEvent(e: PageEvent) {
     this.pageEvent = e;
     this.length = e.length;
@@ -218,7 +172,6 @@ export class ListOrdersComponent implements OnInit, OnDestroy {
 
         })
   }
-  
   
 
   editOrder(order: any){
