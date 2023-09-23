@@ -80,8 +80,7 @@ export class TempOrderComponent implements OnInit {
             if(res.message){
               this.orderService.getOpenOrders().subscribe();
               this.openGenericSuccess('Pedido eliminado con éxito!!');
-              
-              this.errorService.closeIsLoading$.emit(true)
+              this.errorService.closeIsLoading$.emit(true);
             }
           }
         )
@@ -104,7 +103,6 @@ export class TempOrderComponent implements OnInit {
     }
 
     // obtengo primero la orden completa antes de editarla
-
     this.orderService.getSalePointByNumOrder(ptoVenta, cbteNro ).subscribe(
       ({Pedido})=>{
         console.log(Pedido);
@@ -119,7 +117,6 @@ export class TempOrderComponent implements OnInit {
               }
               this.isLoading = true
     });
-
 
   }
 
