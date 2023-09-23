@@ -52,7 +52,7 @@ dataTableActive : any = new MatTableDataSource<any>();
     // paginator
     length = 50;
     pageSize = 10;
-    pageIndex = 0;
+    pageIndex = 1;
     pageSizeOptions = [5, 10, 25];
     hidePageSize = false;
     showPageSizeOptions = true;
