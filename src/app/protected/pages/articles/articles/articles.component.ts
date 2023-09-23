@@ -11,6 +11,7 @@ import { getDataSS } from 'src/app/protected/Storage';
 import { OrderService } from 'src/app/protected/services/order/order.service';
 import { AppState } from 'src/app/app.reducer';
 import { Store } from '@ngrx/store';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-articles',
@@ -28,10 +29,10 @@ export class ArticlesComponent implements OnInit, OnDestroy {
 @ViewChild ('top', {static: false} ) top! : ElementRef;
 @ViewChild ('menu', {static: false} ) menu! : ElementRef;
 
-displayedColumns: string[] = ['img','name','price','stock','comment','ingredients'];
+displayedColumns: string[] = ['action', 'name','price','stock','iva'];
 dataTableActive : any = new MatTableDataSource<any>();
   
-  arrArticles : Articulo[]=[]
+  arrArticles : any []=[]
 
   // search
   itemSearch : string = '';
@@ -45,6 +46,18 @@ dataTableActive : any = new MatTableDataSource<any>();
   product  : any[] = [];
   arrArticlesSugested : any[]=[];
   // search
+
+    // paginator
+    length = 50;
+    pageSize = 10;
+    pageIndex = 1;
+    pageSizeOptions = [5, 10, 25];
+    hidePageSize = false;
+    showPageSizeOptions = true;
+    showFirstLastButtons = true;
+    disabled = false;
+    pageEvent!: PageEvent;
+    // paginator
 
   isLoading : boolean = false;
   articleFounded : any = {};
@@ -71,6 +84,15 @@ dataTableActive : any = new MatTableDataSource<any>();
 
 
   ngOnInit(): void {
+
+    this.getAllArticles();
+
+        this.articleService.updateEditingArticle$.subscribe( 
+          (articulo )=>{
+             if(articulo){
+                this.getItem(articulo)
+              }
+             })
     
         this.authSuscription = this.store.select('auth').subscribe(
           ({salePoint})=>{
@@ -84,6 +106,8 @@ dataTableActive : any = new MatTableDataSource<any>();
         //para las busquedas
         this.myForm.get('itemSearch')?.valueChanges.subscribe(newValue => {
           this.itemSearch = newValue;
+          this.articleFounded = {};
+          this.isArticleFounded = false;
     
           if(this.itemSearch !== null && this.itemSearch !== ''){
     
@@ -99,8 +123,6 @@ dataTableActive : any = new MatTableDataSource<any>();
           this.sugerencias(valor);
         });
     
-      
-
   }
 
   
@@ -116,10 +138,35 @@ dataTableActive : any = new MatTableDataSource<any>();
 
   getAllArticles(){
     this.isLoading = true;
-    this.articleService.getAllArticles().subscribe(
-      ({articulos})=>{
+    this.articleService.getAllArticles(this.pageIndex, this.pageSize).subscribe(
+      ({articulos, pagination})=>{
 
-            console.log(articulos);
+            if(articulos.length !== 0){
+              this.arrArticles = articulos;
+              this.dataTableActive = articulos;
+              this.isLoading = false;
+              this.length = pagination.total_reg;
+            }
+      }
+    );
+  }
+
+  handlePageEvent(e: PageEvent) {
+
+
+    this.pageEvent = e;
+    this.length = e.length;
+    this.pageSize = e.pageSize;
+    this.pageIndex = e.pageIndex;
+    this.isLoading= true;
+  
+    if(this.pageIndex === 0){
+      this.isLoading = false;
+      return
+    }
+
+    this.articleService.getAllArticles(this.pageIndex, this.pageSize).subscribe(
+      ({articulos})=>{
             if(articulos.length !== 0){
               this.arrArticles = articulos;
               this.dataTableActive = articulos;
@@ -127,7 +174,9 @@ dataTableActive : any = new MatTableDataSource<any>();
             }
       }
     );
-  }
+
+      
+    }
 
   styleObject(status : boolean) : object {
  
@@ -139,12 +188,12 @@ dataTableActive : any = new MatTableDataSource<any>();
   }
 
 
-  addArticles(){
-    this.dialog.open(EditArticleComponent, {
-      // data: msg,
-      disableClose: true,
-      panelClass:"custom-modalbox-NoMoreComponent", 
-    });
+  addArticle(){
+    // this.dialog.open(EditArticleComponent, {
+    //   // data: msg,
+    //   disableClose: true,
+    //   panelClass:"custom-modalbox-NoMoreComponent", 
+    // });
   }
 
   deleteArticle( article:any ){
@@ -157,15 +206,15 @@ dataTableActive : any = new MatTableDataSource<any>();
     let width;
     let height;
     if(screen.width >= 800) {
-      width = "600px";
-      height ="720px";
+      width = "650px";
+      height ="550px";
     }
   
     this.dialog.open(EditArticleComponent, {
       data: article,
       width: `${width}`|| "",
       height:`${height}`|| "",
-      panelClass:"custom-modalbox-NoMoreComponent", 
+      panelClass: "custom-modalbox-EditArticleComponent", 
     });
   }
 

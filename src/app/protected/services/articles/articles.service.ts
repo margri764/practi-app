@@ -11,6 +11,7 @@ import { getDataLS } from '../../Storage';
 export class ArticlesService {
 
   initialStateAfterEditOrder$ : EventEmitter<boolean> = new EventEmitter<boolean>; 
+  updateEditingArticle$ : EventEmitter<any> = new EventEmitter<any>; 
 
 
   token : string = '';
@@ -29,11 +30,11 @@ setBaseUrl(newUrl: string) {
   this.baseUrl = newUrl;
 }
 
-getAllArticles(){
-
-    return this.http.get<any>(`${this.baseUrl}api/articulos`) 
+getAllArticles(from : any, to : any){
+    return this.http.get<any>(`${this.baseUrl}api/articulos?p=${from}&r=${to}`) 
     .pipe(
-      map( res => res )
+      tap( (res)=>{console.log('desde getAllArticles: ', res)}),
+      map( res =>  res )
     )
 }
 
@@ -46,7 +47,7 @@ getArticleById(id : string){
                     // if(token){
                     //     this.token = token
                     // }           
-                  // console.log("desde login Service: ",res);
+                  console.log("desde login Service: ",res);
               }  
     ),            
     map( res => res )
@@ -73,7 +74,7 @@ searchProductById( id : any){
 }
 
 editProductById( body: any, codigo_interno : string){
-  return this.http.get<any>(`${this.baseUrl}api/articulos/${codigo_interno}`, body)
+  return this.http.put<any>(`${this.baseUrl}api/articulos/${codigo_interno}`, body)
 .pipe(
   map( res =>{ 
         console.log('desde service searchProductById', res)

@@ -27,7 +27,7 @@ export class EditClientComponent implements OnInit, OnDestroy {
   defaultValue : string = '';
   salePoint : any;
   ivaOption : any;
-  dniOption : any;
+  dniOption : any [] = [];
   isLoading : boolean = false;
   authSuscription! : Subscription;
 
@@ -82,7 +82,7 @@ export class EditClientComponent implements OnInit, OnDestroy {
       idCondicionIva:[this.client.idCondicionIva],
       email1: [ this.client.email1 ],
       idListaPrecios: [ this.client.idListaPrecios],
-      idTipoDocumento: [ this.client.idTipoDocumento ],
+      idTipoDocumento: [ this.client.idDocTipo ],
       telefonoCodigoArea:[ this.client.telefonoCodigoArea ],
       numeroLocal:[ this.client.numeroLocal ],
       domicilio:[ this.client.domicilio ],
@@ -97,6 +97,8 @@ export class EditClientComponent implements OnInit, OnDestroy {
   
     });          
 
+    console.log(this.myForm.get('idCondicionIva')?.value);
+    console.log(this.myForm.get('idTipoDocumento')?.value);
 
     this.authSuscription = this.store.select('auth').subscribe(
       ({salePoint})=>{
@@ -171,6 +173,7 @@ export class EditClientComponent implements OnInit, OnDestroy {
           if(tipos.length !== 0){
                const newTipos = tipos.filter((item: { descripcion: string; })=> item.descripcion !== "CUIT")
                this.dniOption = newTipos;
+               console.log(newTipos);
           }
       })
 
@@ -192,6 +195,7 @@ export class EditClientComponent implements OnInit, OnDestroy {
             this.openGenericSuccess('Cliente editado con éxito');
             this.isLoading = false;
             this.dialogRef.close();
+            this.authService.updateEditingUser$.emit(true)
         }
       })
 

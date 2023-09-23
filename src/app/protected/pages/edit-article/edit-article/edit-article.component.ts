@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
+import { GenericSuccessComponent } from 'src/app/protected/messages/generic-success/generic-success/generic-success.component';
+import { ArticlesService } from 'src/app/protected/services/articles/articles.service';
 import { AuthService } from 'src/app/protected/services/auth/auth.service';
 import { ErrorService } from 'src/app/protected/services/error/error.service';
 
@@ -24,6 +26,7 @@ export class EditArticleComponent implements OnInit {
                 private store : Store <AppState>,
                 private authService : AuthService,
                 private dialog : MatDialog,
+                private articleService : ArticlesService,
                 private errorService : ErrorService,
                 private dialogRef: MatDialogRef<EditArticleComponent>,
                 @Inject(MAT_DIALOG_DATA) public data: any,
@@ -53,8 +56,26 @@ export class EditArticleComponent implements OnInit {
   
 
   onSaveForm(){
-    
 
+    if ( this.myForm.invalid  ) {
+      this.myForm.markAllAsTouched();
+      return;
+    }
+    this.isLoading = true;
+    
+    this.articleService.editProductById(this.myForm.value,  this.article._id).subscribe( 
+      (res)=>{
+        if(res){
+          this.articleService.getArticleById(this.article._id).subscribe( 
+            ({articulo}) =>{
+              console.log(articulo);
+              this.articleService.updateEditingArticle$.emit(articulo)
+            });
+          this.closeComponent();
+          this.openGenericSuccess('Articulo editado correctamente');
+          this.isLoading = false;  
+
+        }})
     // this.authService.updateClientById(this.myForm.value, "2739").subscribe(
     //   (res)=>{
     //     console.log(res);
@@ -66,6 +87,28 @@ export class EditArticleComponent implements OnInit {
     this.dialogRef.close();
 
   }
+
+    
+  openGenericSuccess(msg : string){
+
+    let width : string = '';
+    let height : string = '';
+
+    if(screen.width >= 800) {
+      width = "400px"
+      height ="450px";
+    }
+
+    this.dialog.open(GenericSuccessComponent, {
+      data: msg,
+      width: `${width}`|| "",
+      height:`${height}`|| "",
+      disableClose: true,
+      panelClass:"custom-modalbox-NoMoreComponent", 
+    });
+  
+  }
+
 
 
 

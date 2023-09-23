@@ -53,7 +53,7 @@ export class ClientComponent implements OnInit, OnDestroy {
   // paginator
   length = 50;
   pageSize = 10;
-  pageIndex = 1;
+  pageIndex = 0;
   pageSizeOptions = [5, 10, 25];
   hidePageSize = false;
   showPageSizeOptions = true;
@@ -100,6 +100,7 @@ export class ClientComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
+    this.authService.updateEditingUser$.subscribe( (emmited)=>{ if(emmited){this.getInitialClients()} })
     this.getInitialClients();
 
         //para las busquedas
@@ -122,7 +123,6 @@ export class ClientComponent implements OnInit, OnDestroy {
 
  getInitialClients(){
   this.isLoading = true;
-
 
   this.authService.getClientsPaginator(this.pageIndex, this.pageSize).subscribe(
     ({contactos, pagination})=>{

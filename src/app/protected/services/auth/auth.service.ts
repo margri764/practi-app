@@ -18,6 +18,7 @@ import { getDataLS } from '../../Storage';
 })
 export class AuthService {
 
+  updateEditingUser$ : EventEmitter<boolean> = new EventEmitter<boolean>; 
   showLabelTempOrder$ : EventEmitter<boolean> = new EventEmitter<boolean>; 
   private labelSubject = new BehaviorSubject<string>(''); // Valor inicial vacío
   label$ = this.labelSubject.asObservable();
