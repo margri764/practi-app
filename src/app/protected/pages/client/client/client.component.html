@@ -1,5 +1,5 @@
 
-<div  fxLayout="row wrap"  fxLayoutAlign="center start" fxFlex="100">
+<div  fxLayout="row wrap"  fxLayoutAlign="center start" fxFlex="100" (scroll)="onScroll($event)" class="scroll">
     
     <div  fxLayout="row wrap"  fxLayoutAlign="center center" fxFlex.xs="97" fxFlex.sm="95" fxFlex="85" >
 
@@ -59,9 +59,8 @@
         <!-- start result search cards -->
         <div  fxLayout="row wrap"  fxLayoutAlign="center start"  fxFlex="100" style="margin-top: 40px;" *ngIf="isClientFounded">
             <div fxLayout="row wrap"  fxLayoutAlign="space-between center" style="margin-bottom: 30px;  padding: 10px; background-color: white;" fxFlex="97" class="whiteframe" >
-                <div  fxLayout="row wrap"  fxLayoutAlign="space-around center" fxFlex="100" style="background-color: rgb(37, 150, 190); color: white; height: 30px; padding: 5px;">
-                    <span  class="font" fxFlex="50" > {{clientFounded.archivarComo| capitalizeFirstLetter }} </span>
-                    <span  class="font" fxLayout="row wrap"  fxLayoutAlign="end center" fxFlex="50" > idAgenda: {{clientFounded.id}} </span>
+                <div  fxLayout="row wrap"  fxLayoutAlign="start center" fxFlex="100" style="background-color: rgb(37, 150, 190); color: white; height: 30px; padding: 5px;">
+                    <span  class="font" fxFlex="100" > {{clientFounded.id}}. {{clientFounded.archivarComo| capitalizeFirstLetter }} </span>
             
                 </div>
         
@@ -91,19 +90,6 @@
         <!-- end result search cards -->
 
         <ng-container *ngIf="phone">
-
-            <mat-paginator #paginator
-            class="demo-paginator"
-            (page)="handlePageEvent($event)"
-            [length]="length"
-            [pageSize]="pageSize"
-            [disabled]="disabled"
-            [showFirstLastButtons]="showFirstLastButtons"
-            [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
-            [hidePageSize]="hidePageSize"
-            [pageIndex]="pageIndex"
-            aria-label="Select page" style="margin-top: 30px;">
-            </mat-paginator>
 
             <!-- start cards -->
             <div  fxLayout="row wrap"  fxLayoutAlign="center start" FxFlex="100" style="background-color: rgb(241, 241, 241); margin-top: 40px;" *ngIf="contactos.length !== 0">
@@ -136,7 +122,6 @@
                 
             </div>
             <!-- end cards     -->
-            
           
         </ng-container>
 

@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Articulo } from '../../../interfaces/articulo.interface'
 import { ArticlesService } from 'src/app/protected/services/articles/articles.service';
 import { Subject, Subscription, debounceTime } from 'rxjs';
@@ -25,6 +25,16 @@ export class ArticlesComponent implements OnInit, OnDestroy {
   @Output() onDebounce: EventEmitter<string> = new EventEmitter();
   @Output() onEnter   : EventEmitter<string> = new EventEmitter();
   debouncer: Subject<string> = new Subject();
+
+  @HostListener('window:scroll') onScroll(e: Event): void {
+    const scrollPosition = window.innerHeight + window.scrollY;
+    const contentHeight = document.body.offsetHeight;
+    if(this.phone){
+       if (scrollPosition >= contentHeight - 100 && !this.isLoading) {
+         this.loadInfiniteScroll();
+       }
+    }
+ }
 
   
 @ViewChild(MatAccordion) accordion!: MatAccordion;
@@ -85,6 +95,25 @@ dataTableActive : any = new MatTableDataSource<any>();
         itemSearch:  [ '',  ],
       });  
   }
+
+  loadInfiniteScroll() {
+
+    this.pageIndex++;
+    this.isLoading = true;
+    
+    this.articleService.getAllArticles(this.pageIndex, this.pageSize).subscribe(
+      ({articulos, pagination})=>{
+
+        if(articulos.length !== 0){
+          this.arrArticles =  [...this.arrArticles, ...articulos];
+          this.dataTableActive = articulos;
+          this.isLoading = false;
+          this.length = pagination.total_reg;
+        }
+  }
+);
+  }
+
 
 
   ngOnInit(): void {
@@ -150,7 +179,10 @@ dataTableActive : any = new MatTableDataSource<any>();
   }
 
   getAllArticles(){
+    
     this.isLoading = true;
+    console.log(this.pageIndex, this.pageSize);
+
     this.articleService.getAllArticles(this.pageIndex, this.pageSize).subscribe(
       ({articulos, pagination})=>{
 

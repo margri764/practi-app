@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, HostListener, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from 'src/app/protected/services/auth/auth.service';
 import { EditClientComponent } from '../../edit-client/edit-client/edit-client.component';
@@ -21,7 +21,17 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
   styleUrls: ['./client.component.scss']
 })
 export class ClientComponent implements OnInit, OnDestroy {
-  
+
+  @HostListener('window:scroll') onScroll(e: Event): void {
+    const scrollPosition = window.innerHeight + window.scrollY;
+    const contentHeight = document.body.offsetHeight;
+    if(this.phone){
+       if (scrollPosition >= contentHeight - 100 && !this.isLoading) {
+         this.loadInfiniteScroll();
+       }
+    }
+ }
+
 // start search
   @Output() onDebounce: EventEmitter<string> = new EventEmitter();
   @Output() onEnter   : EventEmitter<string> = new EventEmitter();
@@ -134,6 +144,17 @@ export class ClientComponent implements OnInit, OnDestroy {
     })
 }
 
+
+loadInfiniteScroll(){
+  this.pageIndex++;
+  this.authService.getClientsPaginator(this.pageIndex, this.pageSize).subscribe(
+    ({contactos, pagination})=>{
+      this.contactos = [...this.contactos, ...contactos];
+      this.dataTableActive = contactos;
+      this.isLoading = false;
+      this.length = pagination.total_reg;
+    })
+}
 handlePageEvent(e: PageEvent) {
 
 
