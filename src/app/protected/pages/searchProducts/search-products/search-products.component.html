@@ -62,10 +62,14 @@
                             <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="15" (click)="counter(item, 'dec')" >
                                     <i class="material-symbols-outlined notranslate cursor">remove</i>
                             </div>
-                        
-                            <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="20">
-                                <span class="font fs-4">{{item.cantidad || 1}}</span>
-                            </div>
+
+                            <!-- <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="20">
+                                  <span class="font fs-4" >{{item.cantidad || 1}}</span>
+                            </div> 
+                         -->
+                            <form #f="ngForm" fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="20" >
+                                <input class="font fs-4" [(ngModel)]="item.cantidad" name="cantidadInput" (ngModelChange)="onCantidadChange(f, item)" style="width: 40px; border: none; text-align: center;" >
+                            </form>
                         
                             <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="15" (click)="counter(item, 'inc')">
                                     <i class="material-symbols-outlined notranslate cursor">add</i>

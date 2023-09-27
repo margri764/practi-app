@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Subject, Subscription, debounceTime } from 'rxjs';
@@ -13,7 +13,7 @@ import { SelectArticleMessageComponent } from 'src/app/protected/messages/select
 import { Router } from '@angular/router';
 import { getDataLS, getDataSS, saveDataLS } from 'src/app/protected/Storage';
 import { LocalStorageService } from 'src/app/protected/services/localStorage/local-storage.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ErrorService } from 'src/app/protected/services/error/error.service';
 
 
@@ -29,6 +29,7 @@ export class SearchProductsComponent implements OnInit, OnDestroy {
   @Output() onEnter   : EventEmitter<string> = new EventEmitter();
   debouncer: Subject<string> = new Subject();
   debouncerCode: Subject<string> = new Subject();
+
   
   authSuscription! : Subscription;
   articleSuscription! : Subscription;
@@ -43,6 +44,7 @@ export class SearchProductsComponent implements OnInit, OnDestroy {
   myForm! : FormGroup;
   noMatch : boolean = false;
   defaultValue : string = "Por descripción";
+  initialValue : any = 1
 
   searchOptions : string [] = ["Por descripción", "Por código"]
 
@@ -141,7 +143,7 @@ producto : string = "Producto añadido"
   teclaPresionada(){
     this.noMatches = false;
       this.debouncer.next( this.itemSearch );  
-   };
+   }
     
   sugerencias(value : string){
 
@@ -176,36 +178,54 @@ producto : string = "Producto añadido"
   
   }
   
+  onCantidadChange(f: NgForm, article:any ){
+    if(f.value.cantidadInput === ''){
+      return
+    }
+    this.counter(article, f.value.cantidadInput);
 
+  }
+
+ doubleO: number = 0 ;
 
 counter( article : any, value :  string ){
  
   let articlesInSStorage = getDataSS("arrArticles");
   article.showIncrementer = true; // es para mostrar el incrementer
-
-
+  let valueAsNumber = parseFloat(value);
   if(value === 'inc'){
     article.cantidad = article.cantidad + 1;
-  }else{
+    this.initialValue++;
+  }else if(value === "dec"){
     // this.productQuantity = this.productQuantity - 1;
-    ( article.cantidad >= 1) ?  article.cantidad  =  article.cantidad  - 1 : "";
+    ( article.cantidad >= 1) ?  article.cantidad = article.cantidad  - 1 : "";
+    this.initialValue--;
+  }else{
+    article.cantidad = valueAsNumber;
   }
+
 
   // si es 0 quita el counter y tiene que eliminar el item del SS y redux
   if( article.cantidad == 0){
-    article.showIncrementer = false;
-    let noCeroQuantity = articlesInSStorage.filter((item: any) => item.codigoInterno !== article.codigoInterno);
-    this.localStorageService.saveStateToSessionStorage(noCeroQuantity, "arrArticles");
-    this.store.dispatch(articleAction.deleteArticle({ articleId: article.codigoInterno }));
+
+      this.doubleO ++;
+
+    if(this.doubleO === 2 ){
+      article.showIncrementer = false;
+      let noCeroQuantity = articlesInSStorage.filter((item: any) => item.codigoInterno !== article.codigoInterno);
+      this.localStorageService.saveStateToSessionStorage(noCeroQuantity, "arrArticles");
+      this.store.dispatch(articleAction.deleteArticle({ articleId: article.codigoInterno }));
+    }
     return
   }
+  this.doubleO = 0;
 
   const itemSelect = {
                     descripcionLarga : article.descripcionLarga,
                     precioBrutoFinal: article.precioBrutoFinal,
                     cantidad: article.cantidad,
                     codigoInterno : article.codigoInterno,
-                    id : article.idArticulo,
+                    // id : article.idArticulo,
                     bonificacionPorciento: 0,
                     ventaTotal: (1 * article.precioBrutoFinal) 
 }
@@ -232,12 +252,7 @@ counter( article : any, value :  string ){
     this.producto = "Productos añadidos"
   }
 
-  //guardo en el ss los articulos temporalmente, el concat lo uso para q no se sobreescriban los datos
-  // let tempData = getDataSS("arrArticles");
-  // updatedArr.concat(tempData);
-  // this.localStorageService.saveStateToSessionStorage(updatedArr, "arrArticles");
-  // this.openGenericSuccess('1 Producto añadido con éxito');
-  // this.close();
+
 
 }
 
