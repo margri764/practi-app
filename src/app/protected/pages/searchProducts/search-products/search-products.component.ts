@@ -192,25 +192,30 @@ counter( article : any, value :  string ){
  
   let articlesInSStorage = getDataSS("arrArticles");
   article.showIncrementer = true; // es para mostrar el incrementer
+
   let valueAsNumber = parseFloat(value);
+
   if(value === 'inc'){
     article.cantidad = article.cantidad + 1;
     this.initialValue++;
   }else if(value === "dec"){
     // this.productQuantity = this.productQuantity - 1;
-    ( article.cantidad >= 1) ?  article.cantidad = article.cantidad  - 1 : "";
+    ( article.cantidad >= 1) ?  article.cantidad = article.cantidad  - 1 : article.cantidad = 0;
     this.initialValue--;
   }else{
+    
+    // es el valor del input q es un string "1.5" por ej
+    console.log(value);
     article.cantidad = valueAsNumber;
   }
 
-
   // si es 0 quita el counter y tiene que eliminar el item del SS y redux
   if( article.cantidad == 0){
+    
+    this.doubleO ++;
 
-      this.doubleO ++;
-
-    if(this.doubleO === 2 ){
+    //si no pongo la valuacion del 0. cuando pongo 0.5 se elimina el articulo seleccionado
+    if(this.doubleO === 2 && value !== "0."){
       article.showIncrementer = false;
       let noCeroQuantity = articlesInSStorage.filter((item: any) => item.codigoInterno !== article.codigoInterno);
       this.localStorageService.saveStateToSessionStorage(noCeroQuantity, "arrArticles");
