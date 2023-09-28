@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1695503115680,
+  "timestamp": 1695940968217,
   "index": "/practi-app/index.html",
   "assetGroups": [
     {
@@ -13,7 +13,7 @@
       "urls": [
         "/practi-app/favicon.ico",
         "/practi-app/index.html",
-        "/practi-app/main.c4024c96accdbf4d.js",
+        "/practi-app/main.39eaa1ca823791c1.js",
         "/practi-app/manifest.webmanifest",
         "/practi-app/polyfills.18abb9878618be99.js",
         "/practi-app/runtime.cd6c83e3b1b17864.js",
@@ -120,8 +120,8 @@
     "/practi-app/assets/qr-practi-gestion.png": "7609e9e765a791bc49fcfcfbe4d8fa049d116762",
     "/practi-app/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
     "/practi-app/fontawesome-webfont.8a7cb27d142e3e19.ttf": "13b1eab65a983c7a73bc7997c479d66943f7c6cb",
-    "/practi-app/index.html": "17caa9c313050a437d19efc8b98ca756baf6624a",
-    "/practi-app/main.c4024c96accdbf4d.js": "2694f678c170029c8a297af2eae749066046f329",
+    "/practi-app/index.html": "022203ed59bee285c997539a3348d83b937d52dc",
+    "/practi-app/main.39eaa1ca823791c1.js": "ca969da8aa016467bde3c0922b3df4bb84df73d4",
     "/practi-app/manifest.webmanifest": "59013a1b9578fc15d516fb13f5422ba3cc5079eb",
     "/practi-app/polyfills.18abb9878618be99.js": "451e8b17c129eea3e018aacbcb1e9d1cb91f5766",
     "/practi-app/runtime.cd6c83e3b1b17864.js": "d18aa1c2b21b009b774a895495350486b6411ede",
