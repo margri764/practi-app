@@ -120,7 +120,6 @@ export class TempOrderComponent implements OnInit {
 
   }
 
-
   sendOrder(order :any){
 
     this.openDialogSendOrder();
@@ -170,7 +169,6 @@ export class TempOrderComponent implements OnInit {
   
   }
 
-
   openGenericSuccess(msg : string){
 
     let width : string = '';
@@ -191,13 +189,13 @@ export class TempOrderComponent implements OnInit {
   
   }
   
-openGenericMsgAlert(msg : string){
-  this.dialog.open(WrongActionMessageComponent, {
-    data: msg,
-    // disableClose: true,
-    panelClass:"custom-modalbox-NoMoreComponent", 
-  });
+  openGenericMsgAlert(msg : string){
+    this.dialog.open(WrongActionMessageComponent, {
+      data: msg,
+      // disableClose: true,
+      panelClass:"custom-modalbox-NoMoreComponent", 
+    });
 
-}
+  }
 
 }

@@ -122,6 +122,14 @@ getAllOrders( ){
   );
 }
 
+getDailyOrders( day : string){
+  return this.http.get<any>(`${this.baseUrl}api/pedidos/realizados?d=${day}`)
+.pipe(
+  map( res =>{ 
+        console.log('desde service getDailyOrders', res);
+          return res} )
+  );
+}
 
 getOrdersByPtoVenta( id :  any, from : any, to : any){
 

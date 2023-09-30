@@ -112,7 +112,27 @@
   .add mat-icon{
     transform: scale(1.6);
   }
+
+  .mat-datepicker-toggle {
+    position: absolute;
+    top: 50%;
+    right: 0px;
+    left: 100%;
+    transform: translateY(-65%);
+  }
   
+  .shadow{
+    padding:  10px;
+    background-color: white;
+
+    border-radius: 20px 20px 0px 0px !important;
+    -webkit-border-radius: 20px 20px 0px 0px;
+    -moz-border-radius: 20px 20px 0px 0px;
+
+    box-shadow: -1px 0px 14px -1px rgba(197, 196, 196, 0.45);
+    -webkit-box-shadow: -1px 0px 14px -1px rgba(197, 196, 196, 0.45);
+     -moz-box-shadow: -1px 0px 14px -1px rgba(197, 196, 196, 0.45);
+}
   
   
 //Extra small devices (phones, 600px and down) */

@@ -1,5 +1,5 @@
 import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatAccordion } from '@angular/material/expansion';
 import { PageEvent } from '@angular/material/paginator';
@@ -49,7 +49,7 @@ export class ListOrdersComponent implements OnInit, OnDestroy {
     // paginator
     length = 150;
     pageSize = 10;
-    pageIndex = 0;
+    pageIndex = 1;
     pageSizeOptions = [5, 10, 25];
     hidePageSize = false;
     showPageSizeOptions = true;
@@ -60,6 +60,9 @@ export class ListOrdersComponent implements OnInit, OnDestroy {
     
     myForm! : FormGroup;
     myForm2! : FormGroup;
+    myFormDate! : FormGroup;
+    date : string = '';
+    singleDate : boolean = false;
     send :  boolean = false;
     order : any;
     salePoint : any = null;
@@ -84,8 +87,6 @@ export class ListOrdersComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    
-
     this.errorService.closeIsLoading$.subscribe((emitted)=>{if(emitted){this.isLoading = false}});
     this.errorService.loadAllOrders$.subscribe((emitted)=>{if(emitted){this.isLoading = false; this.getAllOrders()}});
    
@@ -94,10 +95,16 @@ export class ListOrdersComponent implements OnInit, OnDestroy {
       nroOrder:  [  , Validators.pattern('^[0-9]*$')],
     });   
 
+    this.myFormDate = this.fb.group({
+      date:  [''], 
+    });
+  
+
     this.authSuscription = this.store.select('auth').subscribe(
       ({salePoint})=>{
         this.salePoint = salePoint;
       })
+
 
   }
 
@@ -119,10 +126,39 @@ export class ListOrdersComponent implements OnInit, OnDestroy {
             this.arrOrders = pedidos;
             this.isLoading = false;
             this.length = pagination.total_reg;
+            console.log(this.getTotalDaily(pedidos) );
             // this.myForm.reset();
           }
         })
    }
+
+   getTotalDaily(order : any){
+    if (!order || order.length === 0) {
+      return ;
+    }
+    return order.reduce((total: any, article: any) => total + article.impTotal, 0);
+
+   }
+
+   submitDate(){
+
+    const formDate = (<FormControl>this.myFormDate.controls['date']).value;
+    const date = new Date(formDate);
+    const year = date.getFullYear(); // Obtiene el year (ej. 2023)
+    const month = date.getMonth() + 1; // El month se indexa desde 0 (enero) a 11 (diciembre), así que agregamos 1
+    const day = date.getDate(); // Obtiene el día del month
+
+    const formateadDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+
+console.log(formateadDate); // Salida: "2023-09-15"
+
+    if(formDate == '' ){
+      return
+    }
+
+    this.orderService.getDailyOrders(formateadDate).subscribe()
+
+  }
 
 
    searchOrder(){
@@ -203,7 +239,7 @@ export class ListOrdersComponent implements OnInit, OnDestroy {
       this.isLoading = true;
       this.orderService.updateOrderState(ptoVenta, cbteNro, state).subscribe(
         (res)=>{
-          if(res.message){
+          if(res.monthsage){
             this.orderService.getOpenOrders().subscribe();
             this.openGenericSuccess('Pedido enviado con éxito!!');
             this.errorService.closeIsLoading$.emit(true)

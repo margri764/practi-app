@@ -37,6 +37,22 @@
       </div>
     <!-- end error select order -->
 
+    <form [formGroup]="myFormDate" fxLayout="row wrap"  fxLayoutAlign="center center"  fxFlex.xs="100" class="mt-40" >
+        <mat-form-field   fxLayout="row wrap" fxLayoutAlign="center center" class="shadow" fxFlex="95">
+            <mat-label class="font fs-3">Elegí fecha</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="date" fxFlex="100">
+            <mat-datepicker-toggle matIconSuffix [for]="picker" fxFlex="100"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+              
+      </form>
+      <!-- save button -->
+           <button mat-raised-button  [ngClass]="singleDate ? 'btnMenuClicked':'btnMenu'" fxFlex="95" (click)="submitDate()" style="transform: translateY(-1px); z-index: 100; font-size: 1.2em;" >
+               <i class="material-symbols-outlined notranslate" style="transform: scale(1.5); ">schedule</i> 
+               &nbsp; Buscar
+           </button>
+       <!-- end save button -->
+
 
 
     <!-- start paginator -->
