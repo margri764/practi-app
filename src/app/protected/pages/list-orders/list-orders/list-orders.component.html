@@ -14,40 +14,53 @@
         </div> -->
     <!-- </div> -->
 
+    <!-- <form [formGroup]="myForm" fxLayout="row wrap" fxLayoutAlign="center center"  fxFlex="70"  >
 
-    <form [formGroup]="myFormDate" fxLayout="row wrap"  fxLayoutAlign="center center" style="width: 250px;" >
-        <!-- <mat-form-field   fxLayout="row wrap" fxLayoutAlign="center center" class="shadow" fxFlex="100" >
-            <mat-label class="font fs-3">Elegí fecha</mat-label>
-            <input matInput [matDatepicker]="picker" formControlName="date" >
-            <mat-datepicker-toggle matIconSuffix [for]="picker" fxFlex="80"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field> -->
-
-        <mat-form-field appearance="outline" floatLabel="always" fxFlex="49" class="mt-10 font " fxFlex="100">
-            <mat-label >Período</mat-label>
-            <mat-select  formControlName="date" class="font" [value]="defaultValue"  >
-                        <mat-option value=""></mat-option>
-                        <mat-option *ngFor="let option of nameOptions" [value]="option" class="font fs-4"> {{option }}</mat-option>
-                    </mat-select>
+        <mat-form-field class="font" appearance="outline" style="margin-top: 16px;">
+                <mat-label>N° pedido</mat-label>
+                <input matInput type="number" required formControlName="nroOrder" >
         </mat-form-field>
-              
+
+        <mat-icon matSuffix style="transform:scale(1.5); color: rgb(37, 150, 190); cursor: pointer; margin-left: 10px;" (click)="searchOrder()">search</mat-icon>
+               
+    </form> -->
+
+
+    <form [formGroup]="myFormDate" fxLayout="row wrap"  fxLayoutAlign="center center" Flex="100" >
+        <mat-form-field   fxLayout="row wrap" fxLayoutAlign="center center" class="shadow" fxFlex="100">
+            <mat-label class="font fs-2">Elegí fecha</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="date"  >
+            <mat-datepicker-toggle matIconSuffix [for]="picker" fxFlex="100"></mat-datepicker-toggle>
+            <!-- <mat-icon matSuffix style="transform:scale(1.5); color: rgb(37, 150, 190); cursor: pointer; margin-left: 40px;" (click)="searchOrder()">search</mat-icon> -->
+            <mat-datepicker #picker ></mat-datepicker>
+        </mat-form-field>
+
         <button mat-raised-button  [ngClass]="singleDate ? 'btnMenuClicked':'btnMenu'" (click)="submitDate()" style="transform: translateY(-1px); z-index: 100; font-size: 1.2em;" fxFlex="100">
             <i class="material-symbols-outlined notranslate" style="transform: scale(1.5); ">schedule</i> 
             &nbsp; Buscar
         </button>
       </form>
 
-    <form [formGroup]="myForm" fxLayout="row wrap" fxLayoutAlign="center center"  fxFlex="70"  >
+      <div fxLayout="row wrap"  fxLayoutAlign="center center" fxFlex="100" *ngIf="noMatchDaily || noMatches" >
+            
+        <div fxLayout="row wrap" fxLayoutAlign="start center"  fxFlex.xs="75" fxFlex.sm="80" fxFlex="40"  class="fs-2" style="border-radius: 10px; padding: 15px; color: white; background-color: rgb(30, 116, 166); margin-bottom: 20px; margin-top: 30px; height: 48px; border-left: 10px solid red; box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+        -webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);">
+            <span class="material-icons" style="color: white;"> error </span>
+            <span class="font fs-4" style="color: white; text-align: center; margin-left: 20px;">{{msgError}}</span>
+        </div>
+      </div>
 
+           <!-- <mat-form-field appearance="outline" floatLabel="always" fxFlex="49" class="mt-10 font " fxFlex="100">
+            
+            <mat-label >Período</mat-label>
+            <mat-select  formControlName="date" class="font" [value]="defaultValue" >
+                        <mat-option value=""></mat-option>
+                        <mat-option *ngFor="let option of nameOptions" [value]="option" class="font fs-4"> {{option }}</mat-option>
+            </mat-select>
+        </mat-form-field> -->
 
-        <mat-form-field class="font" appearance="outline" style="margin-top: 16px;">
-                <mat-label>N° pedido</mat-label>
-                <input matInput type="number" required formControlName="nroOrder" >
-            </mat-form-field>
-
-            <mat-icon matSuffix style="transform:scale(1.5); color: rgb(37, 150, 190); cursor: pointer; margin-left: 10px;" (click)="searchOrder()">search</mat-icon>
-               
-    </form>
+ 
 
 
     <!-- start paginator -->

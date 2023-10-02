@@ -71,6 +71,8 @@ export class ListOrdersComponent implements OnInit, OnDestroy {
     salePoint : any = null;
     showOrderFounded : boolean = false;
     noMatches : boolean = false;
+    noMatchDaily : boolean = false;
+    msgError : string = 'Sin ordenes';
     showErrorNoSelection : boolean = false;
 
 
@@ -112,7 +114,6 @@ export class ListOrdersComponent implements OnInit, OnDestroy {
   }
 
   
-
   getDailyOrders( ){
 
     const formDate = new Date;
@@ -129,9 +130,12 @@ export class ListOrdersComponent implements OnInit, OnDestroy {
           this.arrOrders = pedidos;
           this.dataTableActive = pedidos;
           this.isLoading = false;
-          // if(pedidos.length === 0){
-          //   alert("Sin pedidos en el dia de hoy")
-          // }
+          if(pedidos.length === 0){
+            this.noMatchDaily = true;
+            this.msgError = 'Sin ordenes diarias..';
+            setTimeout(()=>{ this.noMatchDaily = false },2000)
+
+          }
    })
 }
    
@@ -146,6 +150,7 @@ export class ListOrdersComponent implements OnInit, OnDestroy {
 
    submitDate(){
 
+    this.noMatches = false;
     const formDate = (<FormControl>this.myFormDate.controls['date']).value;
     const date = new Date(formDate);
     const year = date.getFullYear(); 
@@ -164,8 +169,13 @@ export class ListOrdersComponent implements OnInit, OnDestroy {
         this.arrOrders = pedidos;
         this.dataTableActive = pedidos;
         this.isLoading = false;
-      
-    })
+        if(pedidos.length === 0){
+          this.noMatches = true;
+          this.msgError = 'Sin ordenes para la fecha elegida';
+          setTimeout(()=>{ this.noMatches = false },2000)
+
+        }
+        })
 
   }
 
