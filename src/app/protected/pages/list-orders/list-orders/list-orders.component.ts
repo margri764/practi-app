@@ -43,8 +43,11 @@ export class ListOrdersComponent implements OnInit, OnDestroy {
     authSuscription! : Subscription;
 
     // table
-    displayedColumns: string[] = ['id','socialName','items'];
+    displayedColumns: string[] = ['date','client','total'];
     dataTableActive : any = new MatTableDataSource<any>();
+
+    defaultValue : string = 'actual'; 
+    nameOptions : any = ['actual', 'antiguo']
 
     // paginator
     length = 150;
@@ -88,7 +91,7 @@ export class ListOrdersComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
 
     this.errorService.closeIsLoading$.subscribe((emitted)=>{if(emitted){this.isLoading = false}});
-    this.errorService.loadAllOrders$.subscribe((emitted)=>{if(emitted){this.isLoading = false; this.getAllOrders()}});
+    this.errorService.loadAllOrders$.subscribe((emitted)=>{if(emitted){this.isLoading = false}});
    
     this.myForm = this.fb.group({
       ptoVenta:  [ '' ],
@@ -104,33 +107,34 @@ export class ListOrdersComponent implements OnInit, OnDestroy {
       ({salePoint})=>{
         this.salePoint = salePoint;
       })
-
+  this.getDailyOrders();
 
   }
 
   
 
-  getAllOrders( ){
+  getDailyOrders( ){
 
-      this.arrOrders = [];
-      this.showOrderFounded = false;
-      this.isLoading = true;
-      if(this.salePoint === undefined || this.salePoint === null ){
-        this.isLoading = false;
-        return
-      }
+    const formDate = new Date;
+    const date = new Date(formDate);
+    const year = date.getFullYear(); 
+    const month = date.getMonth() + 1; 
+    const day = date.getDate(); 
 
-      this.orderService.getOrdersByPtoVenta(this.salePoint, this.pageIndex, this.pageSize).subscribe(
-        ({pedidos, pagination})=>{
-          if(pedidos.length !== 0){
-            this.arrOrders = pedidos;
-            this.isLoading = false;
-            this.length = pagination.total_reg;
-            console.log(this.getTotalDaily(pedidos) );
-            // this.myForm.reset();
-          }
-        })
-   }
+    const formateadDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+
+  this.isLoading = true;
+  this.orderService.getDailyOrders(formateadDate).subscribe(
+     ({pedidos})=>{
+          this.arrOrders = pedidos;
+          this.dataTableActive = pedidos;
+          this.isLoading = false;
+          // if(pedidos.length === 0){
+          //   alert("Sin pedidos en el dia de hoy")
+          // }
+   })
+}
+   
 
    getTotalDaily(order : any){
     if (!order || order.length === 0) {
@@ -144,19 +148,24 @@ export class ListOrdersComponent implements OnInit, OnDestroy {
 
     const formDate = (<FormControl>this.myFormDate.controls['date']).value;
     const date = new Date(formDate);
-    const year = date.getFullYear(); // Obtiene el year (ej. 2023)
-    const month = date.getMonth() + 1; // El month se indexa desde 0 (enero) a 11 (diciembre), así que agregamos 1
-    const day = date.getDate(); // Obtiene el día del month
+    const year = date.getFullYear(); 
+    const month = date.getMonth() + 1; 
+    const day = date.getDate(); 
 
     const formateadDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-
-console.log(formateadDate); // Salida: "2023-09-15"
 
     if(formDate == '' ){
       return
     }
 
-    this.orderService.getDailyOrders(formateadDate).subscribe()
+    this.isLoading = true;
+    this.orderService.getDailyOrders(formateadDate).subscribe(
+       ({pedidos})=>{
+        this.arrOrders = pedidos;
+        this.dataTableActive = pedidos;
+        this.isLoading = false;
+      
+    })
 
   }
 
@@ -186,7 +195,6 @@ console.log(formateadDate); // Salida: "2023-09-15"
 
    }
  
-
   handlePageEvent(e: PageEvent) {
     this.pageEvent = e;
     this.length = e.length;
