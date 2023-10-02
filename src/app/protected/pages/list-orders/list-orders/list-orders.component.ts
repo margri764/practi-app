@@ -48,6 +48,8 @@ export class ListOrdersComponent implements OnInit, OnDestroy {
 
     defaultValue : string = 'actual'; 
     nameOptions : any = ['actual', 'antiguo']
+    confirm :  boolean = false;
+    total : any;
 
     // paginator
     length = 150;
@@ -124,8 +126,8 @@ export class ListOrdersComponent implements OnInit, OnDestroy {
 
     const formateadDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
 
-  this.isLoading = true;
-  this.orderService.getDailyOrders(formateadDate).subscribe(
+    this.isLoading = true;
+    this.orderService.getDailyOrders(formateadDate).subscribe(
      ({pedidos})=>{
           this.arrOrders = pedidos;
           this.dataTableActive = pedidos;
@@ -134,7 +136,8 @@ export class ListOrdersComponent implements OnInit, OnDestroy {
             this.noMatchDaily = true;
             this.msgError = 'Sin ordenes diarias..';
             setTimeout(()=>{ this.noMatchDaily = false },2000)
-
+          }else{
+            this.getTotalDaily(pedidos);
           }
    })
 }
@@ -144,13 +147,15 @@ export class ListOrdersComponent implements OnInit, OnDestroy {
     if (!order || order.length === 0) {
       return ;
     }
-    return order.reduce((total: any, article: any) => total + article.impTotal, 0);
+    console.log(order.reduce((total: any, article: any) => total + article.impTotal, 0));
+    this.total= order.reduce((total: any, article: any) => total + article.impTotal, 0);
 
    }
 
    submitDate(){
 
     this.noMatches = false;
+    this.confirm = true;
     const formDate = (<FormControl>this.myFormDate.controls['date']).value;
     const date = new Date(formDate);
     const year = date.getFullYear(); 
@@ -173,7 +178,8 @@ export class ListOrdersComponent implements OnInit, OnDestroy {
           this.noMatches = true;
           this.msgError = 'Sin ordenes para la fecha elegida';
           setTimeout(()=>{ this.noMatches = false },2000)
-
+        }else{
+          this.getTotalDaily(pedidos);
         }
         })
 

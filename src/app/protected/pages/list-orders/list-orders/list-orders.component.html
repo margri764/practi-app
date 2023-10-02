@@ -1,4 +1,4 @@
-<div  fxLayout="row wrap"  fxLayoutAlign="center center" fxFlex="100" (scroll)="onScroll($event)" class="scroll" >
+<div  fxLayout="row wrap"  fxLayoutAlign="center center" fxFlex="100" >
 
   <div fxLayout="row wrap" fxLayoutAlign="center start" fxFlex.xs="97" fxFlex="90" class="whiteframe" style="height: 100%; background-color: white; margin-top: 27px;">
 
@@ -35,7 +35,7 @@
             <mat-datepicker #picker ></mat-datepicker>
         </mat-form-field>
 
-        <button mat-raised-button  [ngClass]="singleDate ? 'btnMenuClicked':'btnMenu'" (click)="submitDate()" style="transform: translateY(-1px); z-index: 100; font-size: 1.2em;" fxFlex="100">
+        <button mat-raised-button  [ngClass]="confirm ? 'btnMenuClicked':'btnMenu'" (click)="submitDate()" style="transform: translateY(-1px); z-index: 100; font-size: 1.2em;" fxFlex="100">
             <i class="material-symbols-outlined notranslate" style="transform: scale(1.5); ">schedule</i> 
             &nbsp; Buscar
         </button>
@@ -154,8 +154,11 @@
     <!-- end order by N° -->
 
     <ng-container *ngIf="arrOrders.length !== 0">
-        
-        <div class="example-container mat-elevation-z8 font mt-30" fxFlex="97">
+
+
+                <span class="font" style="font-size: 1em; text-align: start;" fxFlex="99">Cantidad de ordenes: {{arrOrders.length}}</span>
+                <span class="font" style="font-size: 1em; text-align: start;" fxFlex="99">Importe total: &nbsp; ${{total | decimalRound}}</span>
+        <div class="example-container mat-elevation-z8 font mt-30" fxFlex="99">
         
             <table mat-table [dataSource]="dataTableActive" style="width: 100%;">
         
@@ -254,7 +257,7 @@
         </mat-accordion> -->
         <!-- </div>   -->
     <!-- end order -->
-</div>    
+ </div>    
 </div>      
 
 
