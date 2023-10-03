@@ -197,12 +197,10 @@ logout() {
     this.store.dispatch(articleActions.unSetTempOrder());
     this.store.dispatch(authActions.unSetTempClient());
     this.store.dispatch(authActions.unSetUser());
-    this.store.dispatch(authActions.unSetSalePoint());
+    localStorage.removeItem('salePoint')
   }
   
-  // this.errorService.logout().subscribe(
-  //     (res)=>{if(res)this.login = false;});
-  //  }
+
 
 ngOnDestroy(): void {
 

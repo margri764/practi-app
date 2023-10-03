@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { AppState } from 'src/app/app.reducer';
+import { getDataLS } from 'src/app/protected/Storage';
 import { Pedido } from 'src/app/protected/interfaces/orders-posted';
 import { EditOrderComponent } from 'src/app/protected/messages/edit-order/edit-order/edit-order.component';
 import { GenericSuccessComponent } from 'src/app/protected/messages/generic-success/generic-success/generic-success.component';
@@ -106,11 +107,11 @@ export class ListOrdersComponent implements OnInit, OnDestroy {
       date:  [''], 
     });
   
-
-    this.authSuscription = this.store.select('auth').subscribe(
-      ({salePoint})=>{
-        this.salePoint = salePoint;
-      })
+    // obtengo el idLista de precios 
+    const salePoint = getDataLS('salePoint');
+    if(salePoint !== null || salePoint !== undefined){
+      this.salePoint = salePoint;
+    }
   this.getDailyOrders();
 
   }

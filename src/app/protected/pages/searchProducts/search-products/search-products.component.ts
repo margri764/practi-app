@@ -35,6 +35,8 @@ export class SearchProductsComponent implements OnInit, OnDestroy {
   articleSuscription! : Subscription;
   arrArticles : Articulo []=[];
   arrItemSelected : DetalleItem []=[];
+  idListaPrecios : any;
+
   
   labelNoArticles : boolean = false;
   isLoading : boolean = false;
@@ -95,6 +97,12 @@ producto : string = "Producto añadido"
     this.orderService.selectProductOption$.subscribe((emmited)=>{ if(emmited){this.close()}
     })
 
+        // obtengo el idLista de precios 
+        const salePoint = getDataLS('salePoint');
+        if(salePoint !== null || salePoint !== undefined){
+          this.idListaPrecios = salePoint
+        }
+
     //para las busquedas
     this.myForm.get('itemSearch')?.valueChanges.subscribe(newValue => {
       this.itemSearch = newValue;
@@ -147,17 +155,11 @@ producto : string = "Producto añadido"
     
   sugerencias(value : string){
 
-    let tempClient : any;
-
-    if(getDataSS("tempClient" ) !== undefined){
-     tempClient = getDataSS("tempClient")
-    }
-
-
+ 
     this.spinner = true;
     this.itemSearch = value;
     this.mostrarSugerencias = true;  
-      this.articleService.getArtListPriceByDesc(tempClient.idListaPrecios, value)
+      this.articleService.getArtListPriceByDesc(this.idListaPrecios, value)
       .subscribe ( ({precios} )=>{
         console.log(precios);
         if(precios.length !== 0){
@@ -188,7 +190,8 @@ producto : string = "Producto añadido"
  doubleO: number = 0 ;
 
 counter( article : any, value :  string ){
-            this.myForm.get('itemSearch')?.setValue('');
+  
+  this.myForm.get('itemSearch')?.setValue('');
  
   let articlesInSStorage = getDataSS("arrArticles");
   article.showIncrementer = true; // es para mostrar el incrementer

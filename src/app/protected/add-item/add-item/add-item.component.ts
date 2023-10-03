@@ -89,11 +89,12 @@ export class AddItemComponent implements OnInit {
 
     this.errorService.closeIsLoading$.subscribe((emitted)=>{if(emitted){this.isLoading = false}})
 
-    // obtengo el idLista de precios del cliente de la orden
-  this.authService.getClientById(this.item.idAgenda).subscribe(({contacto})=>{
-    this.idListaPrecios = contacto.idListaPrecios;
-  })
-    
+    // obtengo el idLista de precios 
+    const salePoint = getDataLS('salePoint');
+    if(salePoint !== null || salePoint !== undefined){
+      this.idListaPrecios = salePoint
+    }
+
     //para las busquedas
       this.myForm.get('itemSearch')?.valueChanges.subscribe(newValue => {
         this.itemSearch = newValue;
@@ -151,8 +152,8 @@ export class AddItemComponent implements OnInit {
         this.spinner = true;
         this.itemSearch = value;
         this.mostrarSugerencias = true;  
-
-          this.articleService.getArtListPriceByDesc(this.idListaPrecios, value)
+          console.log("desde sugerencia: ",this.idListaPrecios,this.itemSearch);
+          this.articleService.getArtListPriceByDesc(this.idListaPrecios,  this.itemSearch)
           .subscribe ( ({precios} )=>{
             console.log(precios);
             if(precios.length !== 0){

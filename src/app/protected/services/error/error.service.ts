@@ -173,7 +173,7 @@ export class ErrorService {
                  this.store.dispatch(articleActions.unSetTempOrder());
                  this.store.dispatch(authActions.unSetTempClient());
                  this.store.dispatch(authActions.unSetUser());
-                 this.store.dispatch(authActions.unSetSalePoint());
+                 localStorage.removeItem('salePoint')
                 //  setTimeout(()=>{location.reload()},100)
                  this.router.navigateByUrl('login'); 
             
@@ -198,7 +198,7 @@ export class ErrorService {
     this.store.dispatch(articleActions.unSetTempOrder());
     this.store.dispatch(authActions.unSetTempClient());
     this.store.dispatch(authActions.unSetUser());
-    this.store.dispatch(authActions.unSetSalePoint());
+    localStorage.removeItem('salePoint')
    //  setTimeout(()=>{location.reload()},100)
     this.router.navigateByUrl('login'); 
   }

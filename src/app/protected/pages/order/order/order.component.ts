@@ -13,7 +13,7 @@ import * as authAction from 'src/app/auth.actions'
 import { GenericSuccessComponent } from 'src/app/protected/messages/generic-success/generic-success/generic-success.component';
 import { LocalStorageService } from 'src/app/protected/services/localStorage/local-storage.service';
 import { Subscription, filter } from 'rxjs';
-import {getDataSS, saveDataSS } from 'src/app/protected/Storage';
+import {getDataLS, getDataSS, saveDataSS } from 'src/app/protected/Storage';
 import { ErrorService } from 'src/app/protected/services/error/error.service';
 import { AuthService } from 'src/app/protected/services/auth/auth.service';
 import { CuitValidatorService } from 'src/app/protected/services/cuit-validator/cuit-validator.service';
@@ -77,7 +77,12 @@ export class OrderComponent implements OnInit, OnDestroy {
 
    this.errorService.closeIsLoading$.subscribe((emmited)=>{if(emmited){this.isLoading = false}})
 
-   this.getSalePoint();
+       // obtengo el idLista de precios 
+       const salePoint = getDataLS('salePoint');
+       if(salePoint !== null || salePoint !== undefined){
+         this.salePoint = salePoint
+       }
+   
    this.getTotal();
 
 
@@ -138,15 +143,6 @@ export class OrderComponent implements OnInit, OnDestroy {
   }
 
 
-  getSalePoint(){
-
-    this.orderService.getSalePoint().subscribe(
-      ({pos})=>{
-          if(pos){
-              this.salePoint = pos;
-          }
-      })
-  }
 
   getTotal(): number {
     if (!this.arrArticles || this.arrArticles.length === 0) {

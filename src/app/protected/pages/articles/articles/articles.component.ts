@@ -7,7 +7,7 @@ import { EditArticleComponent } from '../../edit-article/edit-article/edit-artic
 import { MatAccordion } from '@angular/material/expansion';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { getDataSS } from 'src/app/protected/Storage';
+import { getDataLS, getDataSS } from 'src/app/protected/Storage';
 import { OrderService } from 'src/app/protected/services/order/order.service';
 import { AppState } from 'src/app/app.reducer';
 import { Store } from '@ngrx/store';
@@ -135,15 +135,13 @@ dataTableActive : any = new MatTableDataSource<any>();
                 this.getItem(articulo)
               }
              })
-    
-        this.authSuscription = this.store.select('auth').subscribe(
-          ({salePoint})=>{
-            if(salePoint === null){
-              this.getSalePoint();
-            }else{
-              this.salePoint = salePoint;
-            }
-          })
+        // obtengo el idLista de precios 
+        const salePoint = getDataLS('salePoint');
+        if(salePoint !== null || salePoint !== undefined){
+          this.salePoint = salePoint
+        }
+
+     
 
         //para las busquedas
         this.myForm.get('itemSearch')?.valueChanges.subscribe(newValue => {

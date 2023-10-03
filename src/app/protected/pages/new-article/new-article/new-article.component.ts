@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { AppState } from 'src/app/app.reducer';
+import { getDataLS } from 'src/app/protected/Storage';
 import { GenericSuccessComponent } from 'src/app/protected/messages/generic-success/generic-success/generic-success.component';
 import { ArticlesService } from 'src/app/protected/services/articles/articles.service';
 import { AuthService } from 'src/app/protected/services/auth/auth.service';
@@ -42,13 +43,13 @@ export class NewArticleComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-
-    this.authSuscription = this.store.select('auth').subscribe(
-      ({salePoint})=>{
-        if(salePoint !== null){
+    
+        // obtengo el idLista de precios 
+        const salePoint = getDataLS('salePoint');
+        if(salePoint !== null || salePoint !== undefined){
           this.salePoint = salePoint;
         }
-      })
+ 
 
     this.errorService.closeIsLoading$.subscribe((emmited)=>{if(emmited){this.isLoading = false}})
 

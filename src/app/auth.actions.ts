@@ -9,9 +9,6 @@ export const setTempClient = createAction( '[Auth] setTempClient',
     props<{ client: any }>()
 );
 
-export const setSalePoint = createAction( '[Auth] setSalePoint',
-    props<{ salePoint: number }>()
-);
 
 
 
@@ -19,4 +16,3 @@ export const setSalePoint = createAction( '[Auth] setSalePoint',
 /************************** UNSET *******************************/
 export const unSetUser = createAction('[Auth] unSetUser');
 export const unSetTempClient = createAction('[Auth] unSetTempClient');
-export const unSetSalePoint = createAction('[Auth] unSetSalePoint');

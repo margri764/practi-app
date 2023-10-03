@@ -10,6 +10,7 @@ import { ArticlesService } from 'src/app/protected/services/articles/articles.se
 import { GenericSuccessComponent } from 'src/app/protected/messages/generic-success/generic-success/generic-success.component';
 import { ErrorService } from 'src/app/protected/services/error/error.service';
 import { CuitValidatorService } from 'src/app/protected/services/cuit-validator/cuit-validator.service';
+import { getDataLS } from 'src/app/protected/Storage';
 
 @Component({
   selector: 'app-new-client',
@@ -129,16 +130,14 @@ export class NewClientComponent implements OnInit, OnDestroy {
       // this.sugerencias(valor);
     });
 
+    // obtengo el idLista de precios 
+    const salePoint = getDataLS('salePoint');
+    if(salePoint !== null || salePoint !== undefined){
+      this.salePoint = salePoint;
+    }
 
-
-    this.authSuscription = this.store.select('auth').subscribe(
-      ({salePoint})=>{
-        if(salePoint !== null){
-          this.salePoint = salePoint;
-        }
-      })
   }
-
+  
   validateCuit(control: AbstractControl) {
     const isValid = this.cuitValidatorService.verifyCuit(control.value);
     return isValid ? null : { invalidCuit: true };

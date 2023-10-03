@@ -117,7 +117,7 @@ ngOnInit() {
     ({pos})=>{
       if(pos){
         let numero = parseFloat(pos.numero);
-        this.store.dispatch(authActions.setSalePoint( {salePoint : numero} ))
+        saveDataLS('salePoint', numero)
       }
     })
   }
