@@ -166,7 +166,6 @@ producto : string = "Producto añadido"
           const suggestedWithShowIncrementer = precios.map((item: any) => ({ ...item, showIncrementer: false, cantidad:0 }));
           this.suggested = suggestedWithShowIncrementer;
             // this.itemSearch = '';
-            this.myForm.get('itemSearch')?.setValue('');
             this.spinner = false;
             }else{
             this.spinner = false;
@@ -189,6 +188,7 @@ producto : string = "Producto añadido"
  doubleO: number = 0 ;
 
 counter( article : any, value :  string ){
+            this.myForm.get('itemSearch')?.setValue('');
  
   let articlesInSStorage = getDataSS("arrArticles");
   article.showIncrementer = true; // es para mostrar el incrementer
