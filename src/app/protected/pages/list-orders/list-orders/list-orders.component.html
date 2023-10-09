@@ -43,7 +43,7 @@
 
       <div fxLayout="row wrap"  fxLayoutAlign="center center" fxFlex="100" *ngIf="noMatchDaily || noMatches" >
             
-        <div fxLayout="row wrap" fxLayoutAlign="start center"  fxFlex.xs="75" fxFlex.sm="80" fxFlex="40"  class="fs-2" style="border-radius: 10px; padding: 15px; color: white; background-color: rgb(30, 116, 166); margin-bottom: 20px; margin-top: 30px; height: 48px; border-left: 10px solid red; box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+        <div fxLayout="row wrap" fxLayoutAlign="start center"  fxFlex.xs="75" fxFlex.sm="80" fxFlex="30"  class="fs-2" style="border-radius: 10px; padding: 15px; color: white; background-color: rgb(30, 116, 166); margin-bottom: 20px; margin-top: 30px; height: 48px; border-left: 10px solid red; box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
         -webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
         -moz-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);">
             <span class="material-icons" style="color: white;"> error </span>
@@ -155,10 +155,12 @@
 
     <ng-container *ngIf="arrOrders.length !== 0">
 
-
-                <span class="font" style="font-size: 1em; text-align: start;" fxFlex="99">Cantidad de ordenes: {{arrOrders.length}}</span>
-                <span class="font" style="font-size: 1em; text-align: start;" fxFlex="99">Importe total: &nbsp; ${{total | decimalRound}}</span>
-        <div class="example-container mat-elevation-z8 font mt-30" fxFlex="99">
+            <div  fxLayout="row wrap"  fxLayoutAlign="start center" fxFlex="97">
+                <span class="font" style="font-size: 1em; text-align: start; margin-top: 20px;" fxFlex="100" >Cantidad de ordenes: {{arrOrders.length}}</span>
+                <span class="font" style="font-size: 1em; text-align: start;" fxFlex="100">Importe total: &nbsp; ${{total | decimalRound}}</span>
+            </div>
+        
+          <div class="example-container mat-elevation-z8 font mt-30" fxFlex="99">
         
             <table mat-table [dataSource]="dataTableActive" style="width: 100%;">
         

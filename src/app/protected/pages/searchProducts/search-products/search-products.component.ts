@@ -97,11 +97,11 @@ producto : string = "Producto añadido"
     this.orderService.selectProductOption$.subscribe((emmited)=>{ if(emmited){this.close()}
     })
 
-        // obtengo el idLista de precios 
-        const salePoint = getDataLS('salePoint');
-        if(salePoint !== null || salePoint !== undefined){
-          this.idListaPrecios = salePoint
-        }
+    // obtengo el idListaPrecios del cliente del pedido
+    const idListaPrecios = getDataSS('tempClient');
+    if(idListaPrecios !== null || idListaPrecios !== undefined){
+      this.idListaPrecios = idListaPrecios;
+    }
 
     //para las busquedas
     this.myForm.get('itemSearch')?.valueChanges.subscribe(newValue => {

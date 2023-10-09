@@ -135,6 +135,7 @@ dataTableActive : any = new MatTableDataSource<any>();
                 this.getItem(articulo)
               }
              })
+             
         // obtengo el idLista de precios 
         const salePoint = getDataLS('salePoint');
         if(salePoint !== null || salePoint !== undefined){
@@ -164,17 +165,7 @@ dataTableActive : any = new MatTableDataSource<any>();
         });
     
   }
-
-  
-  getSalePoint(){
-
-    this.orderService.getSalePoint().subscribe(
-      ({pos})=>{
-          if(pos){
-              this.salePoint = pos.numero;
-          }
-      })
-  }
+ 
 
   getAllArticles(){
     

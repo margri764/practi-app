@@ -98,11 +98,6 @@ export class EditClientComponent implements OnInit, OnDestroy {
   
     });          
 
-    // obtengo el idLista de precios 
-    const salePoint = getDataLS('salePoint');
-    if(salePoint !== null || salePoint !== undefined){
-       this.salePoint = salePoint;
-    }
   }
 
   validateCuit(control: AbstractControl) {

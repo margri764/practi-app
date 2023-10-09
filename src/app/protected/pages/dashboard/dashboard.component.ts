@@ -197,7 +197,9 @@ logout() {
     this.store.dispatch(articleActions.unSetTempOrder());
     this.store.dispatch(authActions.unSetTempClient());
     this.store.dispatch(authActions.unSetUser());
-    localStorage.removeItem('salePoint')
+    localStorage.removeItem('salePoint');
+    localStorage.removeItem('logged');
+    localStorage.removeItem('user');
   }
   
 

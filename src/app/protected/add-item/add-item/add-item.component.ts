@@ -89,10 +89,10 @@ export class AddItemComponent implements OnInit {
 
     this.errorService.closeIsLoading$.subscribe((emitted)=>{if(emitted){this.isLoading = false}})
 
-    // obtengo el idLista de precios 
-    const salePoint = getDataLS('salePoint');
-    if(salePoint !== null || salePoint !== undefined){
-      this.idListaPrecios = salePoint
+    // obtengo el idListaPrecios del cliente del pedido
+    const idListaPrecios = getDataSS('tempClient');
+    if(idListaPrecios !== null || idListaPrecios !== undefined){
+      this.idListaPrecios = idListaPrecios;
     }
 
     //para las busquedas
@@ -133,27 +133,24 @@ export class AddItemComponent implements OnInit {
     }
   }
 
-      // search by description
-       
-      close(){
+  close(){
         this.mostrarSugerencias = false;
         this.itemSearch = '';
         this.suggested = [];
         this.spinner= false;
-      }
+  }
     
-      teclaPresionada(){
+  teclaPresionada(){
          this.noMatch = false;
          this.debouncer.next( this.itemSearch );  
-       };
+  };
     
-       sugerencias(value : string){
+  sugerencias(value : string){
 
         this.spinner = true;
         this.itemSearch = value;
         this.mostrarSugerencias = true;  
-          console.log("desde sugerencia: ",this.idListaPrecios,this.itemSearch);
-          this.articleService.getArtListPriceByDesc(this.idListaPrecios,  this.itemSearch)
+          this.articleService.getArtListPriceByDesc(this.item.idListaPrecios,  this.itemSearch)
           .subscribe ( ({precios} )=>{
             console.log(precios);
             if(precios.length !== 0){
@@ -167,13 +164,9 @@ export class AddItemComponent implements OnInit {
             }
           )
       
-        }
+  }
          
-
-     
-
-    
-searchSuggested( item: any ) {
+  searchSuggested( item: any ) {
   this.orderService.emitedItem$.emit(item);
   this.articleFounded = item;
   this.spinner = false;
@@ -182,10 +175,8 @@ searchSuggested( item: any ) {
   this.itemSearch = '';
   this.suggested = [];
  
-}
+  }
     
-
-
   openGenericSuccess(msg : string){
 
     let width : string = '';

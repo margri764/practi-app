@@ -242,7 +242,7 @@ export class OrderComponent implements OnInit, OnDestroy {
     const body : Order ={
         idAgenda : this.client!.id,
         estado :  "A",
-        ptoVenta: this.salePoint.numero,
+        ptoVenta: this.salePoint,
         descuentoPorcentaje: this.myForm.get('discount')?.value,
         detalleItems 
 
