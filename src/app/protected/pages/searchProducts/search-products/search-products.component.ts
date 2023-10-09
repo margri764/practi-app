@@ -98,9 +98,9 @@ producto : string = "Producto añadido"
     })
 
     // obtengo el idListaPrecios del cliente del pedido
-    const idListaPrecios = getDataSS('tempClient');
-    if(idListaPrecios !== null || idListaPrecios !== undefined){
-      this.idListaPrecios = idListaPrecios;
+    const tempClient = getDataSS('tempClient');
+    if(tempClient !== null || tempClient !== undefined){
+      this.idListaPrecios = tempClient.idListaPrecios;
     }
 
     //para las busquedas
