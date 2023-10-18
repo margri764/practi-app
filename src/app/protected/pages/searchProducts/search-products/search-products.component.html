@@ -5,10 +5,10 @@
      <!-- start menu search -->
      <div fxLayout="row wrap" fxLayoutAlign="center center" class="font whiteframe mt-20" fxFlex.xs="97" fxFlex.sm="80" fxFlex="50" style="padding: 10px;">
 
-        <form  [formGroup]="myForm" fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="100" style="margin-top: 13px;"  > 
+        <form  [formGroup]="myForm" fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="100"  style="margin-top: 13px;"  > 
 
              <mat-form-field  appearance="outline" fxFlex="96" class="font fs-4" >
-                 <input type="text" matInput  placeholder="Buscar artículo"  name="itemSearch" formControlName="itemSearch" >
+                 <input type="text" matInput  placeholder="Buscar artículo"  name="itemSearch" formControlName="itemSearch" autocomplete="off"  (keydown)="onInputKeydown($event)">
                  <mat-icon matSuffix style="transform:scale(1.7); color: rgb(37, 150, 190); margin-right: 20px;">search</mat-icon>
              </mat-form-field>
         </form>

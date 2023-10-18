@@ -54,6 +54,9 @@ export class AddItemComponent implements OnInit {
   noMatch : boolean = false;
   defaultValue : string = 'Por descripción';
   idListaPrecios : any;
+  onSubmitController : boolean= false;
+
+
 
 
   myForm! : FormGroup;
@@ -122,6 +125,15 @@ export class AddItemComponent implements OnInit {
     })
   }
 
+  onInputKeydown(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      // Obtén el valor del campo de entrada y ejecuta la búsqueda
+      const inputValue = this.myForm.get('itemSearch')?.value;
+      this.onSubmitController = true;
+      this.sugerencias(inputValue);
+    }
+  }
+
   
   ngOnDestroy() {
     // Aquí cancela tus suscripciones
@@ -141,25 +153,32 @@ export class AddItemComponent implements OnInit {
   }
     
   teclaPresionada(){
-         this.noMatch = false;
-         this.debouncer.next( this.itemSearch );  
+      this.noMatch = false;
+      this.debouncer.next( this.itemSearch );  
   };
     
   sugerencias(value : string){
 
-        this.spinner = true;
-        this.itemSearch = value;
-        this.mostrarSugerencias = true;  
+    
+    if(value.length < 3 && !this.onSubmitController){
+      return
+    }
+    this.itemSearch = value;
+    this.mostrarSugerencias = true; 
+    this.spinner = true;
           this.articleService.getArtListPriceByDesc(this.item.idListaPrecios,  this.itemSearch)
           .subscribe ( ({precios} )=>{
             console.log(precios);
             if(precios.length !== 0){
               this.suggested = precios;
                 this.spinner = false;
+                this.onSubmitController = false;
                 }else{
                 this.spinner = false;
                 this.mostrarSugerencias = false
                 this.noMatch = true;
+                this.onSubmitController = false;
+
               }
             }
           )

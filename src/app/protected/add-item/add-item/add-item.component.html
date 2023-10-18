@@ -9,7 +9,7 @@
             <form  [formGroup]="myForm" fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="100" style="margin-top: 15px;" > 
     
                 <mat-form-field  appearance="outline" fxFlex="96" class="font fs-4" >
-                    <input type="text" matInput  placeholder="Buscar artículo"  name="itemSearch" formControlName="itemSearch" >
+                    <input type="text" matInput  placeholder="Buscar artículo"  name="itemSearch" formControlName="itemSearch" (keydown)="onInputKeydown($event)" autocomplete="off" >
                  <mat-icon matSuffix style="transform:scale(1.7); color: rgb(37, 150, 190); margin-right: 20px;">search</mat-icon>
 
                 </mat-form-field>

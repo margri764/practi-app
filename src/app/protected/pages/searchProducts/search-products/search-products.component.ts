@@ -47,6 +47,7 @@ export class SearchProductsComponent implements OnInit, OnDestroy {
   noMatch : boolean = false;
   defaultValue : string = "Por descripción";
   initialValue : any = 1
+  onSubmitController : boolean= false;
 
   searchOptions : string [] = ["Por descripción", "Por código"]
 
@@ -126,6 +127,7 @@ producto : string = "Producto añadido"
       this.sugerencias(valor);
     });
 
+
   
 
     this.articleSuscription = this.store.select('article').subscribe(
@@ -138,6 +140,15 @@ producto : string = "Producto añadido"
     })
   }
 
+
+  onInputKeydown(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      // Obtén el valor del campo de entrada y ejecuta la búsqueda
+      const inputValue = this.myForm.get('itemSearch')?.value;
+      this.onSubmitController = true;
+      this.sugerencias(inputValue);
+    }
+  }
 
   close(){
     this.mostrarSugerencias = false;
@@ -156,12 +167,14 @@ producto : string = "Producto añadido"
   sugerencias(value : string){
 
  
+    if (value.length < 3 && !this.onSubmitController) {
+      return
+    }
     this.spinner = true;
     this.itemSearch = value;
     this.mostrarSugerencias = true;  
       this.articleService.getArtListPriceByDesc(this.idListaPrecios, value)
       .subscribe ( ({precios} )=>{
-        console.log(precios);
         if(precios.length !== 0){
           this.suggested = precios;
           //quitar esta logica de aca
@@ -169,10 +182,13 @@ producto : string = "Producto añadido"
           this.suggested = suggestedWithShowIncrementer;
             // this.itemSearch = '';
             this.spinner = false;
+            this.onSubmitController = false;
             }else{
             this.spinner = false;
             this.mostrarSugerencias = false
             this.noMatches = true;
+            this.onSubmitController = false;
+
           }
         }
       )
